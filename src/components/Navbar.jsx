@@ -137,11 +137,11 @@ const Navbar = () => {
               />
             </Link>
 
-            {/* Search Bar - Desktop */}
-            <div className="flex flex-1 max-w-3xl mx-8">
-              <div className="flex w-full bg-white rounded-full overflow-hidden shadow-lg">
+            {/* Search Bar - Desktop - FIXED spacing */}
+            <div className="flex flex-1 max-w-2xl mx-8">
+              <div className="flex w-full bg-white rounded-full overflow-hidden shadow-lg py-2.5 px-4">
                 <div className="relative flex items-center px-4 border-r">
-                  <select className="outline-none bg-transparent text-gray-700 font-medium pr-6">
+                  <select className="outline-none bg-transparent text-gray-700 font-medium pr-6 text-sm">
                     <option>All Categories</option>
                     <option>Electronics</option>
                     <option>Fashion</option>
@@ -154,7 +154,7 @@ const Navbar = () => {
                 <input
                   type="text"
                   placeholder="What are you looking for?"
-                  className="flex-1 px-4 outline-none text-gray-800"
+                  className="flex-1 px-4 outline-none text-gray-800 text-sm"
                 />
                 <button className="bg-gradient-to-r from-gray-900 to-black text-white px-6 hover:from-black hover:to-gray-900 transition-all">
                   <Search size={20} />
@@ -162,8 +162,8 @@ const Navbar = () => {
               </div>
             </div>
 
-            {/* Desktop Navigation Items */}
-            <div className="flex items-center gap-6">
+            {/* Desktop Navigation Items - FIXED spacing */}
+            <div className="flex items-center gap-4">
               {/* Wishlist */}
               <div className="relative group cursor-pointer">
                 <div className="flex items-center gap-2 text-white hover:text-yellow-300 transition-colors">
@@ -186,7 +186,7 @@ const Navbar = () => {
                       />
                     </svg>
                   </div>
-                  <span className="font-medium">Wishlist</span>
+                  <span className="font-medium hidden lg:block">Wishlist</span>
                 </div>
               </div>
 
@@ -194,50 +194,52 @@ const Navbar = () => {
               <Link to="/cart" className="relative group">
                 <div className="flex items-center gap-2 text-white hover:text-yellow-300 transition-colors">
                   <div className="relative">
-                    <ShoppingCart size={24} />
+                    <ShoppingCart size={22} />
                     <div className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
                       {cartItems}
                     </div>
                   </div>
                   <div className="hidden xl:block">
-                    <div className="text-sm">My Cart</div>
-                    <div className="font-bold">${(cartItems * 89.99).toFixed(2)}</div>
+                    <div className="text-sm leading-tight">My Cart</div>
+                    <div className="font-bold text-sm">${(cartItems * 89.99).toFixed(2)}</div>
                   </div>
                 </div>
               </Link>
 
-              {/* Login/Register */}
-              <Link to="/login" className="group">
-                <div className="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full transition-all duration-300">
-                  <User size={20} className="text-white" />
-                  <div className="text-white font-semibold">Login / Register</div>
-                  <ChevronDown size={16} className="text-white" />
+              {/* Login/Register - FIXED overlap issue */}
+              <Link to="/login" className="group relative">
+                <div className="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-3 py-2 rounded-full transition-all duration-300">
+                  <User size={18} className="text-white" />
+                  <div className="text-white font-medium text-sm hidden xl:block">
+                    Login /<br className="sm:hidden" /> Register
+                  </div>
+                  <ChevronDown size={14} className="text-white" />
                 </div>
                 {/* Dropdown Menu */}
-                <div className="absolute hidden group-hover:block mt-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 z-50">
+                <div className="absolute hidden group-hover:block mt-2 right-0 w-48 bg-white rounded-lg shadow-xl border border-gray-200 z-50">
                   <div className="py-2">
                     <Link
                       to="/login"
-                      className="block px-4 py-2 text-gray-700 hover:bg-pink-50 hover:text-pink-600"
+                      className="block px-4 py-2 text-gray-700 hover:bg-pink-50 hover:text-pink-600 text-sm"
                     >
                       👤 Login
                     </Link>
                     <Link
                       to="/register"
-                      className="block px-4 py-2 text-gray-700 hover:bg-pink-50 hover:text-pink-600"
+                      className="block px-4 py-2 text-gray-700 hover:bg-pink-50 hover:text-pink-600 text-sm"
                     >
                       📝 Register
                     </Link>
                     <div className="border-t my-1"></div>
                     <Link
                       to="/profile"
-                      className="block px-4 py-2 text-gray-700 hover:bg-pink-50 hover:text-pink-600"
+                      className="block px-4 py-2 text-gray-700 hover:bg-pink-50 hover:text-pink-600 text-sm"
                     >
                       🏠 My Account
                     </Link>
                     <Link
                       to="/orders"
-                      className="block px-4 py-2 text-gray-700 hover:bg-pink-50 hover:text-pink-600"
+                      className="block px-4 py-2 text-gray-700 hover:bg-pink-50 hover:text-pink-600 text-sm"
                     >
                       📦 My Orders
                     </Link>
@@ -251,26 +253,26 @@ const Navbar = () => {
 
       {/* MOBILE VIEW */}
       <div className="lg:hidden">
-        {/* Mobile Top Bar with Hamburger and Search */}
-        <div className="flex items-center justify-between px-4 pt-4 pb-2">
+        {/* Mobile Top Bar with Hamburger and Search - FIXED spacing */}
+        <div className="flex items-center justify-between px-3 pt-4 pb-3">
           {/* Hamburger Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-2 rounded-lg bg-gradient-to-r from-gray-900 to-black text-white"
+            className="p-2 rounded-lg bg-gradient-to-r from-gray-900 to-black text-white flex-shrink-0"
           >
-            {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
 
-          {/* Mobile Search Bar */}
-          <div className="flex-1 ml-3">
-            <div className="flex bg-white rounded-full overflow-hidden shadow-lg">
+          {/* Mobile Search Bar - FIXED spacing */}
+          <div className="flex-1 ml-3 mr-3">
+            <div className="flex bg-white rounded-full overflow-hidden shadow-lg py-2.5 px-3">
               <input
                 type="text"
                 placeholder="Search products..."
-                className="flex-1 px-4 outline-none text-gray-800 py-3"
+                className="flex-1 px-3 outline-none text-gray-800 text-sm"
               />
-              <button className="bg-gradient-to-r from-gray-900 to-black text-white px-6">
-                <Search size={20} />
+              <button className="bg-gradient-to-r from-gray-900 to-black text-white px-5">
+                <Search size={18} />
               </button>
             </div>
           </div>
@@ -356,7 +358,7 @@ const Navbar = () => {
               setIsMobileMenuOpen(false);
             }}
           >
-            <Home size={24} className="text-gray-700 mb-1" />
+            <Home size={22} className="text-gray-700 mb-1" />
             <span className="text-xs text-gray-700 font-medium">Home</span>
           </Link>
 
@@ -366,7 +368,7 @@ const Navbar = () => {
             className="flex flex-col items-center justify-center flex-1 active:bg-gray-100 rounded-lg p-1 transition"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <Grid size={24} className="text-gray-700 mb-1" />
+            <Grid size={22} className="text-gray-700 mb-1" />
             <span className="text-xs text-gray-700 font-medium">Shop</span>
           </Link>
 
@@ -376,7 +378,7 @@ const Navbar = () => {
             className="flex flex-col items-center justify-center flex-1 relative active:bg-gray-100 rounded-lg p-1 transition"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <ShoppingCart size={24} className="text-gray-700 mb-1" />
+            <ShoppingCart size={22} className="text-gray-700 mb-1" />
             <span className="text-xs text-gray-700 font-medium">Cart</span>
             {cartItems > 0 && (
               <div className="absolute -top-1 right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
@@ -391,7 +393,7 @@ const Navbar = () => {
             className="flex flex-col items-center justify-center flex-1 active:bg-gray-100 rounded-lg p-1 transition"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <User size={24} className="text-gray-700 mb-1" />
+            <User size={22} className="text-gray-700 mb-1" />
             <span className="text-xs text-gray-700 font-medium">Account</span>
           </Link>
         </div>
