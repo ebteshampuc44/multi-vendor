@@ -131,7 +131,7 @@ const Navbar = () => {
             {/* Logo - Desktop Only */}
             <Link to="/" className="flex-shrink-0">
               <img 
-                src="https://i.ibb.co.com/FLHL89PT/Adobe-Express-file.png" 
+                src="https://i.ibb.co.com/TMBDhPGq/Black-White-Minimal-Simple-Modern-Classic-Photography-Studio-Salt-Logo-2.png" 
                 alt="Logo" 
                 className="h-12 w-auto"
               />

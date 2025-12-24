@@ -307,7 +307,7 @@ const Home = () => {
     const isInCart = cartItems[product.id] > 0;
     
     return (
-      <div key={product.id} className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300 group">
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300 group">
         <div className="relative overflow-hidden">
           <div className="absolute top-3 left-3 z-10">
             <div className="bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full">
@@ -342,7 +342,7 @@ const Home = () => {
             ))}
           </div>
           
-          <h3 className="font-bold text-gray-900 text-lg mb-1 group-hover:text-blue-600 transition-colors">
+          <h3 className="font-bold text-gray-900 text-lg mb-1 group-hover:text-blue-600 transition-colors line-clamp-1">
             {product.name}
           </h3>
           <p className="text-gray-500 text-sm mb-3">{product.category}</p>
@@ -363,14 +363,14 @@ const Home = () => {
             </div>
           </div>
           
-          <div className="flex items-center justify-between">
-            <div>
-              <div className="font-bold text-xl text-gray-900">{product.price}</div>
-              <div className="text-sm text-gray-500 line-through">{product.originalPrice}</div>
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div className="flex-1 min-w-0">
+              <div className="font-bold text-xl text-gray-900 truncate">{product.price}</div>
+              <div className="text-sm text-gray-500 line-through truncate">{product.originalPrice}</div>
             </div>
             <button 
               onClick={() => addToCart(product.id)}
-              className={`flex items-center gap-2 px-4 py-2.5 rounded-lg font-medium transition-all duration-300 hover:scale-105 ${
+              className={`flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 rounded-lg font-medium transition-all duration-300 hover:scale-105 whitespace-nowrap flex-shrink-0 ${
                 isInCart 
                   ? "bg-gradient-to-r from-green-500 to-emerald-600 text-white" 
                   : "bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white"
@@ -379,14 +379,15 @@ const Home = () => {
               {isInCart ? (
                 <>
                   <Check className="w-4 h-4 animate-pulse" />
-                  <span className="hidden lg:inline">Added!</span>
-                  <span className="lg:hidden">✓</span>
+                  <span className="hidden sm:inline">Added!</span>
+                  <span className="sm:hidden">✓</span>
                 </>
               ) : (
                 <>
                   <ShoppingCart className="w-4 h-4" />
-                  <span className="hidden lg:inline">Add to Cart</span>
-                  <span className="lg:hidden">Add</span>
+                  <span className="hidden xl:inline">Add to Cart</span>
+                  <span className="xl:hidden sm:inline">Add</span>
+                  <span className="sm:hidden">Cart</span>
                 </>
               )}
             </button>
@@ -555,6 +556,7 @@ const Home = () => {
               </div>
             </div>
 
+            {/* Fashion & Accessories Section */}
             <div className="mb-12">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-900">Fashion & Accessories</h2>
@@ -563,14 +565,14 @@ const Home = () => {
                 </button>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {fashionProducts.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
               </div>
             </div>
 
-        
+            {/* Digital & Electronics Section */}
             <div className="mb-12">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-900">Digital & Electronics</h2>
@@ -579,7 +581,7 @@ const Home = () => {
                 </button>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {digitalProducts.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}
@@ -606,7 +608,7 @@ const Home = () => {
                 </div>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                 {featureProducts.map((product) => (
                   <ProductCard key={product.id} product={product} />
                 ))}

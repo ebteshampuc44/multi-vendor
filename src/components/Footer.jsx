@@ -14,13 +14,11 @@ const Footer = () => {
                     <div>
                         <div className="flex items-center gap-3 mb-4">
                             <img 
-                                src="https://i.ibb.co.com/FLHL89PT/Adobe-Express-file.png" 
+                                src="https://i.ibb.co.com/TMBDhPGq/Black-White-Minimal-Simple-Modern-Classic-Photography-Studio-Salt-Logo-2.png" 
                                 alt="Shopick Logo" 
                                 className="h-10 w-auto"
                             />
-                            <span className="text-2xl font-bold bg-gradient-to-r from-pink-500 to-pink-600 bg-clip-text text-transparent">
-                                Shopick
-                            </span>
+                           
                         </div>
                         <p className="text-gray-300 text-sm mb-4">
                             Your favorite online shopping destination.
