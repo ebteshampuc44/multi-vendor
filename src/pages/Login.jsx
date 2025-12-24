@@ -33,9 +33,13 @@ const Login = () => {
         {/* Header */}
         <div className="text-center mb-8">
           <Link to="/" className="inline-block">
-            <h1 className="text-4xl font-bold text-gray-900">
-              TOP<span className="text-pink-600">DEAL</span>
-            </h1>
+            <div className="flex justify-center">
+              <img 
+                src="https://i.ibb.co.com/TMBDhPGq/Black-White-Minimal-Simple-Modern-Classic-Photography-Studio-Salt-Logo-2.png" 
+                alt="Logo" 
+                className="h-12 w-auto"
+              />
+            </div>
           </Link>
           <p className="text-gray-600 mt-2">Welcome back! Please enter your details.</p>
         </div>
