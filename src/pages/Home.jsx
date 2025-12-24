@@ -316,12 +316,12 @@ const Home = () => {
           </div>
           <button
             onClick={() => toggleFavorite(product.id)}
-            className="absolute top-3 right-3 z-10 bg-white/90 hover:bg-white p-2 rounded-full shadow-md transition-all duration-300"
+            className="absolute top-3 right-3 z-10 bg-white/90 hover:bg-white p-2 rounded-full shadow-md transition-all duration-300 hover:scale-110"
           >
             <Heart 
-              className={`w-5 h-5 ${
+              className={`w-5 h-5 transition-all duration-300 ${
                 favorites.includes(product.id) 
-                  ? "fill-red-500 text-red-500" 
+                  ? "fill-red-500 text-red-500 scale-110" 
                   : "text-gray-600"
               }`} 
             />
@@ -352,7 +352,7 @@ const Home = () => {
               {[...Array(5)].map((_, i) => (
                 <Star 
                   key={i} 
-                  className={`w-4 h-4 ${
+                  className={`w-4 h-4 transition-all duration-300 ${
                     i < Math.floor(product.rating) 
                       ? "fill-yellow-400 text-yellow-400" 
                       : "text-gray-300"
@@ -370,24 +370,28 @@ const Home = () => {
             </div>
             <button 
               onClick={() => addToCart(product.id)}
-              className={`flex items-center justify-center gap-2 px-3 sm:px-4 py-2.5 rounded-lg font-medium transition-all duration-300 hover:scale-105 whitespace-nowrap flex-shrink-0 ${
-                isInCart 
-                  ? "bg-gradient-to-r from-green-500 to-emerald-600 text-white" 
-                  : "bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white"
-              }`}
+              className={`
+                flex items-center justify-center gap-1 sm:gap-2 
+                px-3 sm:px-4 py-2.5 rounded-lg font-medium 
+                transition-all duration-300 hover:scale-105 
+                whitespace-nowrap flex-shrink-0 min-w-[100px]
+                ${isInCart 
+                  ? "bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg shadow-green-200" 
+                  : "bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white shadow-md hover:shadow-lg"
+                }
+                ${isInCart ? "animate-bounce-once" : ""}
+              `}
             >
               {isInCart ? (
                 <>
-                  <Check className="w-4 h-4 animate-pulse" />
-                  <span className="hidden sm:inline">Added!</span>
-                  <span className="sm:hidden">✓</span>
+                  <Check className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <span className="text-sm sm:text-base font-medium">Added</span>
                 </>
               ) : (
                 <>
-                  <ShoppingCart className="w-4 h-4" />
-                  <span className="hidden xl:inline">Add to Cart</span>
-                  <span className="xl:hidden sm:inline">Add</span>
-                  <span className="sm:hidden">Cart</span>
+                  <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
+                  <span className="hidden xs:inline text-sm sm:text-base font-medium">Add to Cart</span>
+                  <span className="xs:hidden text-sm font-medium">Add</span>
                 </>
               )}
             </button>
@@ -399,6 +403,32 @@ const Home = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      {/* Custom Animation Styles */}
+      <style jsx global>{`
+        @keyframes bounce-once {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-4px);
+          }
+        }
+        @keyframes bounce-once-strong {
+          0%, 100% {
+            transform: translateY(0);
+          }
+          50% {
+            transform: translateY(-8px);
+          }
+        }
+        .animate-bounce-once {
+          animation: bounce-once 0.5s ease-in-out;
+        }
+        .animate-bounce-once-strong {
+          animation: bounce-once-strong 0.5s ease-in-out;
+        }
+      `}</style>
+
       <div className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           
@@ -466,7 +496,7 @@ const Home = () => {
                 {/* Slide Content */}
                 <div className="absolute left-12 top-1/2 -translate-y-1/2 text-white max-w-xl">
                   <div className="flex items-center gap-2 mb-4">
-                    <div className="bg-gradient-to-r from-blue-500 to-cyan-400 text-white px-5 py-1.5 rounded-full text-sm font-semibold inline-flex items-center">
+                    <div className="bg-gradient-to-r from-blue-500 to-cyan-400 text-white px-5 py-1.5 rounded-full text-sm font-semibold inline-flex items-center animate-bounce-once-strong">
                       <Tag className="w-4 h-4 mr-2" />
                       Summer Sale
                     </div>
@@ -476,12 +506,12 @@ const Home = () => {
                     </div>
                   </div>
                   <h2 className="text-4xl lg:text-5xl font-bold mb-4">
-                    Big Sale Up To <span className="text-blue-300">70% Off</span>
+                    Big Sale Up To <span className="text-blue-300 animate-pulse">70% Off</span>
                   </h2>
                   <p className="text-lg mb-8 opacity-90">
                     Discover amazing products at unbelievable prices. Limited time offer!
                   </p>
-                  <button className="bg-white text-gray-900 hover:bg-gray-100 font-semibold px-8 py-3.5 rounded-full shadow-lg transition-all duration-300 hover:scale-105 flex items-center">
+                  <button className="bg-white text-gray-900 hover:bg-gray-100 font-semibold px-8 py-3.5 rounded-full shadow-lg transition-all duration-300 hover:scale-105 flex items-center animate-bounce-once">
                     Shop Now <ChevronRight className="ml-2 w-5 h-5" />
                   </button>
                 </div>
@@ -526,8 +556,8 @@ const Home = () => {
             <div className="mt-10 mb-12">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-900">Shop by Category</h2>
-                <button className="text-blue-600 hover:text-blue-700 font-medium flex items-center">
-                  View All <ChevronRight className="ml-1 w-4 h-4" />
+                <button className="text-blue-600 hover:text-blue-700 font-medium flex items-center transition-all duration-300 hover:scale-105">
+                  View All <ChevronRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </button>
               </div>
               
@@ -560,8 +590,8 @@ const Home = () => {
             <div className="mb-12">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-900">Fashion & Accessories</h2>
-                <button className="text-blue-600 hover:text-blue-700 font-medium flex items-center">
-                  View All <ChevronRight className="ml-1 w-4 h-4" />
+                <button className="text-blue-600 hover:text-blue-700 font-medium flex items-center transition-all duration-300 hover:scale-105">
+                  View All <ChevronRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </button>
               </div>
               
@@ -576,8 +606,8 @@ const Home = () => {
             <div className="mb-12">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-900">Digital & Electronics</h2>
-                <button className="text-blue-600 hover:text-blue-700 font-medium flex items-center">
-                  View All <ChevronRight className="ml-1 w-4 h-4" />
+                <button className="text-blue-600 hover:text-blue-700 font-medium flex items-center transition-all duration-300 hover:scale-105">
+                  View All <ChevronRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </button>
               </div>
               
@@ -595,15 +625,15 @@ const Home = () => {
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-2 text-sm">
                     <span className="text-gray-600">Sorted by:</span>
-                    <select className="bg-white border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <select className="bg-white border border-gray-300 rounded-lg px-3 py-1.5 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-300 hover:border-blue-400">
                       <option>Popularity</option>
                       <option>Newest</option>
                       <option>Price: Low to High</option>
                       <option>Price: High to Low</option>
                     </select>
                   </div>
-                  <button className="text-blue-600 hover:text-blue-700 font-medium flex items-center">
-                    View All <ChevronRight className="ml-1 w-4 h-4" />
+                  <button className="text-blue-600 hover:text-blue-700 font-medium flex items-center transition-all duration-300 hover:scale-105">
+                    View All <ChevronRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
                   </button>
                 </div>
               </div>
