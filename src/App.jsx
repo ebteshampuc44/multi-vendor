@@ -1,10 +1,26 @@
-// App.jsx - Updated with Wishlist and Cart pages
+// App.jsx - Simplest working version
 import { Routes, Route } from 'react-router-dom';
 import Root from './Root';
 import Home from './pages/Home';
 import Login from './pages/Login';
-import Wishlist from './pages/Wishlist'; // Add this import
-import Cart from './pages/Cart'; // Add this import
+import Wishlist from './pages/Wishlist';
+import Cart from './pages/Cart';
+
+// Simple brand page component
+const BrandPage = ({ brandName = "Brand" }) => (
+  <div className="min-h-screen flex items-center justify-center bg-gray-50">
+    <div className="text-center p-8 bg-white rounded-2xl shadow-lg">
+      <h1 className="text-3xl font-bold text-gray-900 mb-2">{brandName}</h1>
+      <p className="text-gray-600">Coming Soon!</p>
+      <button 
+        onClick={() => window.history.back()}
+        className="mt-4 px-6 py-2 bg-pink-600 text-white rounded-lg hover:bg-pink-700"
+      >
+        Go Back
+      </button>
+    </div>
+  </div>
+);
 
 function App() {
   return (
@@ -12,8 +28,20 @@ function App() {
       <Route path="/" element={<Root />}>
         <Route index element={<Home />} />
         <Route path="login" element={<Login />} />
-        <Route path="wishlist" element={<Wishlist />} /> {/* Add this route */}
-        <Route path="cart" element={<Cart />} /> {/* Add this route */}
+        <Route path="wishlist" element={<Wishlist />} />
+        <Route path="cart" element={<Cart />} />
+        
+        {/* Simple brand routes */}
+        <Route path="brand/sultans-dine" element={<BrandPage brandName="Sultan's Dine" />} />
+        <Route path="brand/kacchi-bhai" element={<BrandPage brandName="Kacchi Bhai" />} />
+        <Route path="brand/7days-restaurant" element={<BrandPage brandName="7 Days Restaurant" />} />
+        <Route path="brand/chillox" element={<BrandPage brandName="Chillox" />} />
+        <Route path="brand/pizzaburg" element={<BrandPage brandName="PizzaBurg" />} />
+        <Route path="brand/kacchi-dine" element={<BrandPage brandName="Kacchi Dine" />} />
+        <Route path="brand/sadias-kitchen" element={<BrandPage brandName="sadia's kitchen" />} />
+        <Route path="brand/pizza-hut" element={<BrandPage brandName="Pizza Hut" />} />
+        <Route path="brand/dominos-pizza" element={<BrandPage brandName="Domino's Pizza" />} />
+        <Route path="brand/kfc" element={<BrandPage brandName="KFC" />} />
       </Route>
     </Routes>
   );

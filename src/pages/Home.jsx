@@ -56,7 +56,7 @@ const categories = [
   },
 ];
 
-// Top Brands Data - আপনার দেওয়া ব্র্যান্ডগুলো
+// Top Brands Data
 const topBrands = [
   {
     id: 1,
@@ -105,7 +105,7 @@ const topBrands = [
     name: "sadia's kitchen",
     logo: "public/sadia's_kitchen.jpg",
     description: "Popular local brand",
-    url: "/brand/sadia's kitchen"
+     url: "/brand/sadias-kitchen"  
   },
   {
     id: 8,
@@ -130,6 +130,52 @@ const topBrands = [
   }
 ];
 
+// Top Shops Data
+const topShops = [
+  {
+    id: 1,
+    name: "Fruit Zone",
+    logo: "public/Fruit_Zone.jpg",
+    description: "Premium shopping mall with international brands",
+    url: "/shop/Fruit_Zone.jpg"
+  },
+  {
+    id: 2,
+    name: "Bengal Meat - Dhali (DCC Market)",
+    logo: "public/bengal_meat.png",
+    description: "Fresh meat and poultry shop",
+    url: "/shop/bengal-meat-dhali"
+  },
+  {
+    id: 3,
+    name: "RFL Best Buy Pharma (Kalachandpur)",
+    logo: "public/rfl_pharma.jpg",
+    description: "Pharmacy and medical supplies",
+    url: "/shop/rfl-best-buy-pharma"
+  },
+  {
+    id: 4,
+    name: "Unimart - Gulshan 2",
+    logo: "public/unimart.jpg",
+    description: "Supermarket and grocery store",
+    url: "/shop/unimart-gulshan"
+  },
+  {
+    id: 5,
+    name: "Amana Big Bazar - Mohakhali",
+    logo: "public/amana_big_bazar.jpg",
+    description: "Departmental store with variety of products",
+    url: "/shop/amana-big-bazar"
+  },
+  {
+    id: 6,
+    name: "Agora (RM Center)",
+    logo: "public/agora.jpg",
+    description: "Retail supermarket chain",
+    url: "/shop/agora-rm-center"
+  }
+];
+
 const Home = () => {
   const [index, setIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(true);
@@ -137,10 +183,12 @@ const Home = () => {
   const [cartItems, setCartItems] = useState([]);
   const sliderRef = useRef(null);
   const marqueeContainerRef = useRef(null);
+  const shopsMarqueeRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [isShopsHovered, setIsShopsHovered] = useState(false);
   const navigate = useNavigate();
 
   // লোকাল স্টোরেজ থেকে ডেটা লোড
@@ -188,8 +236,13 @@ const Home = () => {
     navigate(brand.url, { state: { brandName: brand.name, brandDescription: brand.description } });
   };
 
-  // মাউস ড্রাগ শুরু
-  const handleMouseDown = (e) => {
+  // শপ ক্লিক হ্যান্ডলার
+  const handleShopClick = (shop) => {
+    navigate(shop.url, { state: { shopName: shop.name, shopDescription: shop.description } });
+  };
+
+  // Brands মার্কুই ড্রাগ ফাংশন
+  const handleBrandsMouseDown = (e) => {
     if (!marqueeContainerRef.current) return;
     
     setIsDragging(true);
@@ -199,8 +252,7 @@ const Home = () => {
     marqueeContainerRef.current.style.userSelect = 'none';
   };
 
-  // মাউস ড্রাগ চলছে
-  const handleMouseMove = (e) => {
+  const handleBrandsMouseMove = (e) => {
     if (!isDragging || !marqueeContainerRef.current) return;
     
     e.preventDefault();
@@ -209,8 +261,7 @@ const Home = () => {
     marqueeContainerRef.current.scrollLeft = scrollLeft - walk;
   };
 
-  // মাউস ড্রাগ শেষ
-  const handleMouseUp = () => {
+  const handleBrandsMouseUp = () => {
     setIsDragging(false);
     if (marqueeContainerRef.current) {
       marqueeContainerRef.current.style.cursor = 'grab';
@@ -218,27 +269,78 @@ const Home = () => {
     }
   };
 
-  // মার্কুই কন্টেইনারে হোভার ইফেক্ট
-  const handleMouseEnter = () => {
+  // Shops মার্কুই ড্রাগ ফাংশন
+  const handleShopsMouseDown = (e) => {
+    if (!shopsMarqueeRef.current) return;
+    
+    setIsDragging(true);
+    setStartX(e.pageX - shopsMarqueeRef.current.offsetLeft);
+    setScrollLeft(shopsMarqueeRef.current.scrollLeft);
+    shopsMarqueeRef.current.style.cursor = 'grabbing';
+    shopsMarqueeRef.current.style.userSelect = 'none';
+  };
+
+  const handleShopsMouseMove = (e) => {
+    if (!isDragging || !shopsMarqueeRef.current) return;
+    
+    e.preventDefault();
+    const x = e.pageX - shopsMarqueeRef.current.offsetLeft;
+    const walk = (x - startX) * 2;
+    shopsMarqueeRef.current.scrollLeft = scrollLeft - walk;
+  };
+
+  const handleShopsMouseUp = () => {
+    setIsDragging(false);
+    if (shopsMarqueeRef.current) {
+      shopsMarqueeRef.current.style.cursor = 'grab';
+      shopsMarqueeRef.current.style.removeProperty('user-select');
+    }
+  };
+
+  // Brands মার্কুই হোভার
+  const handleBrandsMouseEnter = () => {
     setIsHovered(true);
     if (marqueeContainerRef.current) {
       marqueeContainerRef.current.style.cursor = 'grab';
     }
   };
 
-  const handleMouseLeave = () => {
+  const handleBrandsMouseLeave = () => {
     setIsHovered(false);
     if (marqueeContainerRef.current) {
       marqueeContainerRef.current.style.cursor = 'default';
     }
   };
 
-  // মার্কুই কন্টেইনারে হুইল স্ক্রল
-  const handleWheel = (e) => {
+  // Shops মার্কুই হোভার
+  const handleShopsMouseEnter = () => {
+    setIsShopsHovered(true);
+    if (shopsMarqueeRef.current) {
+      shopsMarqueeRef.current.style.cursor = 'grab';
+    }
+  };
+
+  const handleShopsMouseLeave = () => {
+    setIsShopsHovered(false);
+    if (shopsMarqueeRef.current) {
+      shopsMarqueeRef.current.style.cursor = 'default';
+    }
+  };
+
+  // Brands মার্কুই হুইল স্ক্রল
+  const handleBrandsWheel = (e) => {
     if (!marqueeContainerRef.current) return;
     
     e.preventDefault();
     marqueeContainerRef.current.scrollLeft += e.deltaY;
+  };
+
+  // Shops মার্কুই হুইল স্ক্রল
+  const handleShopsWheel = (e) => {
+    if (!shopsMarqueeRef.current) return;
+    
+    e.preventDefault();
+    shopsMarqueeRef.current.scrollLeft += e.deltaY;
   };
 
   useEffect(() => {
@@ -255,15 +357,27 @@ const Home = () => {
     return () => clearTimeout(timer);
   }, [index]);
 
-  // মার্কুই কন্টেইনারে ইভেন্ট লিসেনার যোগ
+  // Brands মার্কুই ইভেন্ট লিসেনার
   useEffect(() => {
     const container = marqueeContainerRef.current;
     if (!container) return;
 
-    container.addEventListener('wheel', handleWheel, { passive: false });
+    container.addEventListener('wheel', handleBrandsWheel, { passive: false });
 
     return () => {
-      container.removeEventListener('wheel', handleWheel);
+      container.removeEventListener('wheel', handleBrandsWheel);
+    };
+  }, []);
+
+  // Shops মার্কুই ইভেন্ট লিসেনার
+  useEffect(() => {
+    const container = shopsMarqueeRef.current;
+    if (!container) return;
+
+    container.addEventListener('wheel', handleShopsWheel, { passive: false });
+
+    return () => {
+      container.removeEventListener('wheel', handleShopsWheel);
     };
   }, []);
 
@@ -290,28 +404,28 @@ const Home = () => {
           width: 100%;
           scroll-behavior: smooth;
           -webkit-overflow-scrolling: touch;
-          scrollbar-width: none; /* Firefox */
-          padding-left: 1rem; /* বামে স্পেস */
-          padding-right: 1rem; /* ডানে স্পেস */
+          scrollbar-width: none;
+          padding-left: 1rem;
+          padding-right: 1rem;
         }
         
         .marquee-container::-webkit-scrollbar {
-          display: none; /* Chrome, Safari, Opera */
+          display: none;
         }
         
         .marquee-content {
           display: flex;
-          gap: 1.5rem; /* কার্ডগুলোর মধ্যে বেশি গ্যাপ */
+          gap: 1.5rem;
           padding: 0.5rem 0;
           width: max-content;
         }
         
-        /* ব্র্যান্ড কার্ড স্টাইল */
+        /* ব্র্যান্ড/শপ কার্ড স্টাইল */
         .brand-card {
           transition: all 0.3s ease;
           flex-shrink: 0;
-          width: 260px; /* ফিক্সড উইডথ */
-          height: 260px; /* ফিক্সড হাইট */
+          width: 260px;
+          height: 260px;
           display: flex;
           flex-direction: column;
           justify-content: space-between;
@@ -343,8 +457,16 @@ const Home = () => {
           width: 100px;
           background: linear-gradient(90deg, #10b981, #34d399);
           border-radius: 2px;
-          opacity: ${isHovered ? 0.8 : 0};
+          opacity: 0;
           transition: opacity 0.3s ease;
+        }
+        
+        .drag-indicator.green {
+          background: linear-gradient(90deg, #10b981, #34d399);
+        }
+        
+        .drag-indicator.blue {
+          background: linear-gradient(90deg, #3b82f6, #60a5fa);
         }
         
         /* স্ক্রল ইন্ডিকেটর */
@@ -361,7 +483,7 @@ const Home = () => {
           justify-content: center;
           box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
           cursor: pointer;
-          opacity: ${isHovered ? 1 : 0};
+          opacity: 0;
           transition: opacity 0.3s ease, transform 0.2s ease;
           z-index: 20;
         }
@@ -383,56 +505,14 @@ const Home = () => {
           color: #10b981;
           font-weight: bold;
         }
+        
+        .scroll-arrow.blue {
+          color: #3b82f6;
+        }
       `}</style>
 
       <div className="container mx-auto px-4 py-8">
-        {/* Quick Stats Bar */}
-        <div className="mb-6 p-4 bg-white rounded-2xl shadow-sm border border-gray-200">
-          <div className="flex flex-wrap items-center justify-between gap-4">
-            <div className="flex items-center gap-6">
-              <button
-                onClick={() => navigate('/wishlist')}
-                className="flex items-center gap-2 text-gray-700 hover:text-green-600 transition-colors"
-              >
-                <div className="relative">
-                  <Heart className="w-5 h-5" fill={wishlist.length > 0 ? "#10b981" : "none"} />
-                  {wishlist.length > 0 && (
-                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
-                      {wishlist.length}
-                    </div>
-                  )}
-                </div>
-                <span className="font-medium">{wishlist.length} Items</span>
-              </button>
-              
-              <button
-                onClick={() => navigate('/cart')}
-                className="flex items-center gap-2 text-gray-700 hover:text-green-600 transition-colors"
-              >
-                <div className="relative">
-                  <ShoppingCart className="w-5 h-5" />
-                  {cartItems.length > 0 && (
-                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
-                      {cartItems.reduce((sum, item) => sum + item.quantity, 0)}
-                    </div>
-                  )}
-                </div>
-                <span className="font-medium">
-                  ${cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2)}
-                </span>
-              </button>
-            </div>
-            
-            <div className="flex items-center gap-4">
-              <span className="text-sm text-gray-600">
-                <span className="font-bold text-green-600">{wishlist.length}</span> items in wishlist
-              </span>
-              <span className="text-sm text-gray-600">
-                <span className="font-bold text-green-600">{cartItems.length}</span> items in cart
-              </span>
-            </div>
-          </div>
-        </div>
+        {/* Quick Stats Bar সম্পূর্ণ রিমুভ করা হয়েছে */}
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           
@@ -603,13 +683,13 @@ const Home = () => {
               </div>
             </div>
 
-            {/* Top Brands Section with Local Brands */}
-            <div className="mt-10 mb-12">
+            {/* Top Brands Section */}
+            <div className="mt-10">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-900">Top Brands</h2>
                 <button 
                   onClick={() => navigate('/brands')}
-                  className="text-green-600 hover:text-green-700 font-medium flex items-center transition-all duration-300 hover:scale-105"
+                  className="text-green-600 hover:text-green-700 font-medium flex items-center transition-all duration-300 hover:scale-105 group"
                 >
                   View All Brands <ChevronRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </button>
@@ -619,6 +699,7 @@ const Home = () => {
                 {/* স্ক্রল ইন্ডিকেটর বাটন */}
                 <div 
                   className="scroll-indicator scroll-left"
+                  style={{ opacity: isHovered ? 1 : 0 }}
                   onClick={() => {
                     if (marqueeContainerRef.current) {
                       marqueeContainerRef.current.scrollBy({ left: -300, behavior: 'smooth' });
@@ -630,6 +711,7 @@ const Home = () => {
                 
                 <div 
                   className="scroll-indicator scroll-right"
+                  style={{ opacity: isHovered ? 1 : 0 }}
                   onClick={() => {
                     if (marqueeContainerRef.current) {
                       marqueeContainerRef.current.scrollBy({ left: 300, behavior: 'smooth' });
@@ -640,23 +722,22 @@ const Home = () => {
                 </div>
                 
                 {/* ড্রাগ ইন্ডিকেটর */}
-                <div className="drag-indicator"></div>
+                <div className="drag-indicator green" style={{ opacity: isHovered ? 0.8 : 0 }}></div>
                 
                 {/* ড্রাগযোগ্য মার্কুই কন্টেইনার */}
                 <div
                   ref={marqueeContainerRef}
                   className="marquee-container"
-                  onMouseDown={handleMouseDown}
-                  onMouseMove={handleMouseMove}
-                  onMouseUp={handleMouseUp}
+                  onMouseDown={handleBrandsMouseDown}
+                  onMouseMove={handleBrandsMouseMove}
+                  onMouseUp={handleBrandsMouseUp}
                   onMouseLeave={() => {
-                    handleMouseUp();
-                    handleMouseLeave();
+                    handleBrandsMouseUp();
+                    handleBrandsMouseLeave();
                   }}
-                  onMouseEnter={handleMouseEnter}
+                  onMouseEnter={handleBrandsMouseEnter}
                 >
                   <div className="marquee-content">
-                    {/* প্রথম কার্ডের আগে স্পেসার */}
                     <div className="first-card-spacer"></div>
                     
                     {topBrands.map((brand) => (
@@ -681,7 +762,6 @@ const Home = () => {
                       </div>
                     ))}
                     
-                    {/* শেষ কার্ডের পরে স্পেসার */}
                     <div className="last-card-spacer"></div>
                   </div>
                 </div>
@@ -707,6 +787,120 @@ const Home = () => {
                     <div className="text-center">
                       <div className="font-bold text-green-700 text-xl">500+</div>
                       <div className="text-xs text-green-600">Food Items</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Top Shops Section */}
+            <div className="mt-12 mb-12">
+              <div className="flex items-center justify-between mb-6">
+                <h2 className="text-2xl font-bold text-gray-900">Top Shops</h2>
+                <button 
+                  onClick={() => navigate('/shops')}
+                  className="text-blue-600 hover:text-blue-700 font-medium flex items-center transition-all duration-300 hover:scale-105 group"
+                >
+                  View All Shops <ChevronRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </button>
+              </div>
+              
+              <div className="relative">
+                {/* স্ক্রল ইন্ডিকেটর বাটন */}
+                <div 
+                  className="scroll-indicator scroll-left"
+                  style={{ opacity: isShopsHovered ? 1 : 0 }}
+                  onClick={() => {
+                    if (shopsMarqueeRef.current) {
+                      shopsMarqueeRef.current.scrollBy({ left: -300, behavior: 'smooth' });
+                    }
+                  }}
+                >
+                  <span className="scroll-arrow blue">←</span>
+                </div>
+                
+                <div 
+                  className="scroll-indicator scroll-right"
+                  style={{ opacity: isShopsHovered ? 1 : 0 }}
+                  onClick={() => {
+                    if (shopsMarqueeRef.current) {
+                      shopsMarqueeRef.current.scrollBy({ left: 300, behavior: 'smooth' });
+                    }
+                  }}
+                >
+                  <span className="scroll-arrow blue">→</span>
+                </div>
+                
+                {/* ড্রাগ ইন্ডিকেটর */}
+                <div className="drag-indicator blue" style={{ opacity: isShopsHovered ? 0.8 : 0 }}></div>
+                
+                {/* ড্রাগযোগ্য মার্কুই কন্টেইনার */}
+                <div
+                  ref={shopsMarqueeRef}
+                  className="marquee-container"
+                  onMouseDown={handleShopsMouseDown}
+                  onMouseMove={handleShopsMouseMove}
+                  onMouseUp={handleShopsMouseUp}
+                  onMouseLeave={() => {
+                    handleShopsMouseUp();
+                    handleShopsMouseLeave();
+                  }}
+                  onMouseEnter={handleShopsMouseEnter}
+                >
+                  <div className="marquee-content">
+                    <div className="first-card-spacer"></div>
+                    
+                    {topShops.map((shop) => (
+                      <div
+                        key={shop.id}
+                        onClick={() => handleShopClick(shop)}
+                        className="brand-card bg-white rounded-2xl p-6 shadow-sm border border-gray-200 hover:shadow-xl transition-all duration-300 cursor-pointer"
+                      >
+                        <div className="relative w-full h-40 rounded-xl overflow-hidden mb-4 bg-white p-4 flex items-center justify-center">
+                          <img 
+                            src={shop.logo} 
+                            alt={shop.name}
+                            className="w-full h-full object-contain transition-transform duration-300 hover:scale-110"
+                          />
+                        </div>
+                        <div className="text-center flex-grow flex flex-col justify-center">
+                          <h3 className="font-bold text-gray-900 text-lg group-hover:text-blue-600 transition-colors duration-300 mb-2">
+                            {shop.name}
+                          </h3>
+                          <p className="text-sm text-gray-500 line-clamp-2">{shop.description}</p>
+                        </div>
+                      </div>
+                    ))}
+                    
+                    <div className="last-card-spacer"></div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* শপ স্ট্যাটাস বার */}
+              <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl border border-blue-100">
+                <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="text-center sm:text-left">
+                    <h3 className="font-bold text-blue-800 text-lg">Premium Shopping Partners</h3>
+                    <p className="text-sm text-blue-600">
+                      {isShopsHovered 
+                        ? "Drag left/right or use arrows to scroll • Click on any shop to explore" 
+                        : "Click on any shop to explore their products and services"
+                      }
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-4">
+                    <div className="text-center">
+                      <div className="font-bold text-blue-700 text-xl">{topShops.length}</div>
+                      <div className="text-xs text-blue-600">Shops</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="font-bold text-blue-700 text-xl">1000+</div>
+                      <div className="text-xs text-blue-600">Products</div>
+                    </div>
+                    <div className="text-center">
+                      <div className="font-bold text-blue-700 text-xl">24/7</div>
+                      <div className="text-xs text-blue-600">Service</div>
                     </div>
                   </div>
                 </div>
