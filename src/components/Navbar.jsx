@@ -1,11 +1,56 @@
 // Navbar.jsx
 import { Link } from "react-router-dom";
-import { Search, ShoppingCart, User, ChevronDown, Home, Grid, Menu, X } from "lucide-react";
-import { useState } from "react";
+import { Search, ShoppingCart, User, ChevronDown, Home, Grid, Menu, X, Heart } from "lucide-react"; // Heart import করুন
+import { useState, useEffect } from "react"; // useEffect import করুন
 
 const Navbar = () => {
-  const [cartItems] = useState(3); // Example cart count
+  const [cartItemsCount, setCartItemsCount] = useState(0); // নাম পরিবর্তন
+  const [wishlistCount, setWishlistCount] = useState(0); // নতুন state
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [cartTotal, setCartTotal] = useState(0); // কার্ট টোটাল
+
+  // কার্ট আইটেম কাউন্ট আপডেট ফাংশন
+  const updateCartCount = () => {
+    const cart = JSON.parse(localStorage.getItem("shopickCart")) || [];
+    const count = cart.reduce((total, item) => total + item.quantity, 0);
+    setCartItemsCount(count);
+    
+    // কার্ট টোটাল ক্যালকুলেট
+    const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    setCartTotal(total);
+  };
+
+  // উইশলিস্ট কাউন্ট আপডেট ফাংশন
+  const updateWishlistCount = () => {
+    const wishlist = JSON.parse(localStorage.getItem("shopickWishlist")) || [];
+    setWishlistCount(wishlist.length);
+  };
+
+  // লোকাল স্টোরেজ পরিবর্তন শোনা
+  useEffect(() => {
+    // প্রথম লোডে কাউন্ট আপডেট
+    updateCartCount();
+    updateWishlistCount();
+
+    // লোকাল স্টোরেজ পরিবর্তনের জন্য ইভেন্ট লিসেনার
+    const handleStorageChange = () => {
+      updateCartCount();
+      updateWishlistCount();
+    };
+
+    // স্টোরেজ ইভেন্ট শুনুন
+    window.addEventListener('storage', handleStorageChange);
+    
+    // কাস্টম ইভেন্টের জন্য লিসেনার (নিজের ট্যাবের পরিবর্তনের জন্য)
+    window.addEventListener('cartUpdated', updateCartCount);
+    window.addEventListener('wishlistUpdated', updateWishlistCount);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('cartUpdated', updateCartCount);
+      window.removeEventListener('wishlistUpdated', updateWishlistCount);
+    };
+  }, []);
 
   // ক্যাটেগরি ডেটা
   const categories = [
@@ -164,44 +209,40 @@ const Navbar = () => {
 
             {/* Desktop Navigation Items - FIXED spacing */}
             <div className="flex items-center gap-4">
-              {/* Wishlist */}
-              <div className="relative group cursor-pointer">
+              {/* Wishlist - Link দিয়ে wrap করুন */}
+              <Link to="/wishlist" className="relative group cursor-pointer">
                 <div className="flex items-center gap-2 text-white hover:text-yellow-300 transition-colors">
                   <div className="relative">
-                    <div className="w-5 h-5 rounded-full bg-red-500 absolute -top-1 -right-1 flex items-center justify-center">
-                      <span className="text-xs font-bold">3</span>
-                    </div>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
+                    {wishlistCount > 0 && (
+                      <div className="w-5 h-5 rounded-full bg-red-500 absolute -top-1 -right-1 flex items-center justify-center">
+                        <span className="text-xs font-bold">{wishlistCount}</span>
+                      </div>
+                    )}
+                    <Heart
                       className="h-6 w-6"
                       fill="none"
-                      viewBox="0 0 24 24"
                       stroke="currentColor"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                      />
-                    </svg>
+                      strokeWidth={2}
+                    />
                   </div>
                   <span className="font-medium hidden lg:block">Wishlist</span>
                 </div>
-              </div>
+              </Link>
 
-              {/* Cart */}
+              {/* Cart - Link already exists */}
               <Link to="/cart" className="relative group">
                 <div className="flex items-center gap-2 text-white hover:text-yellow-300 transition-colors">
                   <div className="relative">
                     <ShoppingCart size={22} />
-                    <div className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
-                      {cartItems}
-                    </div>
+                    {cartItemsCount > 0 && (
+                      <div className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
+                        {cartItemsCount}
+                      </div>
+                    )}
                   </div>
                   <div className="hidden xl:block">
                     <div className="text-sm leading-tight">My Cart</div>
-                    <div className="font-bold text-sm">${(cartItems * 89.99).toFixed(2)}</div>
+                    <div className="font-bold text-sm">${cartTotal.toFixed(2)}</div>
                   </div>
                 </div>
               </Link>
@@ -372,19 +413,44 @@ const Navbar = () => {
             <span className="text-xs text-gray-700 font-medium">Shop</span>
           </Link>
 
+          {/* Wishlist (Mobile) */}
+          <Link 
+            to="/wishlist" 
+            className="flex flex-col items-center justify-center flex-1 relative active:bg-gray-100 rounded-lg p-1 transition"
+            onClick={() => setIsMobileMenuOpen(false)}
+          >
+            <div className="relative">
+              <Heart 
+                size={22} 
+                className="text-gray-700 mb-1" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth={2}
+              />
+              {wishlistCount > 0 && (
+                <div className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center">
+                  <span className="text-[10px] font-bold">{wishlistCount}</span>
+                </div>
+              )}
+            </div>
+            <span className="text-xs text-gray-700 font-medium">Wishlist</span>
+          </Link>
+
           {/* Cart */}
           <Link 
             to="/cart" 
             className="flex flex-col items-center justify-center flex-1 relative active:bg-gray-100 rounded-lg p-1 transition"
             onClick={() => setIsMobileMenuOpen(false)}
           >
-            <ShoppingCart size={22} className="text-gray-700 mb-1" />
+            <div className="relative">
+              <ShoppingCart size={22} className="text-gray-700 mb-1" />
+              {cartItemsCount > 0 && (
+                <div className="absolute -top-1 -right-1 bg-red-500 text-white rounded-full w-4 h-4 flex items-center justify-center">
+                  <span className="text-[10px] font-bold">{cartItemsCount}</span>
+                </div>
+              )}
+            </div>
             <span className="text-xs text-gray-700 font-medium">Cart</span>
-            {cartItems > 0 && (
-              <div className="absolute -top-1 right-2 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold">
-                {cartItems}
-              </div>
-            )}
           </Link>
 
           {/* Account/Login */}
