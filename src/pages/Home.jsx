@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { ChevronLeft, ChevronRight, Clock, Tag, Heart, ShoppingCart } from "lucide-react";
+import { ChevronLeft, ChevronRight, Clock, Tag, Heart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const sliderImages = [
@@ -56,121 +56,121 @@ const categories = [
   },
 ];
 
-// Top Brands Data
+// Top Brands Data - নতুন ইমেজ URL সহ
 const topBrands = [
   {
     id: 1,
     name: "Sultan's Dine",
-    logo: "public/sd.jpg",
+    logo: "https://i.postimg.cc/kXBXmy7x/sd.jpg",
     description: "Authentic Bengali cuisine",
     url: "/brand/sultans-dine"
   },
   {
     id: 2,
     name: "Kacchi Bhai",
-    logo: "public/kb.png",
+    logo: "https://i.postimg.cc/Y2XqZPBL/kb.png",
     description: "Best Kacchi in town",
     url: "/brand/kacchi-bhai"
   },
   {
     id: 3,
     name: "7 Days Restaurant",
-    logo: "public/7days.jpg",
+    logo: "https://i.postimg.cc/2jH8MtRg/7days.jpg",
     description: "Open 7 days a week",
     url: "/brand/7days-restaurant"
   },
   {
     id: 4,
     name: "Chillox",
-    logo: "public/chillox.png",
+    logo: "https://i.postimg.cc/2jH8MtNr/chillox.png",
     description: "Famous for burgers",
     url: "/brand/chillox"
   },
   {
     id: 5,
     name: "PizzaBurg",
-    logo: "public/logo_1727.jpeg",
+    logo: "https://i.postimg.cc/qBmMSFHK/logo-1727.jpg",
     description: "Pizza & Burgers",
     url: "/brand/pizzaburg"
   },
   {
     id: 6,
     name: "Kacchi Dine",
-    logo: "public/Kacchi_Dine.jpg",
+    logo: "https://i.postimg.cc/sfnDqLCg/Kacchi-Dine.jpg",
     description: "Fast food chain",
     url: "/brand/kacchi-dine"
   },
   {
     id: 7,
     name: "sadia's kitchen",
-    logo: "public/sadia's_kitchen.jpg",
+    logo: "https://i.postimg.cc/SNJNhGm8/sadia-s-kitchen.jpg",
     description: "Popular local brand",
-     url: "/brand/sadias-kitchen"  
+    url: "/brand/sadias-kitchen"  
   },
   {
     id: 8,
     name: "Pizza Hut Bangladesh",
-    logo: "Pizza_Hut.png",
+    logo: "https://i.postimg.cc/fTJTNvMV/Pizza-Hut.png",
     description: "International pizza chain",
     url: "/brand/pizza-hut"
   },
   {
     id: 9,
     name: "Domino's Pizza Bangladesh",
-    logo: "Dominos_pizza.png",
+    logo: "https://i.postimg.cc/ZYfK2Qzn/Dominos-pizza.png",
     description: "World famous pizza",
     url: "/brand/dominos-pizza"
   },
   {
     id: 10,
     name: "KFC",
-    logo: "public/KFC.png",
+    logo: "https://i.postimg.cc/pXpXHBPy/KFC.png",
     description: "Finger lickin' good",
     url: "/brand/kfc"
   }
 ];
 
-// Top Shops Data
+// Top Shops Data - নতুন ইমেজ URL সহ
 const topShops = [
   {
     id: 1,
     name: "Fruit Zone",
-    logo: "public/Fruit_Zone.jpg",
+    logo: "https://i.postimg.cc/v8PHkKwB/Fruit-Zone.jpg",
     description: "Premium shopping mall with international brands",
     url: "/shop/Fruit_Zone.jpg"
   },
   {
     id: 2,
     name: "Bengal Meat - Dhali (DCC Market)",
-    logo: "public/bengal_meat.png",
+    logo: "https://i.postimg.cc/v8PHkKFj/bengal-meat.png",
     description: "Fresh meat and poultry shop",
     url: "/shop/bengal-meat-dhali"
   },
   {
     id: 3,
     name: "RFL Best Buy Pharma (Kalachandpur)",
-    logo: "public/rfl_pharma.jpg",
+    logo: "https://i.postimg.cc/J4G4LQR0/rfl-pharma.jpg",
     description: "Pharmacy and medical supplies",
     url: "/shop/rfl-best-buy-pharma"
   },
   {
     id: 4,
     name: "Unimart - Gulshan 2",
-    logo: "public/unimart.jpg",
+    logo: "https://i.postimg.cc/m2t2sST3/unimart.jpg",
     description: "Supermarket and grocery store",
     url: "/shop/unimart-gulshan"
   },
   {
     id: 5,
     name: "Amana Big Bazar - Mohakhali",
-    logo: "public/amana_big_bazar.jpg",
+    logo: "https://i.postimg.cc/tJmq6sNz/amana-big-bazar.jpg",
     description: "Departmental store with variety of products",
     url: "/shop/amana-big-bazar"
   },
   {
     id: 6,
     name: "Agora (RM Center)",
-    logo: "public/agora.jpg",
+    logo: "https://i.postimg.cc/C56h8RsJ/agora.jpg",
     description: "Retail supermarket chain",
     url: "/shop/agora-rm-center"
   }
@@ -415,20 +415,20 @@ const Home = () => {
         
         .marquee-content {
           display: flex;
-          gap: 1.5rem;
+          gap: 1rem;
           padding: 0.5rem 0;
           width: max-content;
         }
         
-        /* ব্র্যান্ড/শপ কার্ড স্টাইল */
+        /* ব্র্যান্ড/শপ কার্ড স্টাইল - ছোট লোগোর জন্য */
         .brand-card {
           transition: all 0.3s ease;
           flex-shrink: 0;
-          width: 260px;
-          height: 260px;
+          width: 180px;
+          height: 180px;
           display: flex;
-          flex-direction: column;
-          justify-content: space-between;
+          align-items: center;
+          justify-content: center;
         }
         
         .brand-card:hover {
@@ -509,92 +509,138 @@ const Home = () => {
         .scroll-arrow.blue {
           color: #3b82f6;
         }
+        
+        /* স্টিকি সাইডবার স্টাইল - নেভিবারের নিচে ঢুকবেনা */
+        .sticky-sidebar {
+          position: sticky;
+          top: 6rem;
+          height: calc(100vh - 8rem);
+          overflow-y: auto;
+          overflow-x: hidden;
+          scrollbar-width: thin;
+          scrollbar-color: #c1c1c1 #f1f1f1;
+          z-index: 40;
+        }
+        
+        .sticky-sidebar::-webkit-scrollbar {
+          width: 6px;
+        }
+        
+        .sticky-sidebar::-webkit-scrollbar-track {
+          background: #f1f1f1;
+          border-radius: 10px;
+        }
+        
+        .sticky-sidebar::-webkit-scrollbar-thumb {
+          background: #c1c1c1;
+          border-radius: 10px;
+        }
+        
+        .sticky-sidebar::-webkit-scrollbar-thumb:hover {
+          background: #a8a8a8;
+        }
+        
+        /* স্টিকি হেডার */
+        .sticky-categories-header {
+          position: sticky;
+          top: 0;
+          z-index: 50;
+          background: linear-gradient(to right, #10b981, #34d399);
+          margin: 0 -1.25rem;
+          padding: 0 1.25rem;
+        }
+        
+        /* ক্যাটেগরি আইটেমের জন্য হোভার ইফেক্ট */
+        .category-item:hover {
+          transform: translateX(5px);
+          transition: transform 0.3s ease;
+        }
       `}</style>
 
       <div className="container mx-auto px-4 py-8">
-        {/* Quick Stats Bar সম্পূর্ণ রিমুভ করা হয়েছে */}
-
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           
           {/* LEFT SIDEBAR - Categories (Desktop Only) */}
           <div className="hidden lg:block lg:col-span-3">
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-              <div className="bg-gradient-to-r from-green-700 to-green-600 px-6 py-5">
-                <h2 className="font-bold text-xl text-white flex items-center">
-                  <span className="mr-3">🛒</span>
-                  GROCERY CATEGORIES
-                </h2>
-                <p className="text-gray-200 text-sm mt-1">Browse fresh groceries</p>
-              </div>
+            <div className="sticky-sidebar">
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                <div className="sticky-categories-header px-6 py-5">
+                  <h2 className="font-bold text-xl text-white flex items-center">
+                    <span className="mr-3">🛒</span>
+                    GROCERY CATEGORIES
+                  </h2>
+                  <p className="text-gray-200 text-sm mt-1">Browse fresh groceries</p>
+                </div>
 
-              <div className="px-5 py-4 space-y-1">
-                {categories.map((item, i) => (
-                  <div
-                    key={i}
-                    className={`flex justify-between items-center py-3.5 px-4 rounded-xl cursor-pointer transition-all duration-300 ${
-                      item.featured
-                        ? "bg-gradient-to-r from-green-50 to-emerald-50 text-green-700 font-semibold border border-green-100"
-                        : "text-gray-700 hover:bg-gray-50 hover:text-green-600"
-                    }`}
-                  >
-                    <div className="flex items-center">
-                      <div className="w-8 h-8 mr-3 flex-shrink-0 rounded-lg overflow-hidden">
-                        <img 
-                          src={item.image} 
-                          alt={item.name}
-                          className="w-full h-full object-cover"
-                        />
+                <div className="px-5 py-4 space-y-1">
+                  {categories.map((item, i) => (
+                    <div
+                      key={i}
+                      className={`flex justify-between items-center py-3.5 px-4 rounded-xl cursor-pointer transition-all duration-300 category-item ${
+                        item.featured
+                          ? "bg-gradient-to-r from-green-50 to-emerald-50 text-green-700 font-semibold border border-green-100"
+                          : "text-gray-700 hover:bg-gray-50 hover:text-green-600"
+                      }`}
+                    >
+                      <div className="flex items-center">
+                        <div className="w-8 h-8 mr-3 flex-shrink-0 rounded-lg overflow-hidden">
+                          <img 
+                            src={item.image} 
+                            alt={item.name}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
+                        <span className="font-medium">{item.name}</span>
                       </div>
-                      <span className="font-medium">{item.name}</span>
+                      {!item.featured && (
+                        <span className="text-gray-400 text-lg">›</span>
+                      )}
                     </div>
-                    {!item.featured && (
-                      <span className="text-gray-400 text-lg">›</span>
+                  ))}
+                </div>
+              </div>
+              
+              {/* Wishlist Preview */}
+              {wishlist.length > 0 && (
+                <div className="mt-6 bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+                  <div className="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
+                    <h3 className="font-bold text-white flex items-center gap-2">
+                      <Heart className="w-5 h-5" fill="white" />
+                      My Wishlist ({wishlist.length})
+                    </h3>
+                  </div>
+                  <div className="p-4">
+                    <div className="space-y-3">
+                      {wishlist.slice(0, 3).map(item => (
+                        <div key={item.id} className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg">
+                          <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
+                            <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <div className="font-medium text-sm truncate">{item.name}</div>
+                            <div className="text-xs text-gray-500">${item.price.toFixed(2)}</div>
+                          </div>
+                          <button
+                            onClick={() => navigate('/cart')}
+                            className="text-xs bg-green-100 text-green-700 hover:bg-green-200 px-2 py-1 rounded transition-colors"
+                          >
+                            View
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                    {wishlist.length > 3 && (
+                      <button
+                        onClick={() => navigate('/wishlist')}
+                        className="w-full mt-3 text-center text-sm text-green-600 hover:text-green-700 font-medium"
+                      >
+                        View All {wishlist.length} Items →
+                      </button>
                     )}
                   </div>
-                ))}
-              </div>
+                </div>
+              )}
             </div>
-            
-            {/* Wishlist Preview */}
-            {wishlist.length > 0 && (
-              <div className="mt-6 bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-                <div className="bg-gradient-to-r from-green-600 to-green-700 px-6 py-4">
-                  <h3 className="font-bold text-white flex items-center gap-2">
-                    <Heart className="w-5 h-5" fill="white" />
-                    My Wishlist ({wishlist.length})
-                  </h3>
-                </div>
-                <div className="p-4">
-                  <div className="space-y-3">
-                    {wishlist.slice(0, 3).map(item => (
-                      <div key={item.id} className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded-lg">
-                        <div className="w-12 h-12 rounded-lg overflow-hidden flex-shrink-0">
-                          <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="font-medium text-sm truncate">{item.name}</div>
-                          <div className="text-xs text-gray-500">${item.price.toFixed(2)}</div>
-                        </div>
-                        <button
-                          onClick={() => navigate('/cart')}
-                          className="text-xs bg-green-100 text-green-700 hover:bg-green-200 px-2 py-1 rounded transition-colors"
-                        >
-                          View
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                  {wishlist.length > 3 && (
-                    <button
-                      onClick={() => navigate('/wishlist')}
-                      className="w-full mt-3 text-center text-sm text-green-600 hover:text-green-700 font-medium"
-                    >
-                      View All {wishlist.length} Items →
-                    </button>
-                  )}
-                </div>
-              </div>
-            )}
           </div>
 
           {/* MAIN CONTENT */}
@@ -687,12 +733,6 @@ const Home = () => {
             <div className="mt-10">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-900">Top Brands</h2>
-                <button 
-                  onClick={() => navigate('/brands')}
-                  className="text-green-600 hover:text-green-700 font-medium flex items-center transition-all duration-300 hover:scale-105 group"
-                >
-                  View All Brands <ChevronRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </button>
               </div>
               
               <div className="relative">
@@ -744,50 +784,20 @@ const Home = () => {
                       <div
                         key={brand.id}
                         onClick={() => handleBrandClick(brand)}
-                        className="brand-card bg-white rounded-2xl p-6 shadow-sm border border-gray-200 hover:shadow-xl transition-all duration-300 cursor-pointer"
+                        className="brand-card bg-white rounded-2xl p-4 shadow-sm border border-gray-200 hover:shadow-xl transition-all duration-300 cursor-pointer flex items-center justify-center"
                       >
-                        <div className="relative w-full h-40 rounded-xl overflow-hidden mb-4 bg-white p-4 flex items-center justify-center">
+                        <div className="relative w-full h-full rounded-xl overflow-hidden bg-white p-4 flex items-center justify-center">
                           <img 
                             src={brand.logo} 
                             alt={brand.name}
-                            className="w-full h-full object-contain transition-transform duration-300 hover:scale-110"
+                            className="w-full h-full object-contain max-h-[120px] max-w-[120px] transition-transform duration-300 hover:scale-110"
+                            title={brand.name}
                           />
-                        </div>
-                        <div className="text-center flex-grow flex flex-col justify-center">
-                          <h3 className="font-bold text-gray-900 text-lg group-hover:text-green-600 transition-colors duration-300 mb-2">
-                            {brand.name}
-                          </h3>
-                          <p className="text-sm text-gray-500 line-clamp-2">{brand.description}</p>
                         </div>
                       </div>
                     ))}
                     
                     <div className="last-card-spacer"></div>
-                  </div>
-                </div>
-              </div>
-              
-              {/* ব্র্যান্ড স্ট্যাটাস বার */}
-              <div className="mt-6 p-4 bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl border border-green-100">
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <div className="text-center sm:text-left">
-                    <h3 className="font-bold text-green-800 text-lg">Premium Brand Partners</h3>
-                    <p className="text-sm text-green-600">
-                      {isHovered 
-                        ? "Drag left/right or use arrows to scroll • Click on any brand to explore" 
-                        : "Click on any brand to explore their products"
-                      }
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <div className="text-center">
-                      <div className="font-bold text-green-700 text-xl">{topBrands.length}</div>
-                      <div className="text-xs text-green-600">Brands</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="font-bold text-green-700 text-xl">500+</div>
-                      <div className="text-xs text-green-600">Food Items</div>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -797,12 +807,6 @@ const Home = () => {
             <div className="mt-12 mb-12">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-900">Top Shops</h2>
-                <button 
-                  onClick={() => navigate('/shops')}
-                  className="text-blue-600 hover:text-blue-700 font-medium flex items-center transition-all duration-300 hover:scale-105 group"
-                >
-                  View All Shops <ChevronRight className="ml-1 w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </button>
               </div>
               
               <div className="relative">
@@ -854,54 +858,20 @@ const Home = () => {
                       <div
                         key={shop.id}
                         onClick={() => handleShopClick(shop)}
-                        className="brand-card bg-white rounded-2xl p-6 shadow-sm border border-gray-200 hover:shadow-xl transition-all duration-300 cursor-pointer"
+                        className="brand-card bg-white rounded-2xl p-4 shadow-sm border border-gray-200 hover:shadow-xl transition-all duration-300 cursor-pointer flex items-center justify-center"
                       >
-                        <div className="relative w-full h-40 rounded-xl overflow-hidden mb-4 bg-white p-4 flex items-center justify-center">
+                        <div className="relative w-full h-full rounded-xl overflow-hidden bg-white p-4 flex items-center justify-center">
                           <img 
                             src={shop.logo} 
                             alt={shop.name}
-                            className="w-full h-full object-contain transition-transform duration-300 hover:scale-110"
+                            className="w-full h-full object-contain max-h-[120px] max-w-[120px] transition-transform duration-300 hover:scale-110"
+                            title={shop.name}
                           />
-                        </div>
-                        <div className="text-center flex-grow flex flex-col justify-center">
-                          <h3 className="font-bold text-gray-900 text-lg group-hover:text-blue-600 transition-colors duration-300 mb-2">
-                            {shop.name}
-                          </h3>
-                          <p className="text-sm text-gray-500 line-clamp-2">{shop.description}</p>
                         </div>
                       </div>
                     ))}
                     
                     <div className="last-card-spacer"></div>
-                  </div>
-                </div>
-              </div>
-              
-              {/* শপ স্ট্যাটাস বার */}
-              <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl border border-blue-100">
-                <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <div className="text-center sm:text-left">
-                    <h3 className="font-bold text-blue-800 text-lg">Premium Shopping Partners</h3>
-                    <p className="text-sm text-blue-600">
-                      {isShopsHovered 
-                        ? "Drag left/right or use arrows to scroll • Click on any shop to explore" 
-                        : "Click on any shop to explore their products and services"
-                      }
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <div className="text-center">
-                      <div className="font-bold text-blue-700 text-xl">{topShops.length}</div>
-                      <div className="text-xs text-blue-600">Shops</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="font-bold text-blue-700 text-xl">1000+</div>
-                      <div className="text-xs text-blue-600">Products</div>
-                    </div>
-                    <div className="text-center">
-                      <div className="font-bold text-blue-700 text-xl">24/7</div>
-                      <div className="text-xs text-blue-600">Service</div>
-                    </div>
                   </div>
                 </div>
               </div>
