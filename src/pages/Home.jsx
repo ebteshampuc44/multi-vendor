@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { ChevronLeft, ChevronRight, Clock, Tag, Heart } from "lucide-react";
+import { ChevronLeft, ChevronRight, Clock, Tag, Heart, Star, MapPin, Timer } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const sliderImages = [
@@ -56,7 +56,7 @@ const categories = [
   },
 ];
 
-// Top Brands Data - নতুন ইমেজ URL সহ
+// Top Brands Data
 const topBrands = [
   {
     id: 1,
@@ -127,10 +127,17 @@ const topBrands = [
     logo: "https://i.postimg.cc/pXpXHBPy/KFC.png",
     description: "Finger lickin' good",
     url: "/brand/kfc"
+  },
+  {
+    id: 11,
+    name: "Peyari Tehari",
+    logo: "https://i.postimg.cc/Bn9NQ691/Peyari-Tehari.jpg",
+    description: "Famous for Tehari",
+    url: "/brand/peyari-tehari"
   }
 ];
 
-// Top Shops Data - নতুন ইমেজ URL সহ
+// Top Shops Data
 const topShops = [
   {
     id: 1,
@@ -176,11 +183,184 @@ const topShops = [
   }
 ];
 
+// All Restaurants Data - বিভিন্ন ধরনের রেস্তোরাঁ
+const allRestaurants = [
+  {
+    id: 1,
+    name: "Sultan's Dine",
+    image: "https://images.unsplash.com/photo-1552566626-52f8b828add9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    cuisine: "Bengali, Biryani",
+    rating: 4.6,
+    deliveryTime: "45-55 min",
+    priceRange: "$$",
+    location: "Gulshan, Dhaka",
+    tags: ["Biryani", "Kacchi", "Traditional"],
+    featured: true,
+    discount: "20% OFF",
+    url: "/restaurant/sultans-dine"
+  },
+  {
+    id: 2,
+    name: "Kacchi Bhai",
+    image: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    cuisine: "Biryani, Bengali",
+    rating: 4.7,
+    deliveryTime: "50-60 min",
+    priceRange: "$$",
+    location: "Dhanmondi, Dhaka",
+    tags: ["Special Kacchi", "Biryani", "Popular"],
+    featured: true,
+    discount: "15% OFF",
+    url: "/restaurant/kacchi-bhai"
+  },
+  {
+    id: 3,
+    name: "Chillox",
+    image: "https://images.unsplash.com/photo-1553979459-d2229ba7433f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    cuisine: "Burgers, American",
+    rating: 4.5,
+    deliveryTime: "40-50 min",
+    priceRange: "$",
+    location: "Bashundhara, Dhaka",
+    tags: ["Burgers", "Fast Food", "American"],
+    featured: false,
+    discount: "10% OFF",
+    url: "/restaurant/chillox"
+  },
+  {
+    id: 4,
+    name: "Pizza Hut",
+    image: "https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    cuisine: "Pizza, Italian",
+    rating: 4.3,
+    deliveryTime: "35-45 min",
+    priceRange: "$$",
+    location: "Uttara, Dhaka",
+    tags: ["Pizza", "Pasta", "Italian"],
+    featured: false,
+    discount: "Buy 1 Get 1",
+    url: "/restaurant/pizza-hut"
+  },
+  {
+    id: 5,
+    name: "KFC",
+    image: "https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    cuisine: "Fried Chicken, Fast Food",
+    rating: 4.1,
+    deliveryTime: "25-35 min",
+    priceRange: "$$",
+    location: "Mirpur, Dhaka",
+    tags: ["Fried Chicken", "Fast Food", "Buckets"],
+    featured: false,
+    discount: "30% OFF",
+    url: "/restaurant/kfc"
+  },
+  {
+    id: 6,
+    name: "Baskin Robbins",
+    image: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    cuisine: "Ice Cream, Desserts",
+    rating: 4.4,
+    deliveryTime: "20-30 min",
+    priceRange: "$$",
+    location: "Banani, Dhaka",
+    tags: ["Ice Cream", "Desserts", "Sweets"],
+    featured: false,
+    discount: "",
+    url: "/restaurant/baskin-robbins"
+  },
+  {
+    id: 7,
+    name: "Star Kabab",
+    image: "https://images.unsplash.com/photo-1603360946369-dc9bb6258143?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    cuisine: "Kabab, Bangladeshi",
+    rating: 4.3,
+    deliveryTime: "35-45 min",
+    priceRange: "$",
+    location: "Old Dhaka",
+    tags: ["Kabab", "Traditional", "Spicy"],
+    featured: false,
+    discount: "Free Delivery",
+    url: "/restaurant/star-kabab"
+  },
+  {
+    id: 8,
+    name: "Bombay Sweets",
+    image: "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    cuisine: "Indian, Sweets",
+    rating: 4.2,
+    deliveryTime: "30-40 min",
+    priceRange: "$",
+    location: "Farmgate, Dhaka",
+    tags: ["Sweets", "Indian", "Vegetarian"],
+    featured: false,
+    discount: "",
+    url: "/restaurant/bombay-sweets"
+  },
+  {
+    id: 9,
+    name: "Nando's",
+    image: "https://images.unsplash.com/photo-1603360946369-dc9bb6258143?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    cuisine: "Grilled Chicken, Portuguese",
+    rating: 4.4,
+    deliveryTime: "40-50 min",
+    priceRange: "$$$",
+    location: "Gulshan 2, Dhaka",
+    tags: ["Grilled", "Chicken", "Portuguese"],
+    featured: true,
+    discount: "25% OFF",
+    url: "/restaurant/nandos"
+  },
+  {
+    id: 10,
+    name: "Coffee World",
+    image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    cuisine: "Coffee, Bakery",
+    rating: 4.1,
+    deliveryTime: "25-35 min",
+    priceRange: "$$",
+    location: "Dhanmondi 32, Dhaka",
+    tags: ["Coffee", "Bakery", "Cafe"],
+    featured: false,
+    discount: "",
+    url: "/restaurant/coffee-world"
+  },
+  {
+    id: 11,
+    name: "Burger King",
+    image: "https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    cuisine: "Burgers, Fast Food",
+    rating: 4.2,
+    deliveryTime: "30-40 min",
+    priceRange: "$$",
+    location: "Basundhara City, Dhaka",
+    tags: ["Burgers", "Whopper", "Fast Food"],
+    featured: false,
+    discount: "Combo Deal",
+    url: "/restaurant/burger-king"
+  },
+  {
+    id: 12,
+    name: "Domino's Pizza",
+    image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    cuisine: "Pizza, Fast Food",
+    rating: 4.0,
+    deliveryTime: "30-40 min",
+    priceRange: "$$",
+    location: "Mirpur 10, Dhaka",
+    tags: ["Pizza", "Fast Delivery", "Italian"],
+    featured: false,
+    discount: "30 min delivery",
+    url: "/restaurant/dominos-pizza"
+  }
+];
+
 const Home = () => {
   const [index, setIndex] = useState(0);
   const [isTransitioning, setIsTransitioning] = useState(true);
   const [wishlist, setWishlist] = useState([]);
   const [cartItems, setCartItems] = useState([]);
+  const [visibleRestaurants, setVisibleRestaurants] = useState(8);
   const sliderRef = useRef(null);
   const marqueeContainerRef = useRef(null);
   const shopsMarqueeRef = useRef(null);
@@ -239,6 +419,24 @@ const Home = () => {
   // শপ ক্লিক হ্যান্ডলার
   const handleShopClick = (shop) => {
     navigate(shop.url, { state: { shopName: shop.name, shopDescription: shop.description } });
+  };
+
+  // রেস্তোরাঁ ক্লিক হ্যান্ডলার
+  const handleRestaurantClick = (restaurant) => {
+    navigate(restaurant.url, { 
+      state: { 
+        restaurantName: restaurant.name, 
+        cuisine: restaurant.cuisine,
+        rating: restaurant.rating,
+        deliveryTime: restaurant.deliveryTime,
+        location: restaurant.location
+      } 
+    });
+  };
+
+  // আরো রেস্তোরাঁ লোড করার ফাংশন
+  const loadMoreRestaurants = () => {
+    setVisibleRestaurants(prev => prev + 4);
   };
 
   // Brands মার্কুই ড্রাগ ফাংশন
@@ -415,7 +613,7 @@ const Home = () => {
         
         .marquee-content {
           display: flex;
-          gap: 1rem;
+          gap: 0.75rem;
           padding: 0.5rem 0;
           width: max-content;
         }
@@ -424,16 +622,23 @@ const Home = () => {
         .brand-card {
           transition: all 0.3s ease;
           flex-shrink: 0;
-          width: 180px;
-          height: 180px;
+          width: 150px;
+          height: 150px;
           display: flex;
           align-items: center;
           justify-content: center;
         }
         
         .brand-card:hover {
-          transform: translateY(-5px) scale(1.05);
-          box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+          transform: translateY(-4px) scale(1.03);
+          box-shadow: 0 12px 25px rgba(0, 0, 0, 0.08);
+        }
+        
+        /* লোগো ইমেজ স্টাইল */
+        .brand-card img {
+          max-height: 80px !important;
+          max-width: 80px !important;
+          object-fit: contain;
         }
         
         /* প্রথম এবং শেষ কার্ডের জন্য বিশেষ স্পেস */
@@ -554,6 +759,22 @@ const Home = () => {
         .category-item:hover {
           transform: translateX(5px);
           transition: transform 0.3s ease;
+        }
+
+        /* Restaurant Card Animation */
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        .restaurant-card {
+          animation: fadeInUp 0.5s ease-out;
         }
       `}</style>
 
@@ -784,13 +1005,13 @@ const Home = () => {
                       <div
                         key={brand.id}
                         onClick={() => handleBrandClick(brand)}
-                        className="brand-card bg-white rounded-2xl p-4 shadow-sm border border-gray-200 hover:shadow-xl transition-all duration-300 cursor-pointer flex items-center justify-center"
+                        className="brand-card bg-white rounded-xl p-3 shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 cursor-pointer"
                       >
-                        <div className="relative w-full h-full rounded-xl overflow-hidden bg-white p-4 flex items-center justify-center">
+                        <div className="relative w-full h-full rounded-lg overflow-hidden bg-white p-3 flex items-center justify-center">
                           <img 
                             src={brand.logo} 
                             alt={brand.name}
-                            className="w-full h-full object-contain max-h-[120px] max-w-[120px] transition-transform duration-300 hover:scale-110"
+                            className="w-full h-full object-contain max-h-[80px] max-w-[80px] transition-transform duration-300 hover:scale-105"
                             title={brand.name}
                           />
                         </div>
@@ -804,7 +1025,7 @@ const Home = () => {
             </div>
 
             {/* Top Shops Section */}
-            <div className="mt-12 mb-12">
+            <div className="mt-12">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-900">Top Shops</h2>
               </div>
@@ -858,13 +1079,13 @@ const Home = () => {
                       <div
                         key={shop.id}
                         onClick={() => handleShopClick(shop)}
-                        className="brand-card bg-white rounded-2xl p-4 shadow-sm border border-gray-200 hover:shadow-xl transition-all duration-300 cursor-pointer flex items-center justify-center"
+                        className="brand-card bg-white rounded-xl p-3 shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 cursor-pointer"
                       >
-                        <div className="relative w-full h-full rounded-xl overflow-hidden bg-white p-4 flex items-center justify-center">
+                        <div className="relative w-full h-full rounded-lg overflow-hidden bg-white p-3 flex items-center justify-center">
                           <img 
                             src={shop.logo} 
                             alt={shop.name}
-                            className="w-full h-full object-contain max-h-[120px] max-w-[120px] transition-transform duration-300 hover:scale-110"
+                            className="w-full h-full object-contain max-h-[80px] max-w-[80px] transition-transform duration-300 hover:scale-105"
                             title={shop.name}
                           />
                         </div>
@@ -874,6 +1095,142 @@ const Home = () => {
                     <div className="last-card-spacer"></div>
                   </div>
                 </div>
+              </div>
+            </div>
+
+            {/* All Restaurants Section - গ্রিড লেআউটে */}
+            <div className="mt-12 mb-8">
+              <div className="flex items-center justify-between mb-6">
+                <div>
+                  <h2 className="text-2xl font-bold text-gray-900">All Restaurants</h2>
+                  <p className="text-gray-600 mt-1">Discover amazing food from top restaurants in Dhaka</p>
+                </div>
+                <button 
+                  onClick={() => navigate('/restaurants')}
+                  className="hidden lg:flex text-green-600 hover:text-green-700 font-medium items-center gap-1"
+                >
+                  View All <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+              
+              {/* ফিল্টার বার (ঐচ্ছিক) */}
+              <div className="flex flex-wrap gap-2 mb-6">
+                <button className="px-4 py-2 bg-green-600 text-white rounded-full text-sm font-medium">
+                  All
+                </button>
+                <button className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-sm font-medium">
+                  Biryani
+                </button>
+                <button className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-sm font-medium">
+                  Burgers
+                </button>
+                <button className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-sm font-medium">
+                  Pizza
+                </button>
+                <button className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-sm font-medium">
+                  Fast Food
+                </button>
+                <button className="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-full text-sm font-medium">
+                  Desserts
+                </button>
+              </div>
+
+              {/* রেস্তোরাঁ গ্রিড */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {allRestaurants.slice(0, visibleRestaurants).map((restaurant) => (
+                  <div
+                    key={restaurant.id}
+                    onClick={() => handleRestaurantClick(restaurant)}
+                    className="restaurant-card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group"
+                  >
+                    {/* রেস্তোরাঁ ইমেজ */}
+                    <div className="relative h-48 overflow-hidden">
+                      <img 
+                        src={restaurant.image} 
+                        alt={restaurant.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      
+                      {/* ফিচার্ড ব্যাজ */}
+                      {restaurant.featured && (
+                        <div className="absolute top-3 left-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                          FEATURED
+                        </div>
+                      )}
+                      
+                      {/* ডিসকাউন্ট ব্যাজ */}
+                      {restaurant.discount && (
+                        <div className="absolute top-3 right-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                          {restaurant.discount}
+                        </div>
+                      )}
+                      
+                      {/* রেটিং ব্যাজ */}
+                      <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-md flex items-center gap-1">
+                        <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                        <span className="text-sm font-bold text-gray-900">{restaurant.rating}</span>
+                      </div>
+                    </div>
+                    
+                    {/* রেস্তোরাঁ তথ্য */}
+                    <div className="p-4">
+                      <div className="flex justify-between items-start mb-2">
+                        <h3 className="font-bold text-gray-900 text-lg truncate">{restaurant.name}</h3>
+                        <span className="text-gray-500 text-sm font-medium">{restaurant.priceRange}</span>
+                      </div>
+                      
+                      <p className="text-gray-600 text-sm mb-3">{restaurant.cuisine}</p>
+                      
+                      {/* ট্যাগস */}
+                      <div className="flex flex-wrap gap-1 mb-4">
+                        {restaurant.tags.map((tag, index) => (
+                          <span 
+                            key={index}
+                            className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                      
+                      {/* লোকেশন এবং ডেলিভারি টাইম */}
+                      <div className="flex items-center justify-between text-sm">
+                        <div className="flex items-center gap-1 text-gray-600">
+                          <MapPin className="w-4 h-4" />
+                          <span className="truncate max-w-[120px]">{restaurant.location}</span>
+                        </div>
+                        <div className="flex items-center gap-1 text-gray-600">
+                          <Timer className="w-4 h-4" />
+                          <span className="font-medium">{restaurant.deliveryTime}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+              
+              {/* লোড মোর বাটন */}
+              {visibleRestaurants < allRestaurants.length && (
+                <div className="flex justify-center mt-8">
+                  <button
+                    onClick={loadMoreRestaurants}
+                    className="px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold rounded-full shadow-md transition-all duration-300 hover:scale-105 flex items-center gap-2"
+                  >
+                    <span>Load More Restaurants</span>
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
+              
+              {/* মোবাইলের জন্য ভিউ অল বাটন */}
+              <div className="flex justify-center mt-6 lg:hidden">
+                <button 
+                  onClick={() => navigate('/restaurants')}
+                  className="px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold rounded-full shadow-md transition-all duration-300 hover:scale-105 flex items-center gap-2"
+                >
+                  <span>View All Restaurants</span>
+                  <ChevronRight className="w-4 h-4" />
+                </button>
               </div>
             </div>
           </div>
