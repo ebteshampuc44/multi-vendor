@@ -361,9 +361,11 @@ const Home = () => {
   const [wishlist, setWishlist] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const [visibleRestaurants, setVisibleRestaurants] = useState(8);
+  const [loadingMore, setLoadingMore] = useState(false);
   const sliderRef = useRef(null);
   const marqueeContainerRef = useRef(null);
   const shopsMarqueeRef = useRef(null);
+  const restaurantsContainerRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
@@ -434,9 +436,30 @@ const Home = () => {
     });
   };
 
-  // আরো রেস্তোরাঁ লোড করার ফাংশন
-  const loadMoreRestaurants = () => {
-    setVisibleRestaurants(prev => prev + 4);
+  // স্ক্রল করে আরো রেস্তোরাঁ লোড করার ফাংশন
+  const handleScrollLoad = () => {
+    if (loadingMore || visibleRestaurants >= allRestaurants.length) return;
+    
+    const container = restaurantsContainerRef.current;
+    if (!container) return;
+    
+    const scrollTop = container.scrollTop;
+    const scrollHeight = container.scrollHeight;
+    const clientHeight = container.clientHeight;
+    
+    // নিচে স্ক্রল করলে (৮০% নিচে এলে) নতুন রেস্তোরাঁ লোড হবে
+    if (scrollTop + clientHeight >= scrollHeight * 0.8) {
+      setLoadingMore(true);
+      
+      // ৫০০ms ডিলে দিয়ে নতুন রেস্তোরাঁ লোড হবে
+      setTimeout(() => {
+        setVisibleRestaurants(prev => {
+          const newCount = prev + 4;
+          return newCount > allRestaurants.length ? allRestaurants.length : newCount;
+        });
+        setLoadingMore(false);
+      }, 500);
+    }
   };
 
   // Brands মার্কুই ড্রাগ ফাংশন
@@ -578,6 +601,18 @@ const Home = () => {
       container.removeEventListener('wheel', handleShopsWheel);
     };
   }, []);
+
+  // স্ক্রল ইভেন্ট লিসেনার - All Restaurants সেকশনে
+  useEffect(() => {
+    const container = restaurantsContainerRef.current;
+    if (!container) return;
+
+    container.addEventListener('scroll', handleScrollLoad);
+    
+    return () => {
+      container.removeEventListener('scroll', handleScrollLoad);
+    };
+  }, [visibleRestaurants, loadingMore]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
@@ -775,6 +810,66 @@ const Home = () => {
 
         .restaurant-card {
           animation: fadeInUp 0.5s ease-out;
+        }
+        
+        /* লোডিং ইন্ডিকেটর */
+        .loading-indicator {
+          text-align: center;
+          padding: 20px;
+          color: #10b981;
+          font-weight: 500;
+        }
+        
+        .loading-spinner {
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          border: 3px solid rgba(16, 185, 129, 0.3);
+          border-radius: 50%;
+          border-top-color: #10b981;
+          animation: spin 1s ease-in-out infinite;
+          margin-right: 10px;
+        }
+        
+        @keyframes spin {
+          to { transform: rotate(360deg); }
+        }
+        
+        /* অটো-রিলোড মেসেজ */
+        .auto-reload-message {
+          text-align: center;
+          font-size: 0.875rem;
+          color: #6b7280;
+          margin-top: 1rem;
+          padding: 0.5rem;
+          background-color: #f9fafb;
+          border-radius: 0.5rem;
+          border: 1px dashed #d1d5db;
+        }
+        
+        /* রেস্তোরাঁ কন্টেইনার */
+        .restaurants-container {
+          overflow-y: auto;
+          max-height: calc(100vh - 200px);
+          padding-right: 0.5rem;
+        }
+        
+        .restaurants-container::-webkit-scrollbar {
+          width: 6px;
+        }
+        
+        .restaurants-container::-webkit-scrollbar-track {
+          background: #f1f1f1;
+          border-radius: 10px;
+        }
+        
+        .restaurants-container::-webkit-scrollbar-thumb {
+          background: #c1c1c1;
+          border-radius: 10px;
+        }
+        
+        .restaurants-container::-webkit-scrollbar-thumb:hover {
+          background: #a8a8a8;
         }
       `}</style>
 
@@ -1105,15 +1200,12 @@ const Home = () => {
                   <h2 className="text-2xl font-bold text-gray-900">All Restaurants</h2>
                   <p className="text-gray-600 mt-1">Discover amazing food from top restaurants in Dhaka</p>
                 </div>
-                <button 
-                  onClick={() => navigate('/restaurants')}
-                  className="hidden lg:flex text-green-600 hover:text-green-700 font-medium items-center gap-1"
-                >
-                  View All <ChevronRight className="w-4 h-4" />
-                </button>
+                <div className="text-sm text-gray-500">
+                  Showing {visibleRestaurants} of {allRestaurants.length} restaurants
+                </div>
               </div>
               
-              {/* ফিল্টার বার (ঐচ্ছিক) */}
+              {/* ফিল্টার বার */}
               <div className="flex flex-wrap gap-2 mb-6">
                 <button className="px-4 py-2 bg-green-600 text-white rounded-full text-sm font-medium">
                   All
@@ -1135,102 +1227,100 @@ const Home = () => {
                 </button>
               </div>
 
-              {/* রেস্তোরাঁ গ্রিড */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {allRestaurants.slice(0, visibleRestaurants).map((restaurant) => (
-                  <div
-                    key={restaurant.id}
-                    onClick={() => handleRestaurantClick(restaurant)}
-                    className="restaurant-card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group"
-                  >
-                    {/* রেস্তোরাঁ ইমেজ */}
-                    <div className="relative h-48 overflow-hidden">
-                      <img 
-                        src={restaurant.image} 
-                        alt={restaurant.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                      
-                      {/* ফিচার্ড ব্যাজ */}
-                      {restaurant.featured && (
-                        <div className="absolute top-3 left-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-                          FEATURED
+              {/* রেস্তোরাঁ গ্রিড - স্ক্রলেবল কন্টেইনার */}
+              <div 
+                ref={restaurantsContainerRef}
+                className="restaurants-container"
+              >
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                  {allRestaurants.slice(0, visibleRestaurants).map((restaurant) => (
+                    <div
+                      key={restaurant.id}
+                      onClick={() => handleRestaurantClick(restaurant)}
+                      className="restaurant-card bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-xl transition-all duration-300 cursor-pointer group"
+                    >
+                      {/* রেস্তোরাঁ ইমেজ */}
+                      <div className="relative h-48 overflow-hidden">
+                        <img 
+                          src={restaurant.image} 
+                          alt={restaurant.name}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                        
+                        {/* ফিচার্ড ব্যাজ */}
+                        {restaurant.featured && (
+                          <div className="absolute top-3 left-3 bg-gradient-to-r from-amber-500 to-orange-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                            FEATURED
+                          </div>
+                        )}
+                        
+                        {/* ডিসকাউন্ট ব্যাজ */}
+                        {restaurant.discount && (
+                          <div className="absolute top-3 right-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-3 py-1 rounded-full text-xs font-bold">
+                            {restaurant.discount}
+                          </div>
+                        )}
+                        
+                        {/* রেটিং ব্যাজ */}
+                        <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-md flex items-center gap-1">
+                          <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                          <span className="text-sm font-bold text-gray-900">{restaurant.rating}</span>
                         </div>
-                      )}
+                      </div>
                       
-                      {/* ডিসকাউন্ট ব্যাজ */}
-                      {restaurant.discount && (
-                        <div className="absolute top-3 right-3 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-3 py-1 rounded-full text-xs font-bold">
-                          {restaurant.discount}
+                      {/* রেস্তোরাঁ তথ্য */}
+                      <div className="p-4">
+                        <div className="flex justify-between items-start mb-2">
+                          <h3 className="font-bold text-gray-900 text-lg truncate">{restaurant.name}</h3>
+                          <span className="text-gray-500 text-sm font-medium">{restaurant.priceRange}</span>
                         </div>
-                      )}
-                      
-                      {/* রেটিং ব্যাজ */}
-                      <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-sm px-2 py-1 rounded-md flex items-center gap-1">
-                        <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                        <span className="text-sm font-bold text-gray-900">{restaurant.rating}</span>
+                        
+                        <p className="text-gray-600 text-sm mb-3">{restaurant.cuisine}</p>
+                        
+                        {/* ট্যাগস */}
+                        <div className="flex flex-wrap gap-1 mb-4">
+                          {restaurant.tags.map((tag, index) => (
+                            <span 
+                              key={index}
+                              className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md"
+                            >
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                        
+                        {/* লোকেশন এবং ডেলিভারি টাইম */}
+                        <div className="flex items-center justify-between text-sm">
+                          <div className="flex items-center gap-1 text-gray-600">
+                            <MapPin className="w-4 h-4" />
+                            <span className="truncate max-w-[120px]">{restaurant.location}</span>
+                          </div>
+                          <div className="flex items-center gap-1 text-gray-600">
+                            <Timer className="w-4 h-4" />
+                            <span className="font-medium">{restaurant.deliveryTime}</span>
+                          </div>
+                        </div>
                       </div>
                     </div>
-                    
-                    {/* রেস্তোরাঁ তথ্য */}
-                    <div className="p-4">
-                      <div className="flex justify-between items-start mb-2">
-                        <h3 className="font-bold text-gray-900 text-lg truncate">{restaurant.name}</h3>
-                        <span className="text-gray-500 text-sm font-medium">{restaurant.priceRange}</span>
-                      </div>
-                      
-                      <p className="text-gray-600 text-sm mb-3">{restaurant.cuisine}</p>
-                      
-                      {/* ট্যাগস */}
-                      <div className="flex flex-wrap gap-1 mb-4">
-                        {restaurant.tags.map((tag, index) => (
-                          <span 
-                            key={index}
-                            className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-md"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                      
-                      {/* লোকেশন এবং ডেলিভারি টাইম */}
-                      <div className="flex items-center justify-between text-sm">
-                        <div className="flex items-center gap-1 text-gray-600">
-                          <MapPin className="w-4 h-4" />
-                          <span className="truncate max-w-[120px]">{restaurant.location}</span>
-                        </div>
-                        <div className="flex items-center gap-1 text-gray-600">
-                          <Timer className="w-4 h-4" />
-                          <span className="font-medium">{restaurant.deliveryTime}</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-              
-              {/* লোড মোর বাটন */}
-              {visibleRestaurants < allRestaurants.length && (
-                <div className="flex justify-center mt-8">
-                  <button
-                    onClick={loadMoreRestaurants}
-                    className="px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 hover:from-green-600 hover:to-emerald-700 text-white font-semibold rounded-full shadow-md transition-all duration-300 hover:scale-105 flex items-center gap-2"
-                  >
-                    <span>Load More Restaurants</span>
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
+                  ))}
                 </div>
-              )}
-              
-              {/* মোবাইলের জন্য ভিউ অল বাটন */}
-              <div className="flex justify-center mt-6 lg:hidden">
-                <button 
-                  onClick={() => navigate('/restaurants')}
-                  className="px-6 py-3 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold rounded-full shadow-md transition-all duration-300 hover:scale-105 flex items-center gap-2"
-                >
-                  <span>View All Restaurants</span>
-                  <ChevronRight className="w-4 h-4" />
-                </button>
+                
+                {/* লোডিং ইন্ডিকেটর */}
+                {loadingMore && (
+                  <div className="loading-indicator mt-6">
+                    <div className="loading-spinner"></div>
+                    Loading more restaurants...
+                  </div>
+                )}
+                
+                {/* অটো-রিলোড মেসেজ */}
+                {visibleRestaurants < allRestaurants.length && (
+                  <div className="auto-reload-message mt-6">
+                    ⬆️ Scroll down to load more restaurants automatically
+                  </div>
+                )}
+                
+                {/* সর্বশেষ রেস্তোরাঁ দেখানো হলে - এই মেসেজটি রিমুভ করা হয়েছে */}
               </div>
             </div>
           </div>

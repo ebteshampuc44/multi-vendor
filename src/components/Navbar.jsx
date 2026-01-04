@@ -1,26 +1,27 @@
 // Navbar.jsx
-import { Link } from "react-router-dom";
-import { Search, ShoppingCart, User, ChevronDown, Home, Grid, Menu, X, Heart } from "lucide-react"; // Heart import করুন
-import { useState, useEffect } from "react"; // useEffect import করুন
+import { Link, useNavigate } from "react-router-dom";
+import { Search, ShoppingCart, User, ChevronDown, Home, Grid, Menu, X, Heart } from "lucide-react";
+import { useState, useEffect } from "react";
 
 const Navbar = () => {
-  const [cartItemsCount, setCartItemsCount] = useState(0); // নাম পরিবর্তন
-  const [wishlistCount, setWishlistCount] = useState(0); // নতুন state
+  const [cartItemsCount, setCartItemsCount] = useState(0);
+  const [wishlistCount, setWishlistCount] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [cartTotal, setCartTotal] = useState(0); // কার্ট টোটাল
+  const [cartTotal, setCartTotal] = useState(0);
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const navigate = useNavigate();
 
-  // কার্ট আইটেম কাউন্ট আপডেট ফাংশন
+  // কার্ট আপডেট ফাংশন
   const updateCartCount = () => {
     const cart = JSON.parse(localStorage.getItem("shopickCart")) || [];
     const count = cart.reduce((total, item) => total + item.quantity, 0);
     setCartItemsCount(count);
     
-    // কার্ট টোটাল ক্যালকুলেট
     const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
     setCartTotal(total);
   };
 
-  // উইশলিস্ট কাউন্ট আপডেট ফাংশন
+  // উইশলিস্ট আপডেট ফাংশন
   const updateWishlistCount = () => {
     const wishlist = JSON.parse(localStorage.getItem("shopickWishlist")) || [];
     setWishlistCount(wishlist.length);
@@ -28,20 +29,15 @@ const Navbar = () => {
 
   // লোকাল স্টোরেজ পরিবর্তন শোনা
   useEffect(() => {
-    // প্রথম লোডে কাউন্ট আপডেট
     updateCartCount();
     updateWishlistCount();
 
-    // লোকাল স্টোরেজ পরিবর্তনের জন্য ইভেন্ট লিসেনার
     const handleStorageChange = () => {
       updateCartCount();
       updateWishlistCount();
     };
 
-    // স্টোরেজ ইভেন্ট শুনুন
     window.addEventListener('storage', handleStorageChange);
-    
-    // কাস্টম ইভেন্টের জন্য লিসেনার (নিজের ট্যাবের পরিবর্তনের জন্য)
     window.addEventListener('cartUpdated', updateCartCount);
     window.addEventListener('wishlistUpdated', updateWishlistCount);
 
@@ -51,6 +47,22 @@ const Navbar = () => {
       window.removeEventListener('wishlistUpdated', updateWishlistCount);
     };
   }, []);
+
+  // User Menu টগল ফাংশন
+  const toggleUserMenu = () => {
+    setShowUserMenu(!showUserMenu);
+  };
+
+  // User Menu বন্ধ করার ফাংশন
+  const closeUserMenu = () => {
+    setShowUserMenu(false);
+  };
+
+  // মেনু আইটেমে ক্লিক করার ফাংশন
+  const handleUserMenuItemClick = (path) => {
+    navigate(path);
+    closeUserMenu();
+  };
 
   // ক্যাটেগরি ডেটা
   const categories = [
@@ -247,46 +259,75 @@ const Navbar = () => {
                 </div>
               </Link>
 
-              {/* Login/Register - FIXED overlap issue */}
-              <Link to="/login" className="group relative">
-                <div className="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-3 py-2 rounded-full transition-all duration-300">
-                  <User size={18} className="text-white" />
-                  <div className="text-white font-medium text-sm hidden xl:block">
-                    Login /<br className="sm:hidden" /> Register
+              {/* Login/Register - FIXED with toggle menu */}
+              <div className="relative">
+                <button
+                  onClick={toggleUserMenu}
+                  onMouseEnter={() => setShowUserMenu(true)}
+                  className="group relative"
+                >
+                  <div className="flex items-center gap-2 bg-white/10 hover:bg-white/20 px-3 py-2 rounded-full transition-all duration-300">
+                    <User size={18} className="text-white" />
+                    <div className="text-white font-medium text-sm hidden xl:block">
+                      Login /<br className="sm:hidden" /> Register
+                    </div>
+                    <ChevronDown size={14} className="text-white" />
                   </div>
-                  <ChevronDown size={14} className="text-white" />
-                </div>
-                {/* Dropdown Menu */}
-                <div className="absolute hidden group-hover:block mt-2 right-0 w-48 bg-white rounded-lg shadow-xl border border-gray-200 z-50">
-                  <div className="py-2">
-                    <Link
-                      to="/login"
-                      className="block px-4 py-2 text-gray-700 hover:bg-pink-50 hover:text-pink-600 text-sm"
-                    >
-                      👤 Login
-                    </Link>
-                    <Link
-                      to="/register"
-                      className="block px-4 py-2 text-gray-700 hover:bg-pink-50 hover:text-pink-600 text-sm"
-                    >
-                      📝 Register
-                    </Link>
-                    <div className="border-t my-1"></div>
-                    <Link
-                      to="/profile"
-                      className="block px-4 py-2 text-gray-700 hover:bg-pink-50 hover:text-pink-600 text-sm"
-                    >
-                      🏠 My Account
-                    </Link>
-                    <Link
-                      to="/orders"
-                      className="block px-4 py-2 text-gray-700 hover:bg-pink-50 hover:text-pink-600 text-sm"
-                    >
-                      📦 My Orders
-                    </Link>
+                </button>
+                
+                {/* Dropdown Menu - Show on hover and click */}
+                {showUserMenu && (
+                  <div 
+                    className="absolute mt-2 right-0 w-48 bg-white rounded-lg shadow-xl border border-gray-200 z-50"
+                    onMouseEnter={() => setShowUserMenu(true)}
+                    onMouseLeave={closeUserMenu}
+                  >
+                    <div className="py-2">
+                      <button
+                        onClick={() => handleUserMenuItemClick("/login")}
+                        className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-pink-50 hover:text-pink-600 text-sm transition-colors"
+                      >
+                        👤 Login
+                      </button>
+                      <button
+                        onClick={() => handleUserMenuItemClick("/register")}
+                        className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-pink-50 hover:text-pink-600 text-sm transition-colors"
+                      >
+                        📝 Register
+                      </button>
+                      <div className="border-t my-1"></div>
+                      <button
+                        onClick={() => handleUserMenuItemClick("/profile")}
+                        className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-pink-50 hover:text-pink-600 text-sm transition-colors"
+                      >
+                        🏠 My Account
+                      </button>
+                      <button
+                        onClick={() => handleUserMenuItemClick("/orders")}
+                        className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-pink-50 hover:text-pink-600 text-sm transition-colors"
+                      >
+                        📦 My Orders
+                      </button>
+                      <button
+                        onClick={() => handleUserMenuItemClick("/settings")}
+                        className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-pink-50 hover:text-pink-600 text-sm transition-colors"
+                      >
+                        ⚙️ Settings
+                      </button>
+                      <div className="border-t my-1"></div>
+                      <button
+                        onClick={() => {
+                          // Logout logic here
+                          handleUserMenuItemClick("/");
+                        }}
+                        className="w-full text-left block px-4 py-2 text-red-600 hover:bg-red-50 text-sm transition-colors"
+                      >
+                        🚪 Logout
+                      </button>
+                    </div>
                   </div>
-                </div>
-              </Link>
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -373,6 +414,73 @@ const Navbar = () => {
                 ))}
               </div>
 
+              {/* Mobile User Menu Section */}
+              <div className="px-5 py-4 border-t border-gray-200 mt-4">
+                <h3 className="font-bold text-gray-900 mb-3">Account</h3>
+                <div className="space-y-1">
+                  <button
+                    onClick={() => {
+                      navigate("/login");
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="w-full text-left flex items-center gap-3 py-3 px-4 text-gray-700 hover:bg-pink-50 hover:text-pink-600 rounded-xl transition-colors"
+                  >
+                    <User size={18} />
+                    <span>Login</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      navigate("/register");
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="w-full text-left flex items-center gap-3 py-3 px-4 text-gray-700 hover:bg-pink-50 hover:text-pink-600 rounded-xl transition-colors"
+                  >
+                    <span>📝</span>
+                    <span>Register</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      navigate("/profile");
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="w-full text-left flex items-center gap-3 py-3 px-4 text-gray-700 hover:bg-pink-50 hover:text-pink-600 rounded-xl transition-colors"
+                  >
+                    <span>🏠</span>
+                    <span>My Account</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      navigate("/orders");
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="w-full text-left flex items-center gap-3 py-3 px-4 text-gray-700 hover:bg-pink-50 hover:text-pink-600 rounded-xl transition-colors"
+                  >
+                    <span>📦</span>
+                    <span>My Orders</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      navigate("/settings");
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="w-full text-left flex items-center gap-3 py-3 px-4 text-gray-700 hover:bg-pink-50 hover:text-pink-600 rounded-xl transition-colors"
+                  >
+                    <span>⚙️</span>
+                    <span>Settings</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      navigate("/");
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className="w-full text-left flex items-center gap-3 py-3 px-4 text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+                  >
+                    <span>🚪</span>
+                    <span>Logout</span>
+                  </button>
+                </div>
+              </div>
+
               {/* Close Button at Bottom */}
               <div className="sticky bottom-0 bg-white border-t p-4">
                 <button
@@ -453,15 +561,14 @@ const Navbar = () => {
             <span className="text-xs text-gray-700 font-medium">Cart</span>
           </Link>
 
-          {/* Account/Login */}
-          <Link 
-            to="/login" 
+          {/* Account/Login - Now opens mobile menu */}
+          <button
+            onClick={() => setIsMobileMenuOpen(true)}
             className="flex flex-col items-center justify-center flex-1 active:bg-gray-100 rounded-lg p-1 transition"
-            onClick={() => setIsMobileMenuOpen(false)}
           >
             <User size={22} className="text-gray-700 mb-1" />
             <span className="text-xs text-gray-700 font-medium">Account</span>
-          </Link>
+          </button>
         </div>
       </div>
     </>
