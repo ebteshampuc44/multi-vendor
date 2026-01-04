@@ -62,6 +62,7 @@ const Navbar = () => {
   const handleUserMenuItemClick = (path) => {
     navigate(path);
     closeUserMenu();
+    setIsMobileMenuOpen(false);
   };
 
   // ক্যাটেগরি ডেটা
@@ -278,24 +279,77 @@ const Navbar = () => {
                 {/* Dropdown Menu - Show on hover and click */}
                 {showUserMenu && (
                   <div 
-                    className="absolute mt-2 right-0 w-48 bg-white rounded-lg shadow-xl border border-gray-200 z-50"
+                    className="absolute mt-2 right-0 w-56 bg-white rounded-lg shadow-xl border border-gray-200 z-50"
                     onMouseEnter={() => setShowUserMenu(true)}
                     onMouseLeave={closeUserMenu}
                   >
                     <div className="py-2">
                       <button
                         onClick={() => handleUserMenuItemClick("/login")}
-                        className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-pink-50 hover:text-pink-600 text-sm transition-colors"
+                        className="w-full text-left block px-4 py-3 text-gray-700 hover:bg-pink-50 hover:text-pink-600 text-sm transition-colors border-b border-gray-100"
                       >
-                        👤 Login
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                            <User className="w-4 h-4 text-blue-600" />
+                          </div>
+                          <div>
+                            <div className="font-medium">Login</div>
+                            <div className="text-xs text-gray-500">Access your account</div>
+                          </div>
+                        </div>
                       </button>
+                      
+                      <div className="px-4 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider mt-2">
+                        Register As
+                      </div>
+                      
                       <button
-                        onClick={() => handleUserMenuItemClick("/register")}
-                        className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-pink-50 hover:text-pink-600 text-sm transition-colors"
+                        onClick={() => handleUserMenuItemClick("/register/user")}
+                        className="w-full text-left block px-4 py-3 text-gray-700 hover:bg-pink-50 hover:text-pink-600 text-sm transition-colors"
                       >
-                        📝 Register
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                            <span className="text-green-600">👤</span>
+                          </div>
+                          <div>
+                            <div className="font-medium">Regular User</div>
+                            <div className="text-xs text-gray-500">For shopping & ordering</div>
+                          </div>
+                        </div>
                       </button>
-                      <div className="border-t my-1"></div>
+                      
+                      <button
+                        onClick={() => handleUserMenuItemClick("/register/restaurant-partner")}
+                        className="w-full text-left block px-4 py-3 text-gray-700 hover:bg-pink-50 hover:text-pink-600 text-sm transition-colors"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
+                            <span className="text-orange-600">🍽️</span>
+                          </div>
+                          <div>
+                            <div className="font-medium">Restaurant Partner</div>
+                            <div className="text-xs text-gray-500">List your restaurant</div>
+                          </div>
+                        </div>
+                      </button>
+                      
+                      <button
+                        onClick={() => handleUserMenuItemClick("/register/business-account")}
+                        className="w-full text-left block px-4 py-3 text-gray-700 hover:bg-pink-50 hover:text-pink-600 text-sm transition-colors"
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center">
+                            <span className="text-purple-600">🏢</span>
+                          </div>
+                          <div>
+                            <div className="font-medium">Business Account</div>
+                            <div className="text-xs text-gray-500">For companies & bulk orders</div>
+                          </div>
+                        </div>
+                      </button>
+                      
+                      <div className="border-t my-2"></div>
+                      
                       <button
                         onClick={() => handleUserMenuItemClick("/profile")}
                         className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-pink-50 hover:text-pink-600 text-sm transition-colors"
@@ -314,7 +368,8 @@ const Navbar = () => {
                       >
                         ⚙️ Settings
                       </button>
-                      <div className="border-t my-1"></div>
+                      
+                      <div className="border-t my-2"></div>
                       <button
                         onClick={() => {
                           // Logout logic here
@@ -419,65 +474,86 @@ const Navbar = () => {
                 <h3 className="font-bold text-gray-900 mb-3">Account</h3>
                 <div className="space-y-1">
                   <button
-                    onClick={() => {
-                      navigate("/login");
-                      setIsMobileMenuOpen(false);
-                    }}
+                    onClick={() => handleUserMenuItemClick("/login")}
                     className="w-full text-left flex items-center gap-3 py-3 px-4 text-gray-700 hover:bg-pink-50 hover:text-pink-600 rounded-xl transition-colors"
                   >
                     <User size={18} />
                     <span>Login</span>
                   </button>
+                  
+                  <div className="pl-3 mt-2 mb-1">
+                    <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Register As</h4>
+                  </div>
+                  
                   <button
-                    onClick={() => {
-                      navigate("/register");
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="w-full text-left flex items-center gap-3 py-3 px-4 text-gray-700 hover:bg-pink-50 hover:text-pink-600 rounded-xl transition-colors"
+                    onClick={() => handleUserMenuItemClick("/register/user")}
+                    className="w-full text-left flex items-center gap-3 py-3 px-4 text-gray-700 hover:bg-green-50 hover:text-green-600 rounded-xl transition-colors"
                   >
-                    <span>📝</span>
-                    <span>Register</span>
+                    <div className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center">
+                      <span className="text-green-600 text-sm">👤</span>
+                    </div>
+                    <div>
+                      <div>Regular User</div>
+                      <div className="text-xs text-gray-500">For shopping & ordering</div>
+                    </div>
                   </button>
+                  
                   <button
-                    onClick={() => {
-                      navigate("/profile");
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="w-full text-left flex items-center gap-3 py-3 px-4 text-gray-700 hover:bg-pink-50 hover:text-pink-600 rounded-xl transition-colors"
+                    onClick={() => handleUserMenuItemClick("/register/restaurant-partner")}
+                    className="w-full text-left flex items-center gap-3 py-3 px-4 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-xl transition-colors"
                   >
-                    <span>🏠</span>
-                    <span>My Account</span>
+                    <div className="w-6 h-6 rounded-full bg-orange-100 flex items-center justify-center">
+                      <span className="text-orange-600 text-sm">🍽️</span>
+                    </div>
+                    <div>
+                      <div>Restaurant Partner</div>
+                      <div className="text-xs text-gray-500">List your restaurant</div>
+                    </div>
                   </button>
+                  
                   <button
-                    onClick={() => {
-                      navigate("/orders");
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="w-full text-left flex items-center gap-3 py-3 px-4 text-gray-700 hover:bg-pink-50 hover:text-pink-600 rounded-xl transition-colors"
+                    onClick={() => handleUserMenuItemClick("/register/business-account")}
+                    className="w-full text-left flex items-center gap-3 py-3 px-4 text-gray-700 hover:bg-purple-50 hover:text-purple-600 rounded-xl transition-colors"
                   >
-                    <span>📦</span>
-                    <span>My Orders</span>
+                    <div className="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center">
+                      <span className="text-purple-600 text-sm">🏢</span>
+                    </div>
+                    <div>
+                      <div>Business Account</div>
+                      <div className="text-xs text-gray-500">For companies & bulk orders</div>
+                    </div>
                   </button>
-                  <button
-                    onClick={() => {
-                      navigate("/settings");
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="w-full text-left flex items-center gap-3 py-3 px-4 text-gray-700 hover:bg-pink-50 hover:text-pink-600 rounded-xl transition-colors"
-                  >
-                    <span>⚙️</span>
-                    <span>Settings</span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      navigate("/");
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="w-full text-left flex items-center gap-3 py-3 px-4 text-red-600 hover:bg-red-50 rounded-xl transition-colors"
-                  >
-                    <span>🚪</span>
-                    <span>Logout</span>
-                  </button>
+                  
+                  <div className="pt-2 mt-2 border-t border-gray-100">
+                    <button
+                      onClick={() => handleUserMenuItemClick("/profile")}
+                      className="w-full text-left flex items-center gap-3 py-3 px-4 text-gray-700 hover:bg-pink-50 hover:text-pink-600 rounded-xl transition-colors"
+                    >
+                      <span>🏠</span>
+                      <span>My Account</span>
+                    </button>
+                    <button
+                      onClick={() => handleUserMenuItemClick("/orders")}
+                      className="w-full text-left flex items-center gap-3 py-3 px-4 text-gray-700 hover:bg-pink-50 hover:text-pink-600 rounded-xl transition-colors"
+                    >
+                      <span>📦</span>
+                      <span>My Orders</span>
+                    </button>
+                    <button
+                      onClick={() => handleUserMenuItemClick("/settings")}
+                      className="w-full text-left flex items-center gap-3 py-3 px-4 text-gray-700 hover:bg-pink-50 hover:text-pink-600 rounded-xl transition-colors"
+                    >
+                      <span>⚙️</span>
+                      <span>Settings</span>
+                    </button>
+                    <button
+                      onClick={() => handleUserMenuItemClick("/")}
+                      className="w-full text-left flex items-center gap-3 py-3 px-4 text-red-600 hover:bg-red-50 rounded-xl transition-colors"
+                    >
+                      <span>🚪</span>
+                      <span>Logout</span>
+                    </button>
+                  </div>
                 </div>
               </div>
 

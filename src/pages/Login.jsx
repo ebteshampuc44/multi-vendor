@@ -1,17 +1,18 @@
 // Login.jsx
 import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Mail, Lock, User, Eye, EyeOff, Facebook, Twitter, Github } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { Mail, Lock, User, Eye, EyeOff, Facebook, Twitter, Github, AlertCircle, CheckCircle } from "lucide-react";
 
 const Login = () => {
-  const [isLogin, setIsLogin] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    name: "",
     email: "",
     password: "",
     rememberMe: false
   });
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -19,12 +20,84 @@ const Login = () => {
       ...prev,
       [name]: type === 'checkbox' ? checked : value
     }));
+    setError(""); // Clear error on input change
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Add your authentication logic here
+    setLoading(true);
+    setError("");
+
+    // Basic validation
+    if (!formData.email || !formData.password) {
+      setError("Please fill in all required fields");
+      setLoading(false);
+      return;
+    }
+
+    // Email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(formData.email)) {
+      setError("Please enter a valid email address");
+      setLoading(false);
+      return;
+    }
+
+    console.log("Login submitted:", formData);
+    
+    // Simulate API call
+    setTimeout(() => {
+      // For demo purposes - successful login
+      // In real app, you would check account type here
+      
+      // Example logic to determine account type
+      let redirectPath = "/";
+      
+      // Check email pattern for different account types
+      if (formData.email.includes('partner') || formData.email.includes('restaurant')) {
+        redirectPath = "/partner-dashboard"; // Restaurant partner
+      } else if (formData.email.includes('business') || formData.email.includes('company')) {
+        redirectPath = "/business-dashboard"; // Business account
+      } else {
+        redirectPath = "/"; // Regular user
+      }
+      
+      // Save login state to localStorage
+      localStorage.setItem("shopickUser", JSON.stringify({
+        email: formData.email,
+        loggedIn: true,
+        timestamp: new Date().toISOString()
+      }));
+      
+      setLoading(false);
+      navigate(redirectPath);
+    }, 1500);
+  };
+
+  // Demo login credentials
+  const handleDemoLogin = (accountType) => {
+    let demoEmail = "";
+    let demoPassword = "demo123";
+    
+    switch(accountType) {
+      case 'user':
+        demoEmail = "user@shopick.com";
+        break;
+      case 'restaurant':
+        demoEmail = "partner@restaurant.com";
+        break;
+      case 'business':
+        demoEmail = "business@company.com";
+        break;
+      default:
+        demoEmail = "demo@shopick.com";
+    }
+    
+    setFormData({
+      email: demoEmail,
+      password: demoPassword,
+      rememberMe: false
+    });
   };
 
   return (
@@ -41,61 +114,60 @@ const Login = () => {
               />
             </div>
           </Link>
-          <p className="text-gray-600 mt-2">Welcome back! Please enter your details.</p>
+          <h1 className="text-3xl font-bold text-gray-900 mt-4">Welcome Back</h1>
+          <p className="text-gray-600 mt-2">One login for all account types</p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Left Side - Form */}
-          <div className="bg-white rounded-2xl shadow-xl p-8">
-            {/* Toggle Buttons */}
-            <div className="flex mb-8">
-              <button
-                onClick={() => setIsLogin(true)}
-                className={`flex-1 py-4 font-semibold text-lg rounded-tl-2xl rounded-bl-2xl transition-all ${
-                  isLogin 
-                    ? "bg-pink-600 text-white" 
-                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                }`}
-              >
-                Login
-              </button>
-              <button
-                onClick={() => setIsLogin(false)}
-                className={`flex-1 py-4 font-semibold text-lg rounded-tr-2xl rounded-br-2xl transition-all ${
-                  !isLogin 
-                    ? "bg-pink-600 text-white" 
-                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                }`}
-              >
-                Register
-              </button>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left Side - Login Form */}
+          <div className="lg:col-span-2 bg-white rounded-2xl shadow-xl p-8">
+            {/* Quick Demo Buttons */}
+            <div className="mb-6">
+              <h3 className="text-sm font-semibold text-gray-700 mb-3">Quick Demo Login</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <button
+                  onClick={() => handleDemoLogin('user')}
+                  className="flex items-center justify-center gap-2 py-2.5 border border-gray-300 rounded-xl hover:bg-green-50 hover:border-green-300 transition text-sm"
+                >
+                  <span className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center">
+                    <span className="text-green-600 text-xs">👤</span>
+                  </span>
+                  <span className="font-medium">User Account</span>
+                </button>
+                <button
+                  onClick={() => handleDemoLogin('restaurant')}
+                  className="flex items-center justify-center gap-2 py-2.5 border border-gray-300 rounded-xl hover:bg-orange-50 hover:border-orange-300 transition text-sm"
+                >
+                  <span className="w-6 h-6 rounded-full bg-orange-100 flex items-center justify-center">
+                    <span className="text-orange-600 text-xs">🍽️</span>
+                  </span>
+                  <span className="font-medium">Restaurant Partner</span>
+                </button>
+                <button
+                  onClick={() => handleDemoLogin('business')}
+                  className="flex items-center justify-center gap-2 py-2.5 border border-gray-300 rounded-xl hover:bg-purple-50 hover:border-purple-300 transition text-sm"
+                >
+                  <span className="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center">
+                    <span className="text-purple-600 text-xs">🏢</span>
+                  </span>
+                  <span className="font-medium">Business Account</span>
+                </button>
+              </div>
             </div>
+
+            {/* Error Message */}
+            {error && (
+              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-center gap-3">
+                <AlertCircle className="w-5 h-5 text-red-600" />
+                <span className="text-red-700 font-medium">{error}</span>
+              </div>
+            )}
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-6">
-              {!isLogin && (
-                <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">
-                    Full Name
-                  </label>
-                  <div className="relative">
-                    <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
-                    <input
-                      type="text"
-                      name="name"
-                      value={formData.name}
-                      onChange={handleChange}
-                      placeholder="Enter your full name"
-                      className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-transparent outline-none transition"
-                      required={!isLogin}
-                    />
-                  </div>
-                </div>
-              )}
-
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-gray-700">
-                  Email Address
+                  Email Address *
                 </label>
                 <div className="relative">
                   <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
@@ -113,7 +185,7 @@ const Login = () => {
 
               <div className="space-y-2">
                 <label className="block text-sm font-medium text-gray-700">
-                  Password
+                  Password *
                 </label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
@@ -136,50 +208,35 @@ const Login = () => {
                 </div>
               </div>
 
-              {isLogin && (
-                <div className="flex items-center justify-between">
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      name="rememberMe"
-                      checked={formData.rememberMe}
-                      onChange={handleChange}
-                      className="w-4 h-4 text-pink-600 rounded focus:ring-pink-500"
-                    />
-                    <span className="ml-2 text-sm text-gray-600">Remember me</span>
-                  </label>
-                  <Link to="/forgot-password" className="text-sm text-pink-600 hover:text-pink-700 font-medium">
-                    Forgot password?
-                  </Link>
-                </div>
-              )}
-
-              {!isLogin && (
-                <div className="flex items-center">
+              <div className="flex items-center justify-between">
+                <label className="flex items-center">
                   <input
                     type="checkbox"
-                    id="terms"
+                    name="rememberMe"
+                    checked={formData.rememberMe}
+                    onChange={handleChange}
                     className="w-4 h-4 text-pink-600 rounded focus:ring-pink-500"
-                    required
                   />
-                  <label htmlFor="terms" className="ml-2 text-sm text-gray-600">
-                    I agree to the{" "}
-                    <Link to="/terms" className="text-pink-600 hover:text-pink-700 font-medium">
-                      Terms & Conditions
-                    </Link>{" "}
-                    and{" "}
-                    <Link to="/privacy" className="text-pink-600 hover:text-pink-700 font-medium">
-                      Privacy Policy
-                    </Link>
-                  </label>
-                </div>
-              )}
+                  <span className="ml-2 text-sm text-gray-600">Remember me</span>
+                </label>
+                <Link to="/forgot-password" className="text-sm text-pink-600 hover:text-pink-700 font-medium">
+                  Forgot password?
+                </Link>
+              </div>
 
               <button
                 type="submit"
-                className="w-full bg-gradient-to-r from-pink-600 to-pink-700 hover:from-pink-700 hover:to-pink-800 text-white font-semibold py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5"
+                disabled={loading}
+                className={`w-full bg-gradient-to-r from-pink-600 to-pink-700 hover:from-pink-700 hover:to-pink-800 text-white font-semibold py-3.5 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-0.5 ${loading ? 'opacity-70 cursor-not-allowed' : ''}`}
               >
-                {isLogin ? "Sign In" : "Create Account"}
+                {loading ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <div className="animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></div>
+                    Signing in...
+                  </span>
+                ) : (
+                  "Sign In"
+                )}
               </button>
             </form>
 
@@ -206,78 +263,122 @@ const Login = () => {
               </button>
             </div>
 
-            {/* Switch Mode */}
-            <p className="text-center mt-8 text-gray-600">
-              {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
-              <button
-                onClick={() => setIsLogin(!isLogin)}
-                className="text-pink-600 hover:text-pink-700 font-semibold"
-              >
-                {isLogin ? "Sign up" : "Sign in"}
-              </button>
-            </p>
+            {/* Registration Links */}
+            <div className="mt-8 pt-8 border-t border-gray-200">
+              <h3 className="font-medium text-gray-900 mb-4">Don't have an account?</h3>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <Link
+                  to="/register/user"
+                  className="flex items-center gap-3 p-3 border border-gray-300 rounded-xl hover:bg-green-50 hover:border-green-300 transition group"
+                >
+                  <div className="w-10 h-10 rounded-full bg-green-100 flex items-center justify-center">
+                    <span className="text-green-600">👤</span>
+                  </div>
+                  <div>
+                    <div className="font-medium group-hover:text-green-700">User Account</div>
+                    <div className="text-xs text-gray-500">For shopping</div>
+                  </div>
+                </Link>
+                
+                <Link
+                  to="/register/restaurant-partner"
+                  className="flex items-center gap-3 p-3 border border-gray-300 rounded-xl hover:bg-orange-50 hover:border-orange-300 transition group"
+                >
+                  <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center">
+                    <span className="text-orange-600">🍽️</span>
+                  </div>
+                  <div>
+                    <div className="font-medium group-hover:text-orange-700">Restaurant Partner</div>
+                    <div className="text-xs text-gray-500">List your restaurant</div>
+                  </div>
+                </Link>
+                
+                <Link
+                  to="/register/business-account"
+                  className="flex items-center gap-3 p-3 border border-gray-300 rounded-xl hover:bg-purple-50 hover:border-purple-300 transition group"
+                >
+                  <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center">
+                    <span className="text-purple-600">🏢</span>
+                  </div>
+                  <div>
+                    <div className="font-medium group-hover:text-purple-700">Business Account</div>
+                    <div className="text-xs text-gray-500">For companies</div>
+                  </div>
+                </Link>
+              </div>
+            </div>
           </div>
 
-          {/* Right Side - Welcome Content */}
+          {/* Right Side - Info Panel */}
           <div className="bg-gradient-to-br from-pink-600 to-pink-800 rounded-2xl shadow-xl p-8 text-white">
             <div className="h-full flex flex-col justify-center">
-              <h2 className="text-3xl font-bold mb-6">
-                {isLogin ? "Welcome Back!" : "Join Our Community"}
-              </h2>
+              <h2 className="text-2xl font-bold mb-6">One Login, Multiple Accounts</h2>
               
-              <p className="text-pink-100 text-lg mb-8">
-                {isLogin 
-                  ? "Sign in to access your personalized dashboard, track orders, and enjoy exclusive member benefits."
-                  : "Create an account to unlock amazing features and start shopping with the best deals online."
-                }
-              </p>
-
-              <div className="space-y-6">
+              <div className="space-y-6 mb-8">
                 <div className="flex items-start gap-4">
-                  <div className="bg-white/20 p-3 rounded-xl">
-                    <div className="text-2xl">🚀</div>
+                  <div className="bg-white/20 p-2.5 rounded-lg">
+                    <CheckCircle className="w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-lg mb-1">Fast & Secure</h4>
-                    <p className="text-pink-200">Quick login with enhanced security</p>
+                    <h4 className="font-bold text-lg mb-1">Single Sign-On</h4>
+                    <p className="text-pink-200 text-sm">Use one email & password for all account types</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="bg-white/20 p-3 rounded-xl">
-                    <div className="text-2xl">🎁</div>
+                  <div className="bg-white/20 p-2.5 rounded-lg">
+                    <div className="w-5 h-5">🔒</div>
                   </div>
                   <div>
-                    <h4 className="font-bold text-lg mb-1">Exclusive Deals</h4>
-                    <p className="text-pink-200">Member-only discounts and offers</p>
+                    <h4 className="font-bold text-lg mb-1">Secure & Unified</h4>
+                    <p className="text-pink-200 text-sm">Enhanced security with unified authentication</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-4">
-                  <div className="bg-white/20 p-3 rounded-xl">
-                    <div className="text-2xl">📦</div>
+                  <div className="bg-white/20 p-2.5 rounded-lg">
+                    <div className="w-5 h-5">🔄</div>
                   </div>
                   <div>
-                    <h4 className="font-bold text-lg mb-1">Easy Tracking</h4>
-                    <p className="text-pink-200">Real-time order tracking system</p>
+                    <h4 className="font-bold text-lg mb-1">Easy Switching</h4>
+                    <p className="text-pink-200 text-sm">Switch between account types seamlessly</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Account Types Info */}
+              <div className="bg-white/10 rounded-xl p-4 mb-6">
+                <h4 className="font-bold mb-3">Supported Account Types</h4>
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-green-400"></div>
+                    <span className="text-sm text-pink-100">Regular Users - Shopping & Orders</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-orange-400"></div>
+                    <span className="text-sm text-pink-100">Restaurant Partners - Food Business</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-purple-400"></div>
+                    <span className="text-sm text-pink-100">Business Accounts - Corporate Clients</span>
                   </div>
                 </div>
               </div>
 
               {/* Stats */}
-              <div className="mt-12 pt-8 border-t border-white/20">
+              <div className="pt-6 border-t border-white/20">
                 <div className="grid grid-cols-3 gap-4 text-center">
                   <div>
-                    <div className="text-2xl font-bold">10K+</div>
-                    <div className="text-pink-200 text-sm">Happy Customers</div>
+                    <div className="text-xl font-bold">50K+</div>
+                    <div className="text-pink-200 text-xs">Active Users</div>
                   </div>
                   <div>
-                    <div className="text-2xl font-bold">5K+</div>
-                    <div className="text-pink-200 text-sm">Products</div>
+                    <div className="text-xl font-bold">1K+</div>
+                    <div className="text-pink-200 text-xs">Restaurant Partners</div>
                   </div>
                   <div>
-                    <div className="text-2xl font-bold">98%</div>
-                    <div className="text-pink-200 text-sm">Satisfaction Rate</div>
+                    <div className="text-xl font-bold">500+</div>
+                    <div className="text-pink-200 text-xs">Business Clients</div>
                   </div>
                 </div>
               </div>

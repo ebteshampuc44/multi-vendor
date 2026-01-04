@@ -1,10 +1,14 @@
-// App.jsx - Simplest working version
+
+// App.jsx - Updated with multiple registration routes
 import { Routes, Route } from 'react-router-dom';
 import Root from './Root';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Wishlist from './pages/Wishlist';
 import Cart from './pages/Cart';
+import UserRegister from './pages/UserRegister';
+import RestaurantPartnerRegister from './pages/RestaurantPartnerRegister';
+import BusinessAccountRegister from './pages/BusinessAccountRegister';
 
 // Simple brand page component
 const BrandPage = ({ brandName = "Brand" }) => (
@@ -30,6 +34,11 @@ function App() {
         <Route path="login" element={<Login />} />
         <Route path="wishlist" element={<Wishlist />} />
         <Route path="cart" element={<Cart />} />
+        
+        {/* Registration Routes */}
+        <Route path="register/user" element={<UserRegister />} />
+        <Route path="register/restaurant-partner" element={<RestaurantPartnerRegister />} />
+        <Route path="register/business-account" element={<BusinessAccountRegister />} />
         
         {/* Simple brand routes */}
         <Route path="brand/sultans-dine" element={<BrandPage brandName="Sultan's Dine" />} />
