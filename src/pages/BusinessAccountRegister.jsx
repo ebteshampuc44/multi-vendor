@@ -52,7 +52,7 @@ const BusinessAccountRegister = () => {
             </div>
           </Link>
           <h1 className="text-3xl font-bold text-gray-900">Business Account Registration</h1>
-          <p className="text-gray-600 mt-2">Special solutions for corporate & business customers</p>
+          <p className="text-gray-800 mt-2">Special solutions for corporate & business customers</p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-xl p-8">
@@ -73,7 +73,7 @@ const BusinessAccountRegister = () => {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-gray-800">
                     Company Name *
                   </label>
                   <div className="relative">
@@ -91,7 +91,7 @@ const BusinessAccountRegister = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-gray-800">
                     Company Type *
                   </label>
                   <select
@@ -110,7 +110,7 @@ const BusinessAccountRegister = () => {
               </div>
 
               <div className="mt-4 space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-800">
                   Company Address *
                 </label>
                 <div className="relative">
@@ -129,7 +129,7 @@ const BusinessAccountRegister = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-gray-800">
                     VAT/TIN Number *
                   </label>
                   <div className="relative">
@@ -147,7 +147,7 @@ const BusinessAccountRegister = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-gray-800">
                     Number of Employees
                   </label>
                   <div className="relative">
@@ -179,7 +179,7 @@ const BusinessAccountRegister = () => {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-gray-800">
                     Contact Person Name *
                   </label>
                   <div className="relative">
@@ -197,7 +197,7 @@ const BusinessAccountRegister = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-gray-800">
                     Designation *
                   </label>
                   <div className="relative">
@@ -219,7 +219,7 @@ const BusinessAccountRegister = () => {
             {/* Contact Information */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-800">
                   Business Email *
                 </label>
                 <div className="relative">
@@ -237,7 +237,7 @@ const BusinessAccountRegister = () => {
               </div>
 
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-800">
                   Business Phone *
                 </label>
                 <div className="relative">
@@ -257,7 +257,7 @@ const BusinessAccountRegister = () => {
 
             {/* Password */}
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-gray-800">
                 Create Password *
               </label>
               <div className="relative">
@@ -291,7 +291,7 @@ const BusinessAccountRegister = () => {
                   className="w-5 h-5 mt-1 text-purple-600 rounded focus:ring-purple-500"
                   required
                 />
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-gray-800">
                   I agree to the{" "}
                   <Link to="/business-terms" className="text-purple-600 hover:text-purple-700 font-medium">
                     Business Account Terms
@@ -318,33 +318,33 @@ const BusinessAccountRegister = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex items-center gap-3">
                 <CheckCircle className="w-5 h-5 text-green-500" />
-                <span className="text-sm text-gray-600">Bulk order discounts</span>
+                <span className="text-sm text-gray-800">Bulk order discounts</span>
               </div>
               <div className="flex items-center gap-3">
                 <CheckCircle className="w-5 h-5 text-green-500" />
-                <span className="text-sm text-gray-600">Dedicated account manager</span>
+                <span className="text-sm text-gray-800">Dedicated account manager</span>
               </div>
               <div className="flex items-center gap-3">
                 <CheckCircle className="w-5 h-5 text-green-500" />
-                <span className="text-sm text-gray-600">Invoice & billing management</span>
+                <span className="text-sm text-gray-800">Invoice & billing management</span>
               </div>
               <div className="flex items-center gap-3">
                 <CheckCircle className="w-5 h-5 text-green-500" />
-                <span className="text-sm text-gray-600">Multiple user accounts</span>
+                <span className="text-sm text-gray-800">Multiple user accounts</span>
               </div>
               <div className="flex items-center gap-3">
                 <CheckCircle className="w-5 h-5 text-green-500" />
-                <span className="text-sm text-gray-600">Priority customer support</span>
+                <span className="text-sm text-gray-800">Priority customer support</span>
               </div>
               <div className="flex items-center gap-3">
                 <CheckCircle className="w-5 h-5 text-green-500" />
-                <span className="text-sm text-gray-600">Custom delivery schedules</span>
+                <span className="text-sm text-gray-800">Custom delivery schedules</span>
               </div>
             </div>
           </div>
 
           {/* Login Link */}
-          <p className="text-center mt-8 text-gray-600">
+          <p className="text-center mt-8 text-gray-800">
             Already have a business account?{" "}
             <Link to="/login" className="text-purple-600 hover:text-purple-700 font-semibold">
               Sign in here

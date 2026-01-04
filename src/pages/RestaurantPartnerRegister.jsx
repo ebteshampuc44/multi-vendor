@@ -51,7 +51,7 @@ const RestaurantPartnerRegister = () => {
             </div>
           </Link>
           <h1 className="text-3xl font-bold text-gray-900">Restaurant Partner Registration</h1>
-          <p className="text-gray-600 mt-2">Grow your restaurant business with Shopick</p>
+          <p className="text-gray-800 mt-2">Grow your restaurant business with Shopick</p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-xl p-8">
@@ -72,7 +72,7 @@ const RestaurantPartnerRegister = () => {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-gray-800">
                     Restaurant Name *
                   </label>
                   <div className="relative">
@@ -90,7 +90,7 @@ const RestaurantPartnerRegister = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-gray-800">
                     Owner/Manager Name *
                   </label>
                   <div className="relative">
@@ -109,7 +109,7 @@ const RestaurantPartnerRegister = () => {
               </div>
 
               <div className="mt-4 space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-800">
                   Restaurant Address *
                 </label>
                 <div className="relative">
@@ -128,7 +128,7 @@ const RestaurantPartnerRegister = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-gray-800">
                     Cuisine Type *
                   </label>
                   <select
@@ -146,7 +146,7 @@ const RestaurantPartnerRegister = () => {
                 </div>
 
                 <div className="space-y-2">
-                  <label className="block text-sm font-medium text-gray-700">
+                  <label className="block text-sm font-medium text-gray-800">
                     Seating Capacity
                   </label>
                   <div className="relative">
@@ -167,7 +167,7 @@ const RestaurantPartnerRegister = () => {
             {/* Contact Information */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-800">
                   Email Address *
                 </label>
                 <div className="relative">
@@ -185,7 +185,7 @@ const RestaurantPartnerRegister = () => {
               </div>
 
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-800">
                   Phone Number *
                 </label>
                 <div className="relative">
@@ -205,7 +205,7 @@ const RestaurantPartnerRegister = () => {
 
             {/* Business License */}
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-gray-800">
                 Business License Number *
               </label>
               <div className="relative">
@@ -224,7 +224,7 @@ const RestaurantPartnerRegister = () => {
 
             {/* Password */}
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-gray-800">
                 Create Password *
               </label>
               <div className="relative">
@@ -258,7 +258,7 @@ const RestaurantPartnerRegister = () => {
                   className="w-5 h-5 mt-1 text-orange-600 rounded focus:ring-orange-500"
                   required
                 />
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-gray-800">
                   I agree to the{" "}
                   <Link to="/partner-terms" className="text-orange-600 hover:text-orange-700 font-medium">
                     Restaurant Partner Agreement
@@ -285,33 +285,33 @@ const RestaurantPartnerRegister = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex items-center gap-3">
                 <CheckCircle className="w-5 h-5 text-green-500" />
-                <span className="text-sm text-gray-600">Access to thousands of customers</span>
+                <span className="text-sm text-gray-800">Access to thousands of customers</span>
               </div>
               <div className="flex items-center gap-3">
                 <CheckCircle className="w-5 h-5 text-green-500" />
-                <span className="text-sm text-gray-600">Marketing & promotional support</span>
+                <span className="text-sm text-gray-800">Marketing & promotional support</span>
               </div>
               <div className="flex items-center gap-3">
                 <CheckCircle className="w-5 h-5 text-green-500" />
-                <span className="text-sm text-gray-600">Real-time order management</span>
+                <span className="text-sm text-gray-800">Real-time order management</span>
               </div>
               <div className="flex items-center gap-3">
                 <CheckCircle className="w-5 h-5 text-green-500" />
-                <span className="text-sm text-gray-600">Secure & timely payments</span>
+                <span className="text-sm text-gray-800">Secure & timely payments</span>
               </div>
               <div className="flex items-center gap-3">
                 <CheckCircle className="w-5 h-5 text-green-500" />
-                <span className="text-sm text-gray-600">Analytics & business insights</span>
+                <span className="text-sm text-gray-800">Analytics & business insights</span>
               </div>
               <div className="flex items-center gap-3">
                 <CheckCircle className="w-5 h-5 text-green-500" />
-                <span className="text-sm text-gray-600">Dedicated partner support</span>
+                <span className="text-sm text-gray-800">Dedicated partner support</span>
               </div>
             </div>
           </div>
 
           {/* Login Link */}
-          <p className="text-center mt-8 text-gray-600">
+          <p className="text-center mt-8 text-gray-800">
             Already have a partner account?{" "}
             <Link to="/login" className="text-orange-600 hover:text-orange-700 font-semibold">
               Sign in here

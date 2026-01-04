@@ -43,7 +43,7 @@ const UserRegister = () => {
             </div>
           </Link>
           <h1 className="text-3xl font-bold text-gray-900">Create User Account</h1>
-          <p className="text-gray-600 mt-2">Join thousands of happy shoppers on Shopick</p>
+          <p className="text-gray-800 mt-2">Join thousands of happy shoppers on Shopick</p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-xl p-8">
@@ -57,7 +57,7 @@ const UserRegister = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-800">
                   Full Name *
                 </label>
                 <div className="relative">
@@ -75,7 +75,7 @@ const UserRegister = () => {
               </div>
 
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-800">
                   Phone Number *
                 </label>
                 <div className="relative">
@@ -94,7 +94,7 @@ const UserRegister = () => {
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-gray-800">
                 Email Address *
               </label>
               <div className="relative">
@@ -112,7 +112,7 @@ const UserRegister = () => {
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-gray-800">
                 Password *
               </label>
               <div className="relative">
@@ -134,11 +134,11 @@ const UserRegister = () => {
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
-              <p className="text-xs text-gray-500">Minimum 8 characters with letters and numbers</p>
+              <p className="text-xs text-gray-800">Minimum 8 characters with letters and numbers</p>
             </div>
 
             <div className="space-y-2">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-gray-800">
                 Delivery Address
               </label>
               <div className="relative">
@@ -164,7 +164,7 @@ const UserRegister = () => {
                   className="w-5 h-5 mt-1 text-blue-600 rounded focus:ring-blue-500"
                   required
                 />
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-gray-800">
                   I agree to the{" "}
                   <Link to="/terms" className="text-blue-600 hover:text-blue-700 font-medium">
                     Terms & Conditions
@@ -184,7 +184,7 @@ const UserRegister = () => {
                   onChange={handleChange}
                   className="w-5 h-5 mt-1 text-blue-600 rounded focus:ring-blue-500"
                 />
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-gray-800">
                   Yes, I want to receive promotional emails and updates
                 </span>
               </label>
@@ -204,25 +204,25 @@ const UserRegister = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div className="flex items-center gap-3">
                 <CheckCircle className="w-5 h-5 text-green-500" />
-                <span className="text-sm text-gray-600">Fast checkout process</span>
+                <span className="text-sm text-gray-800">Fast checkout process</span>
               </div>
               <div className="flex items-center gap-3">
                 <CheckCircle className="w-5 h-5 text-green-500" />
-                <span className="text-sm text-gray-600">Order tracking</span>
+                <span className="text-sm text-gray-800">Order tracking</span>
               </div>
               <div className="flex items-center gap-3">
                 <CheckCircle className="w-5 h-5 text-green-500" />
-                <span className="text-sm text-gray-600">Personalized recommendations</span>
+                <span className="text-sm text-gray-800">Personalized recommendations</span>
               </div>
               <div className="flex items-center gap-3">
                 <CheckCircle className="w-5 h-5 text-green-500" />
-                <span className="text-sm text-gray-600">Wishlist & saved items</span>
+                <span className="text-sm text-gray-800">Wishlist & saved items</span>
               </div>
             </div>
           </div>
 
           {/* Login Link */}
-          <p className="text-center mt-8 text-gray-600">
+          <p className="text-center mt-8 text-gray-800">
             Already have an account?{" "}
             <Link to="/login" className="text-blue-600 hover:text-blue-700 font-semibold">
               Sign in here

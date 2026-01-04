@@ -347,38 +347,6 @@ const Navbar = () => {
                           </div>
                         </div>
                       </button>
-                      
-                      <div className="border-t my-2"></div>
-                      
-                      <button
-                        onClick={() => handleUserMenuItemClick("/profile")}
-                        className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-pink-50 hover:text-pink-600 text-sm transition-colors"
-                      >
-                        🏠 My Account
-                      </button>
-                      <button
-                        onClick={() => handleUserMenuItemClick("/orders")}
-                        className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-pink-50 hover:text-pink-600 text-sm transition-colors"
-                      >
-                        📦 My Orders
-                      </button>
-                      <button
-                        onClick={() => handleUserMenuItemClick("/settings")}
-                        className="w-full text-left block px-4 py-2 text-gray-700 hover:bg-pink-50 hover:text-pink-600 text-sm transition-colors"
-                      >
-                        ⚙️ Settings
-                      </button>
-                      
-                      <div className="border-t my-2"></div>
-                      <button
-                        onClick={() => {
-                          // Logout logic here
-                          handleUserMenuItemClick("/");
-                        }}
-                        className="w-full text-left block px-4 py-2 text-red-600 hover:bg-red-50 text-sm transition-colors"
-                      >
-                        🚪 Logout
-                      </button>
                     </div>
                   </div>
                 )}
@@ -523,37 +491,6 @@ const Navbar = () => {
                       <div className="text-xs text-gray-500">For companies & bulk orders</div>
                     </div>
                   </button>
-                  
-                  <div className="pt-2 mt-2 border-t border-gray-100">
-                    <button
-                      onClick={() => handleUserMenuItemClick("/profile")}
-                      className="w-full text-left flex items-center gap-3 py-3 px-4 text-gray-700 hover:bg-pink-50 hover:text-pink-600 rounded-xl transition-colors"
-                    >
-                      <span>🏠</span>
-                      <span>My Account</span>
-                    </button>
-                    <button
-                      onClick={() => handleUserMenuItemClick("/orders")}
-                      className="w-full text-left flex items-center gap-3 py-3 px-4 text-gray-700 hover:bg-pink-50 hover:text-pink-600 rounded-xl transition-colors"
-                    >
-                      <span>📦</span>
-                      <span>My Orders</span>
-                    </button>
-                    <button
-                      onClick={() => handleUserMenuItemClick("/settings")}
-                      className="w-full text-left flex items-center gap-3 py-3 px-4 text-gray-700 hover:bg-pink-50 hover:text-pink-600 rounded-xl transition-colors"
-                    >
-                      <span>⚙️</span>
-                      <span>Settings</span>
-                    </button>
-                    <button
-                      onClick={() => handleUserMenuItemClick("/")}
-                      className="w-full text-left flex items-center gap-3 py-3 px-4 text-red-600 hover:bg-red-50 rounded-xl transition-colors"
-                    >
-                      <span>🚪</span>
-                      <span>Logout</span>
-                    </button>
-                  </div>
                 </div>
               </div>
 

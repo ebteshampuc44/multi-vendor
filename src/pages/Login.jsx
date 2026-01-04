@@ -115,7 +115,7 @@ const Login = () => {
             </div>
           </Link>
           <h1 className="text-3xl font-bold text-gray-900 mt-4">Welcome Back</h1>
-          <p className="text-gray-600 mt-2">One login for all account types</p>
+          <p className="text-gray-800 mt-2">One login for all account types</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -123,7 +123,7 @@ const Login = () => {
           <div className="lg:col-span-2 bg-white rounded-2xl shadow-xl p-8">
             {/* Quick Demo Buttons */}
             <div className="mb-6">
-              <h3 className="text-sm font-semibold text-gray-700 mb-3">Quick Demo Login</h3>
+              <h3 className="text-sm font-semibold text-gray-800 mb-3">Quick Demo Login</h3>
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                 <button
                   onClick={() => handleDemoLogin('user')}
@@ -132,7 +132,7 @@ const Login = () => {
                   <span className="w-6 h-6 rounded-full bg-green-100 flex items-center justify-center">
                     <span className="text-green-600 text-xs">👤</span>
                   </span>
-                  <span className="font-medium">User Account</span>
+                  <span className="font-medium text-gray-800">User Account</span>
                 </button>
                 <button
                   onClick={() => handleDemoLogin('restaurant')}
@@ -141,7 +141,7 @@ const Login = () => {
                   <span className="w-6 h-6 rounded-full bg-orange-100 flex items-center justify-center">
                     <span className="text-orange-600 text-xs">🍽️</span>
                   </span>
-                  <span className="font-medium">Restaurant Partner</span>
+                  <span className="font-medium text-gray-800">Restaurant Partner</span>
                 </button>
                 <button
                   onClick={() => handleDemoLogin('business')}
@@ -150,7 +150,7 @@ const Login = () => {
                   <span className="w-6 h-6 rounded-full bg-purple-100 flex items-center justify-center">
                     <span className="text-purple-600 text-xs">🏢</span>
                   </span>
-                  <span className="font-medium">Business Account</span>
+                  <span className="font-medium text-gray-800">Business Account</span>
                 </button>
               </div>
             </div>
@@ -159,14 +159,14 @@ const Login = () => {
             {error && (
               <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-xl flex items-center gap-3">
                 <AlertCircle className="w-5 h-5 text-red-600" />
-                <span className="text-red-700 font-medium">{error}</span>
+                <span className="text-red-800 font-medium">{error}</span>
               </div>
             )}
 
             {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-800">
                   Email Address *
                 </label>
                 <div className="relative">
@@ -184,7 +184,7 @@ const Login = () => {
               </div>
 
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-gray-800">
                   Password *
                 </label>
                 <div className="relative">
@@ -217,7 +217,7 @@ const Login = () => {
                     onChange={handleChange}
                     className="w-4 h-4 text-pink-600 rounded focus:ring-pink-500"
                   />
-                  <span className="ml-2 text-sm text-gray-600">Remember me</span>
+                  <span className="ml-2 text-sm text-gray-800">Remember me</span>
                 </label>
                 <Link to="/forgot-password" className="text-sm text-pink-600 hover:text-pink-700 font-medium">
                   Forgot password?
@@ -243,7 +243,7 @@ const Login = () => {
             {/* Divider */}
             <div className="my-8 flex items-center">
               <div className="flex-1 h-px bg-gray-300"></div>
-              <span className="px-4 text-sm text-gray-500">Or continue with</span>
+              <span className="px-4 text-sm text-gray-800">Or continue with</span>
               <div className="flex-1 h-px bg-gray-300"></div>
             </div>
 
@@ -251,15 +251,15 @@ const Login = () => {
             <div className="grid grid-cols-3 gap-4">
               <button className="flex items-center justify-center gap-2 py-3 border border-gray-300 rounded-xl hover:bg-gray-50 transition">
                 <Facebook className="w-5 h-5 text-blue-600" />
-                <span className="text-sm font-medium">Facebook</span>
+                <span className="text-sm font-medium text-gray-800">Facebook</span>
               </button>
               <button className="flex items-center justify-center gap-2 py-3 border border-gray-300 rounded-xl hover:bg-gray-50 transition">
                 <Twitter className="w-5 h-5 text-blue-400" />
-                <span className="text-sm font-medium">Twitter</span>
+                <span className="text-sm font-medium text-gray-800">Twitter</span>
               </button>
               <button className="flex items-center justify-center gap-2 py-3 border border-gray-300 rounded-xl hover:bg-gray-50 transition">
                 <Github className="w-5 h-5 text-gray-900" />
-                <span className="text-sm font-medium">GitHub</span>
+                <span className="text-sm font-medium text-gray-800">GitHub</span>
               </button>
             </div>
 
@@ -275,8 +275,8 @@ const Login = () => {
                     <span className="text-green-600">👤</span>
                   </div>
                   <div>
-                    <div className="font-medium group-hover:text-green-700">User Account</div>
-                    <div className="text-xs text-gray-500">For shopping</div>
+                    <div className="font-medium text-gray-800 group-hover:text-green-700">User Account</div>
+                    <div className="text-xs text-gray-800">For shopping</div>
                   </div>
                 </Link>
                 
@@ -288,8 +288,8 @@ const Login = () => {
                     <span className="text-orange-600">🍽️</span>
                   </div>
                   <div>
-                    <div className="font-medium group-hover:text-orange-700">Restaurant Partner</div>
-                    <div className="text-xs text-gray-500">List your restaurant</div>
+                    <div className="font-medium text-gray-800 group-hover:text-orange-700">Restaurant Partner</div>
+                    <div className="text-xs text-gray-800">List your restaurant</div>
                   </div>
                 </Link>
                 
@@ -301,8 +301,8 @@ const Login = () => {
                     <span className="text-purple-600">🏢</span>
                   </div>
                   <div>
-                    <div className="font-medium group-hover:text-purple-700">Business Account</div>
-                    <div className="text-xs text-gray-500">For companies</div>
+                    <div className="font-medium text-gray-800 group-hover:text-purple-700">Business Account</div>
+                    <div className="text-xs text-gray-800">For companies</div>
                   </div>
                 </Link>
               </div>
@@ -321,7 +321,7 @@ const Login = () => {
                   </div>
                   <div>
                     <h4 className="font-bold text-lg mb-1">Single Sign-On</h4>
-                    <p className="text-pink-200 text-sm">Use one email & password for all account types</p>
+                    <p className="text-white/90 text-sm">Use one email & password for all account types</p>
                   </div>
                 </div>
 
@@ -331,7 +331,7 @@ const Login = () => {
                   </div>
                   <div>
                     <h4 className="font-bold text-lg mb-1">Secure & Unified</h4>
-                    <p className="text-pink-200 text-sm">Enhanced security with unified authentication</p>
+                    <p className="text-white/90 text-sm">Enhanced security with unified authentication</p>
                   </div>
                 </div>
 
@@ -341,7 +341,7 @@ const Login = () => {
                   </div>
                   <div>
                     <h4 className="font-bold text-lg mb-1">Easy Switching</h4>
-                    <p className="text-pink-200 text-sm">Switch between account types seamlessly</p>
+                    <p className="text-white/90 text-sm">Switch between account types seamlessly</p>
                   </div>
                 </div>
               </div>
@@ -352,15 +352,15 @@ const Login = () => {
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-green-400"></div>
-                    <span className="text-sm text-pink-100">Regular Users - Shopping & Orders</span>
+                    <span className="text-sm text-white/90">Regular Users - Shopping & Orders</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-orange-400"></div>
-                    <span className="text-sm text-pink-100">Restaurant Partners - Food Business</span>
+                    <span className="text-sm text-white/90">Restaurant Partners - Food Business</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-purple-400"></div>
-                    <span className="text-sm text-pink-100">Business Accounts - Corporate Clients</span>
+                    <span className="text-sm text-white/90">Business Accounts - Corporate Clients</span>
                   </div>
                 </div>
               </div>
@@ -370,15 +370,15 @@ const Login = () => {
                 <div className="grid grid-cols-3 gap-4 text-center">
                   <div>
                     <div className="text-xl font-bold">50K+</div>
-                    <div className="text-pink-200 text-xs">Active Users</div>
+                    <div className="text-white/90 text-xs">Active Users</div>
                   </div>
                   <div>
                     <div className="text-xl font-bold">1K+</div>
-                    <div className="text-pink-200 text-xs">Restaurant Partners</div>
+                    <div className="text-white/90 text-xs">Restaurant Partners</div>
                   </div>
                   <div>
                     <div className="text-xl font-bold">500+</div>
-                    <div className="text-pink-200 text-xs">Business Clients</div>
+                    <div className="text-white/90 text-xs">Business Clients</div>
                   </div>
                 </div>
               </div>
@@ -390,7 +390,7 @@ const Login = () => {
         <div className="text-center mt-8">
           <Link 
             to="/" 
-            className="inline-flex items-center gap-2 text-gray-600 hover:text-pink-600 transition"
+            className="inline-flex items-center gap-2 text-gray-800 hover:text-pink-600 transition"
           >
             ← Back to Home
           </Link>
