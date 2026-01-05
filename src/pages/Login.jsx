@@ -346,7 +346,7 @@ const Login = () => {
                 </div>
               </div>
 
-              {/* Account Types Info */}
+           
               <div className="bg-white/10 rounded-xl p-4 mb-6">
                 <h4 className="font-bold mb-3">Supported Account Types</h4>
                 <div className="space-y-2">
