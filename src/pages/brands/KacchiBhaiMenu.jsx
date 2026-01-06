@@ -1,9 +1,9 @@
-// SultansDineMenu.jsx - Updated with black + and - buttons
+// KacchiBhaiMenu.jsx - Updated with black + and - buttons
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ShoppingCart, Star, Clock, ChevronRight, ChefHat, Heart, Menu } from "lucide-react";
 
-const SultansDineMenu = () => {
+const KacchiBhaiMenu = () => {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
   const [activeCategory, setActiveCategory] = useState("all");
@@ -36,207 +36,207 @@ const SultansDineMenu = () => {
     window.dispatchEvent(new Event('wishlistUpdated'));
   }, [wishlist]);
 
-  // মেনু আইটেম ডেটা
+  // মেনু আইটেম ডেটা - Kacchi Bhai এর জন্য
   const menuItems = [
     {
-      id: 1,
-      name: "Kacchi Bashmati Full",
-      description: "Authentic Dhakaiya Kacchi with aromatic Bashmati rice",
+      id: 101,
+      name: "Kacchi Biryani Full",
+      description: "Signature Kacchi with aromatic rice and tender meat",
       price: 850,
-      image: "https://i.ibb.co.com/PGt9bVK0/Kacchi-Bashmati-Full.webp",
+      image: "https://i.ibb.co.com/N6SxNYG6/image.avif",
       category: "kacchi",
       rating: 4.8,
       prepTime: "30-40 min"
     },
     {
-      id: 2,
-      name: "Kacchi Bashmati Half",
-      description: "Half portion of our signature Kacchi",
+      id: 102,
+      name: "Kacchi Biryani Half",
+      description: "Half portion of our famous Kacchi Biryani",
       price: 450,
-      image: "https://i.ibb.co.com/2YC4Xktp/Kacchi-Bashmati-Half.webp",
+      image: "https://i.ibb.co.com/YB71LSXw/image.avif",
       category: "kacchi",
       rating: 4.7,
       prepTime: "25-35 min"
     },
     {
-      id: 3,
-      name: "Kacchi Platter",
-      description: "Complete Kacchi meal with borhani and salad",
-      price: 1200,
-      image: "https://i.ibb.co.com/xtqc45XV/Kacchi-Platter.webp",
+      id: 103,
+      name: "Premium Kacchi Platter",
+      description: "Complete Kacchi meal with borhani, salad and dessert",
+      price: 1250,
+      image: "https://i.ibb.co.com/rfyTQWHZ/image.avif",
       category: "kacchi",
       rating: 4.9,
       prepTime: "40-50 min"
     },
     {
-      id: 4,
-      name: "Plain Polao Platter",
-      description: "Fragrant polao with choice of meat",
-      price: 650,
-      image: "https://i.ibb.co.com/bMMTh4xT/Plain-Polao-Platter.webp",
-      category: "polao",
+      id: 104,
+      name: "Special Chicken Biryani",
+      description: "Flavorful chicken biryani with special spices",
+      price: 480,
+      image: "https://i.ibb.co.com/Pvd3F1MK/image.avif",
+      category: "biryani",
       rating: 4.6,
-      prepTime: "20-30 min"
-    },
-    {
-      id: 5,
-      name: "Plain Polao Chicken Roast Borhani",
-      description: "Combo meal with chicken roast and borhani",
-      price: 550,
-      image: "https://i.ibb.co.com/FLD5bGzw/Plain-Polao-Chicken-Roast-Borhani.webp",
-      category: "combo",
-      rating: 4.7,
       prepTime: "25-35 min"
     },
     {
-      id: 6,
-      name: "Mutton Tehari",
-      description: "Spicy mutton tehari with aromatic rice",
-      price: 480,
-      image: "https://i.ibb.co.com/s9cKtSz2/Mutton-Tehari.webp",
-      category: "tehari",
+      id: 105,
+      name: "Mutton Biryani",
+      description: "Rich mutton biryani with tender pieces",
+      price: 650,
+      image: "https://i.ibb.co.com/DfyL1hB4/image.avif",
+      category: "biryani",
+      rating: 4.7,
+      prepTime: "35-45 min"
+    },
+    {
+      id: 106,
+      name: "Beef Biryani",
+      description: "Hearty beef biryani with aromatic rice",
+      price: 520,
+      image: "https://i.ibb.co.com/qMHvCRtS/image.avif",
+      category: "biryani",
       rating: 4.5,
       prepTime: "30-40 min"
     },
     {
-      id: 7,
-      name: "Chicken Roast",
-      description: "Tender roasted chicken with spices",
-      price: 320,
-      image: "https://i.ibb.co.com/4wHK7nL9/Chicken-Roast.webp",
+      id: 107,
+      name: "Chicken Roast Platter",
+      description: "Juicy roasted chicken with traditional spices",
+      price: 350,
+      image: "https://i.ibb.co.com/C52dgsGY/image.avif",
       category: "roast",
       rating: 4.4,
       prepTime: "20-25 min"
     },
     {
-      id: 8,
+      id: 108,
       name: "Beef Rezala",
       description: "Creamy beef rezala in rich gravy",
-      price: 380,
-      image: "https://i.ibb.co.com/KzS5wqpG/Beef-Rezala.webp",
+      price: 420,
+      image: "https://i.ibb.co.com/hFDRcNk0/image.avif",
       category: "beef",
       rating: 4.6,
       prepTime: "35-45 min"
     },
     {
-      id: 9,
-      name: "Plain Polao",
-      description: "Simple fragrant polao rice",
-      price: 150,
-      image: "https://i.ibb.co.com/WpnpX1hG/Plain-Polao.webp",
+      id: 109,
+      name: "Mutton Rezala",
+      description: "Traditional mutton rezala with aromatic spices",
+      price: 480,
+      image: "https://i.ibb.co.com/DZDLNKy/image.avif",
+      category: "beef",
+      rating: 4.5,
+      prepTime: "35-45 min"
+    },
+    {
+      id: 110,
+      name: "Special Polao",
+      description: "Fragrant polao with nuts and raisins",
+      price: 180,
+      image: "https://i.ibb.co.com/Y7Sf1qzy/image.avif",
       category: "polao",
-      rating: 4.2,
+      rating: 4.3,
       prepTime: "15-20 min"
     },
     {
-      id: 10,
-      name: "Beef Chap",
-      description: "Juicy beef chap kebab",
-      price: 280,
-      image: "https://i.ibb.co.com/Fb1r7YSN/Beef-Chap.webp",
+      id: 111,
+      name: "Beef Kebab",
+      description: "Juicy grilled beef kebabs",
+      price: 320,
+      image: "https://i.ibb.co.com/39fPGVZB/image.avif",
       category: "kebab",
       rating: 4.7,
       prepTime: "25-30 min"
     },
     {
-      id: 11,
-      name: "Jali Kabab",
-      description: "Crispy net-style chicken kabab",
-      price: 220,
-      image: "https://i.ibb.co.com/4ZvpKwvg/Jali-kabab.webp",
+      id: 112,
+      name: "Chicken Kebab",
+      description: "Tender chicken kebabs with spices",
+      price: 280,
+      image: "https://i.ibb.co.com/R4c37Fg7/image.avif",
       category: "kebab",
-      rating: 4.5,
+      rating: 4.6,
       prepTime: "20-25 min"
     },
     {
-      id: 12,
-      name: "Beef Chap with Plain Polao Combo",
-      description: "Beef chap with polao and salad",
-      price: 420,
-      image: "https://i.ibb.co.com/3yjW7Yh0/Beef-Chap-with-Plain-Polao-Combo.webp",
+      id: 113,
+      name: "Chicken Tikka",
+      description: "Spicy chicken tikka pieces",
+      price: 340,
+      image: "https://i.ibb.co.com/1Y1WB01H/image.avif",
+      category: "kebab",
+      rating: 4.5,
+      prepTime: "25-30 min"
+    },
+    {
+      id: 114,
+      name: "Chicken Combo Meal",
+      description: "Chicken biryani with borhani and salad",
+      price: 580,
+      image: "https://i.ibb.co.com/4Rbm6WWb/image.avif",
       category: "combo",
       rating: 4.8,
-      prepTime: "30-35 min"
+      prepTime: "30-40 min"
     },
     {
-      id: 13,
-      name: "Chutney",
-      description: "Special homemade chutney",
-      price: 50,
-      image: "https://i.ibb.co.com/23QrLdVR/Chutney.webp",
-      category: "sides",
-      rating: 4.3,
-      prepTime: "5 min"
+      id: 115,
+      name: "Mutton Combo Meal",
+      description: "Mutton biryani with borhani and salad",
+      price: 720,
+      image: "https://i.ibb.co.com/4RwJjzvZ/image.avif",
+      category: "combo",
+      rating: 4.7,
+      prepTime: "35-45 min"
     },
     {
-      id: 14,
-      name: "Firni",
-      description: "Creamy rice pudding dessert",
+      id: 116,
+      name: "Special Salad",
+      description: "Fresh salad with special dressing",
       price: 120,
-      image: "https://i.ibb.co.com/s9CdXSvt/Firni.webp",
+      image: "https://i.ibb.co.com/JwMk7D0C/image.avif",
+      category: "sides",
+      rating: 4.2,
+      prepTime: "5-10 min"
+    },
+    {
+      id: 117,
+      name: "Special Firni",
+      description: "Creamy rice pudding with nuts",
+      price: 150,
+      image: "https://i.ibb.co.com/xq8gSJnL/image.avif",
       category: "dessert",
       rating: 4.6,
       prepTime: "10-15 min"
     },
     {
-      id: 15,
-      name: "Jorda",
-      description: "Sweet saffron rice dessert",
-      price: 130,
-      image: "https://i.ibb.co.com/vvfXwK1V/Jorda.webp",
-      category: "dessert",
-      rating: 4.4,
-      prepTime: "10-15 min"
-    },
-    {
-      id: 16,
-      name: "Borhani",
+      id: 118,
+      name: "Special Borhani",
       description: "Traditional spicy yogurt drink",
-      price: 80,
-      image: "https://i.ibb.co.com/HDW14ywM/Borhani.webp",
+      price: 100,
+      image: "https://i.ibb.co.com/99VL992w/image.avif",
       category: "drinks",
       rating: 4.7,
       prepTime: "5 min"
     },
     {
-      id: 17,
+      id: 119,
       name: "Soft Drinks",
       description: "Various cold soft drinks",
-      price: 40,
-      image: "https://i.ibb.co.com/KjKZQZSH/Soft-Drinks.webp",
+      price: 50,
+      image: "https://i.ibb.co.com/5X46S7LD/image.avif",
       category: "drinks",
       rating: 4.0,
       prepTime: "2 min"
     },
     {
-      id: 18,
-      name: "Water",
-      description: "Mineral water",
-      price: 20,
-      image: "https://i.ibb.co.com/d0gxYfHf/Water.webp",
+      id: 120,
+      name: "Mineral Water",
+      description: "Pure mineral water",
+      price: 30,
+      image: "https://i.ibb.co.com/RTx5VvTZ/image.avif",
       category: "drinks",
       rating: 4.1,
       prepTime: "1 min"
-    },
-    {
-      id: 19,
-      name: "Zafrani Sorbot",
-      description: "Refreshing saffron sherbet",
-      price: 110,
-      image: "https://i.ibb.co.com/Y7XsZwBs/Zafrani-Sorbot.webp",
-      category: "drinks",
-      rating: 4.5,
-      prepTime: "5 min"
-    },
-    {
-      id: 20,
-      name: "Chicken Dum Biryani",
-      description: "Aromatic chicken biryani cooked in dum style",
-      price: 380,
-      image: "https://i.ibb.co.com/hRhVLf1V/Chicken-Dum-Biryani.webp",
-      category: "biryani",
-      rating: 4.8,
-      prepTime: "35-45 min"
     }
   ];
 
@@ -246,7 +246,6 @@ const SultansDineMenu = () => {
     { id: "kacchi", name: "Kacchi", count: menuItems.filter(item => item.category === "kacchi").length },
     { id: "biryani", name: "Biryani", count: menuItems.filter(item => item.category === "biryani").length },
     { id: "polao", name: "Polao", count: menuItems.filter(item => item.category === "polao").length },
-    { id: "tehari", name: "Tehari", count: menuItems.filter(item => item.category === "tehari").length },
     { id: "kebab", name: "Kabab", count: menuItems.filter(item => item.category === "kebab").length },
     { id: "combo", name: "Combo Meals", count: menuItems.filter(item => item.category === "combo").length },
     { id: "roast", name: "Roast", count: menuItems.filter(item => item.category === "roast").length },
@@ -269,12 +268,12 @@ const SultansDineMenu = () => {
       price: item.price,
       image: item.image,
       category: item.category,
-      restaurant: "Sultan's Dine",
+      restaurant: "Kacchi Bhai",
       quantity: quantity[item.id] || 1,
       maxQuantity: 10,
-      restaurantId: 1,
-      deliveryTime: "45-55 min",
-      location: "Gulshan, Dhanmondi, Uttara",
+      restaurantId: 2,
+      deliveryTime: "40-50 min",
+      location: "Bashundhara City, Dhanmondi, Uttara",
       description: item.description
     };
     
@@ -316,8 +315,8 @@ const SultansDineMenu = () => {
           price: item.price,
           image: item.image,
           category: item.category,
-          restaurant: "Sultan's Dine",
-          restaurantId: 1
+          restaurant: "Kacchi Bhai",
+          restaurantId: 2
         };
         return [...prev, wishlistItem];
       }
@@ -352,18 +351,19 @@ const SultansDineMenu = () => {
 
   // রেস্টুরেন্ট ডিটেইল
   const restaurantInfo = {
-    name: "Sultan's Dine",
-    rating: 4.7,
-    deliveryTime: "45-55 min",
-    minOrder: 300,
-    deliveryFee: 60,
-    locations: ["Gulshan", "Dhanmondi", "Uttara", "Banani"],
-    cuisine: ["Bengali", "Mughlai", "Biryani", "Kacchi"],
-    openingHours: "11:00 AM - 11:00 PM"
+    name: "Kacchi Bhai",
+    rating: 4.8,
+    deliveryTime: "40-50 min",
+    minOrder: 350,
+    deliveryFee: 50,
+    locations: ["Bashundhara City", "Dhanmondi", "Uttara", "Gulshan"],
+    cuisine: ["Bengali", "Mughlai", "Kacchi", "Biryani"],
+    openingHours: "11:00 AM - 10:30 PM",
+    established: "2003"
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-amber-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-red-50 to-white">
       <style jsx global>{`
         @keyframes fadeIn {
           from {
@@ -390,9 +390,9 @@ const SultansDineMenu = () => {
         }
         
         .category-btn.active {
-          background: linear-gradient(135deg, #f59e0b, #d97706);
+          background: linear-gradient(135deg, #dc2626, #b91c1c);
           color: white;
-          box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+          box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
         }
         
         /* কালো + এবং - বাটনের স্টাইল */
@@ -407,7 +407,7 @@ const SultansDineMenu = () => {
           justify-content: center;
           font-size: 1.25rem;
           font-weight: bold;
-          color: #000000 !important; /* কালো রং */
+          color: #000000 !important;
           cursor: pointer;
           transition: all 0.2s;
         }
@@ -420,13 +420,13 @@ const SultansDineMenu = () => {
           opacity: 0.5;
           cursor: not-allowed;
           background-color: #f3f4f6;
-          color: #9ca3af !important; /* Disabled হলে ধূসর */
+          color: #9ca3af !important;
         }
         
         .quantity-count {
           font-size: 1.125rem;
           font-weight: bold;
-          color: #000000; /* কালো রং */
+          color: #000000;
           min-width: 20px;
           text-align: center;
         }
@@ -591,7 +591,7 @@ const SultansDineMenu = () => {
           }
           
           .nav-btn-mobile.active {
-            background-color: #fef3c7;
+            background-color: #fee2e2;
           }
         }
         
@@ -617,39 +617,39 @@ const SultansDineMenu = () => {
       {/* Main Content */}
       <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6">
         {/* Restaurant Info Card */}
-        <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-amber-200 p-4 sm:p-6 mb-6 sm:mb-8 fade-in">
+        <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-red-200 p-4 sm:p-6 mb-6 sm:mb-8 fade-in">
           <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6 restaurant-info-mobile">
             <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto">
-              <div className="logo-mobile w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden border-2 sm:border-4 border-amber-100 shadow-md">
+              <div className="logo-mobile w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden border-2 sm:border-4 border-red-100 shadow-md">
                 <img 
-                  src="https://i.postimg.cc/kXBXmy7x/sd.jpg" 
-                  alt="Sultan's Dine Logo"
+                  src="public/kb.png" 
+                  alt="Kacchi Bhai Logo"
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="flex-1">
-                <h2 className="title-mobile text-2xl sm:text-3xl font-bold text-gray-900">Sultan's Dine</h2>
-                <p className="subtitle-mobile text-sm sm:text-lg text-gray-600 mt-1">Authentic Bengali & Mughlai Cuisine</p>
+                <h2 className="title-mobile text-2xl sm:text-3xl font-bold text-gray-900">{restaurantInfo.name}</h2>
+                <p className="subtitle-mobile text-sm sm:text-lg text-gray-600 mt-1">Best Kacchi in town since {restaurantInfo.established}</p>
               </div>
             </div>
             
             <div className="w-full">
               <div className="flex flex-wrap gap-2 sm:gap-4 mt-2 stats-mobile">
-                <div className="stat-item-mobile flex items-center gap-1 bg-amber-50 px-3 py-2 rounded-lg">
-                  <Star className="w-4 h-4 sm:w-5 sm:h-5 fill-amber-400 text-amber-400" />
+                <div className="stat-item-mobile flex items-center gap-1 bg-red-50 px-3 py-2 rounded-lg">
+                  <Star className="w-4 h-4 sm:w-5 sm:h-5 fill-red-400 text-red-400" />
                   <span className="font-bold text-base sm:text-lg text-gray-900">{restaurantInfo.rating}</span>
-                  <span className="text-xs sm:text-sm text-gray-500">(500+)</span>
+                  <span className="text-xs sm:text-sm text-gray-500">(1200+)</span>
                 </div>
-                <div className="stat-item-mobile flex items-center gap-1 bg-amber-50 px-3 py-2 rounded-lg">
+                <div className="stat-item-mobile flex items-center gap-1 bg-red-50 px-3 py-2 rounded-lg">
                   <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500" />
                   <span className="font-medium text-sm sm:text-base text-gray-900">{restaurantInfo.deliveryTime}</span>
                 </div>
-                <div className="stat-item-mobile flex items-center gap-1 bg-amber-50 px-3 py-2 rounded-lg">
+                <div className="stat-item-mobile flex items-center gap-1 bg-red-50 px-3 py-2 rounded-lg">
                   <span className="text-sm sm:text-base text-gray-900">
                     Min: <span className="font-bold">৳{restaurantInfo.minOrder}</span>
                   </span>
                 </div>
-                <div className="stat-item-mobile flex items-center gap-1 bg-amber-50 px-3 py-2 rounded-lg">
+                <div className="stat-item-mobile flex items-center gap-1 bg-red-50 px-3 py-2 rounded-lg">
                   <span className="text-sm sm:text-base text-gray-900">
                     Fee: <span className="font-bold">৳{restaurantInfo.deliveryFee}</span>
                   </span>
@@ -657,28 +657,28 @@ const SultansDineMenu = () => {
               </div>
               
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mt-4 sm:mt-6 info-grid-mobile">
-                <div className="bg-amber-50 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
+                <div className="bg-red-50 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
                   <div className="text-xs sm:text-sm text-gray-600 font-medium mb-1">Cuisine</div>
                   <div className="font-medium text-sm sm:text-base text-gray-800 truncate">{restaurantInfo.cuisine.join(", ")}</div>
                 </div>
-                <div className="bg-amber-50 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
+                <div className="bg-red-50 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
                   <div className="text-xs sm:text-sm text-gray-600 font-medium mb-1">Locations</div>
                   <div className="font-medium text-sm sm:text-base text-gray-800 truncate">{restaurantInfo.locations.join(", ")}</div>
                 </div>
-                <div className="bg-amber-50 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
+                <div className="bg-red-50 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
                   <div className="text-xs sm:text-sm text-gray-600 font-medium mb-1">Open Hours</div>
                   <div className="font-medium text-sm sm:text-base text-gray-800">{restaurantInfo.openingHours}</div>
                 </div>
               </div>
               
-              <div className="special-offer-mobile bg-gradient-to-br from-amber-100 to-orange-100 rounded-lg sm:rounded-xl p-4 sm:p-5 border border-amber-200 shadow-md mt-4 sm:mt-0">
+              <div className="special-offer-mobile bg-gradient-to-br from-red-100 to-red-50 rounded-lg sm:rounded-xl p-4 sm:p-5 border border-red-200 shadow-md mt-4 sm:mt-0">
                 <div className="flex items-center gap-3">
-                  <ChefHat className="w-8 h-8 sm:w-10 sm:h-10 text-amber-600" />
+                  <ChefHat className="w-8 h-8 sm:w-10 sm:h-10 text-red-600" />
                   <div>
-                    <div className="text-lg sm:text-xl font-bold text-amber-800">Special Offer</div>
-                    <div className="text-sm sm:text-lg text-amber-700 font-medium">10% OFF on first order</div>
+                    <div className="text-lg sm:text-xl font-bold text-red-800">Special Offer</div>
+                    <div className="text-sm sm:text-lg text-red-700 font-medium">15% OFF on orders above ৳1000</div>
                     <div className="text-xs sm:text-sm text-gray-700 mt-1 bg-white/50 py-1 px-2 sm:px-3 rounded-full inline-block">
-                      Use code: <span className="font-bold">SULTAN10</span>
+                      Use code: <span className="font-bold">KACCHI15</span>
                     </div>
                   </div>
                 </div>
@@ -775,7 +775,7 @@ const SultansDineMenu = () => {
                       {item.description}
                     </p>
                   </div>
-                  <div className="text-amber-600 font-bold text-xl sm:text-2xl ml-2 item-price-mobile">
+                  <div className="text-red-600 font-bold text-xl sm:text-2xl ml-2 item-price-mobile">
                     ৳{item.price}
                   </div>
                 </div>
@@ -790,7 +790,7 @@ const SultansDineMenu = () => {
                       <Star className="w-3 h-3 sm:w-4 sm:h-4 fill-amber-400 text-amber-400" />
                       <span className="font-medium text-gray-800">{item.rating}</span>
                     </div>
-                    <div className="capitalize bg-amber-100 text-amber-800 px-2 py-1 rounded-md text-xs font-medium">
+                    <div className="capitalize bg-red-100 text-red-800 px-2 py-1 rounded-md text-xs font-medium">
                       {item.category}
                     </div>
                   </div>
@@ -820,7 +820,7 @@ const SultansDineMenu = () => {
                   
                   <button
                     onClick={() => addToCart(item)}
-                    className="w-full sm:flex-1 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold py-2.5 sm:py-3 md:py-3.5 rounded-lg sm:rounded-xl transition-all duration-300 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 text-sm sm:text-base add-to-cart-btn-mobile"
+                    className="w-full sm:flex-1 bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-semibold py-2.5 sm:py-3 md:py-3.5 rounded-lg sm:rounded-xl transition-all duration-300 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 text-sm sm:text-base add-to-cart-btn-mobile"
                   >
                     <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
                     Add to Cart
@@ -834,14 +834,14 @@ const SultansDineMenu = () => {
         {/* Empty State */}
         {filteredItems.length === 0 && (
           <div className="text-center py-12 sm:py-16">
-            <div className="w-20 h-20 sm:w-28 sm:h-28 mx-auto mb-4 sm:mb-6 rounded-full bg-amber-100 flex items-center justify-center shadow-lg">
-              <ChefHat className="w-10 h-10 sm:w-14 sm:h-14 text-amber-500" />
+            <div className="w-20 h-20 sm:w-28 sm:h-28 mx-auto mb-4 sm:mb-6 rounded-full bg-red-100 flex items-center justify-center shadow-lg">
+              <ChefHat className="w-10 h-10 sm:w-14 sm:h-14 text-red-500" />
             </div>
             <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 sm:mb-3">No items found</h3>
             <p className="text-gray-600 mb-6 sm:mb-8 text-sm sm:text-lg">Try selecting a different category</p>
             <button
               onClick={() => setActiveCategory("all")}
-              className="px-6 py-2.5 sm:px-8 sm:py-3.5 bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold rounded-full hover:shadow-xl transition-all duration-300 text-sm sm:text-lg"
+              className="px-6 py-2.5 sm:px-8 sm:py-3.5 bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold rounded-full hover:shadow-xl transition-all duration-300 text-sm sm:text-lg"
             >
               View All Menu Items
             </button>
@@ -884,7 +884,7 @@ const SultansDineMenu = () => {
             <ShoppingCart className="w-5 h-5" />
             <span className="text-xs font-medium">Cart</span>
             {cartItems.length > 0 && (
-              <span className="absolute -top-1 -right-1 bg-amber-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
                 {cartItems.length}
               </span>
             )}
@@ -904,7 +904,7 @@ const SultansDineMenu = () => {
         </button>
         <button
           onClick={viewCart}
-          className="bg-gradient-to-r from-amber-500 to-orange-500 text-white font-semibold px-6 py-3.5 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center gap-2"
+          className="bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold px-6 py-3.5 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center gap-2"
         >
           <ShoppingCart className="w-5 h-5" />
           View Cart ({cartItems.length})
@@ -915,4 +915,4 @@ const SultansDineMenu = () => {
   );
 };
 
-export default SultansDineMenu;
+export default KacchiBhaiMenu;
