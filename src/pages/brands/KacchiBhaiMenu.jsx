@@ -622,7 +622,7 @@ const KacchiBhaiMenu = () => {
             <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto">
               <div className="logo-mobile w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden border-2 sm:border-4 border-red-100 shadow-md">
                 <img 
-                  src="public/kb.png" 
+                  src="https://i.postimg.cc/Y2XqZPBL/kb.png" 
                   alt="Kacchi Bhai Logo"
                   className="w-full h-full object-cover"
                 />

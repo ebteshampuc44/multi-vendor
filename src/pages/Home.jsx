@@ -63,14 +63,14 @@ const topBrands = [
     name: "Sultan's Dine",
     logo: "https://i.postimg.cc/kXBXmy7x/sd.jpg",
     description: "Authentic Bengali cuisine",
-    url: "/restaurant/sultans-dine" // Changed to restaurant menu page
+    url: "/restaurant/sultans-dine" // Restaurant menu page
   },
   {
     id: 2,
     name: "Kacchi Bhai",
     logo: "https://i.postimg.cc/Y2XqZPBL/kb.png",
     description: "Best Kacchi in town",
-    url: "/brand/kacchi-bhai"
+    url: "/restaurant/kacchi-bhai" // Changed from /brand/kacchi-bhai to /restaurant/kacchi-bhai
   },
   {
     id: 3,
@@ -197,7 +197,7 @@ const allRestaurants = [
     tags: ["Biryani", "Kacchi", "Traditional"],
     featured: true,
     discount: "20% OFF",
-    url: "/restaurant/sultans-dine" // Updated to restaurant menu page
+    url: "/restaurant/sultans-dine" // Restaurant menu page
   },
   {
     id: 2,
@@ -211,7 +211,7 @@ const allRestaurants = [
     tags: ["Special Kacchi", "Biryani", "Popular"],
     featured: true,
     discount: "15% OFF",
-    url: "/restaurant/kacchi-bhai"
+    url: "/restaurant/kacchi-bhai" // Changed to restaurant menu page
   },
   {
     id: 3,
