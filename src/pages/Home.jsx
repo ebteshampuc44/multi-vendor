@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { ChevronLeft, ChevronRight, Clock, Tag, Heart, Star, MapPin, Timer } from "lucide-react";
+import { ChevronLeft, ChevronRight, Clock, Tag, Heart, Star, MapPin, Timer, ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const sliderImages = [
@@ -56,14 +56,14 @@ const categories = [
   },
 ];
 
-// Top Brands Data
+// Top Brands Data - Updated with correct URLs
 const topBrands = [
   {
     id: 1,
     name: "Sultan's Dine",
     logo: "https://i.postimg.cc/kXBXmy7x/sd.jpg",
     description: "Authentic Bengali cuisine",
-    url: "/brand/sultans-dine"
+    url: "/restaurant/sultans-dine" // Changed to restaurant menu page
   },
   {
     id: 2,
@@ -197,7 +197,7 @@ const allRestaurants = [
     tags: ["Biryani", "Kacchi", "Traditional"],
     featured: true,
     discount: "20% OFF",
-    url: "/restaurant/sultans-dine"
+    url: "/restaurant/sultans-dine" // Updated to restaurant menu page
   },
   {
     id: 2,
@@ -365,7 +365,6 @@ const Home = () => {
   const sliderRef = useRef(null);
   const marqueeContainerRef = useRef(null);
   const shopsMarqueeRef = useRef(null);
-  const restaurantsContainerRef = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
@@ -436,22 +435,57 @@ const Home = () => {
     });
   };
 
+  // Add to Cart ফাংশন
+  const addToCart = (restaurant) => {
+    const cartItem = {
+      id: Date.now(), // Unique ID
+      name: restaurant.name,
+      price: restaurant.priceRange === '$$$' ? 25.99 : 
+             restaurant.priceRange === '$$' ? 15.99 : 9.99,
+      image: restaurant.image,
+      category: restaurant.cuisine,
+      quantity: 1,
+      maxQuantity: 10,
+      restaurantId: restaurant.id,
+      deliveryTime: restaurant.deliveryTime,
+      location: restaurant.location,
+      priceRange: restaurant.priceRange
+    };
+    
+    setCartItems(prev => {
+      const existingItemIndex = prev.findIndex(item => 
+        item.restaurantId === restaurant.id && item.name === restaurant.name
+      );
+      
+      if (existingItemIndex !== -1) {
+        const updatedItems = [...prev];
+        updatedItems[existingItemIndex] = {
+          ...updatedItems[existingItemIndex],
+          quantity: Math.min(
+            updatedItems[existingItemIndex].quantity + 1,
+            updatedItems[existingItemIndex].maxQuantity
+          )
+        };
+        return updatedItems;
+      } else {
+        return [...prev, cartItem];
+      }
+    });
+    
+    alert(`${restaurant.name} added to cart!`);
+  };
+
   // স্ক্রল করে আরো রেস্তোরাঁ লোড করার ফাংশন
   const handleScrollLoad = () => {
     if (loadingMore || visibleRestaurants >= allRestaurants.length) return;
     
-    const container = restaurantsContainerRef.current;
-    if (!container) return;
+    const scrollTop = window.scrollY;
+    const scrollHeight = document.documentElement.scrollHeight;
+    const clientHeight = window.innerHeight;
     
-    const scrollTop = container.scrollTop;
-    const scrollHeight = container.scrollHeight;
-    const clientHeight = container.clientHeight;
-    
-    // নিচে স্ক্রল করলে (৮০% নিচে এলে) নতুন রেস্তোরাঁ লোড হবে
     if (scrollTop + clientHeight >= scrollHeight * 0.8) {
       setLoadingMore(true);
       
-      // ৫০০ms ডিলে দিয়ে নতুন রেস্তোরাঁ লোড হবে
       setTimeout(() => {
         setVisibleRestaurants(prev => {
           const newCount = prev + 4;
@@ -602,15 +636,16 @@ const Home = () => {
     };
   }, []);
 
-  // স্ক্রল ইভেন্ট লিসেনার - All Restaurants সেকশনে
+  // স্ক্রল ইভেন্ট লিসেনার - window scroll
   useEffect(() => {
-    const container = restaurantsContainerRef.current;
-    if (!container) return;
+    const handleScroll = () => {
+      handleScrollLoad();
+    };
 
-    container.addEventListener('scroll', handleScrollLoad);
+    window.addEventListener('scroll', handleScroll);
     
     return () => {
-      container.removeEventListener('scroll', handleScrollLoad);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, [visibleRestaurants, loadingMore]);
 
@@ -845,31 +880,6 @@ const Home = () => {
           background-color: #f9fafb;
           border-radius: 0.5rem;
           border: 1px dashed #d1d5db;
-        }
-        
-        /* রেস্তোরাঁ কন্টেইনার */
-        .restaurants-container {
-          overflow-y: auto;
-          max-height: calc(100vh - 200px);
-          padding-right: 0.5rem;
-        }
-        
-        .restaurants-container::-webkit-scrollbar {
-          width: 6px;
-        }
-        
-        .restaurants-container::-webkit-scrollbar-track {
-          background: #f1f1f1;
-          border-radius: 10px;
-        }
-        
-        .restaurants-container::-webkit-scrollbar-thumb {
-          background: #c1c1c1;
-          border-radius: 10px;
-        }
-        
-        .restaurants-container::-webkit-scrollbar-thumb:hover {
-          background: #a8a8a8;
         }
       `}</style>
 
@@ -1227,11 +1237,8 @@ const Home = () => {
                 </button>
               </div>
 
-              {/* রেস্তোরাঁ গ্রিড - স্ক্রলেবল কন্টেইনার */}
-              <div 
-                ref={restaurantsContainerRef}
-                className="restaurants-container"
-              >
+              {/* রেস্তোরাঁ গ্রিড - সাধারণ কন্টেইনার */}
+              <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
                   {allRestaurants.slice(0, visibleRestaurants).map((restaurant) => (
                     <div
@@ -1300,6 +1307,20 @@ const Home = () => {
                             <span className="font-medium">{restaurant.deliveryTime}</span>
                           </div>
                         </div>
+
+                        {/* Add to Cart Button */}
+                        <div className="mt-4 pt-4 border-t border-gray-100">
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              addToCart(restaurant);
+                            }}
+                            className="w-full bg-gradient-to-r from-pink-600 to-pink-700 hover:from-pink-700 hover:to-pink-800 text-white font-semibold py-3 rounded-xl transition-all duration-300 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
+                          >
+                            <ShoppingCart className="w-5 h-5" />
+                            Add to Cart
+                          </button>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -1319,8 +1340,6 @@ const Home = () => {
                     ⬆️ Scroll down to load more restaurants automatically
                   </div>
                 )}
-                
-                {/* সর্বশেষ রেস্তোরাঁ দেখানো হলে - এই মেসেজটি রিমুভ করা হয়েছে */}
               </div>
             </div>
           </div>

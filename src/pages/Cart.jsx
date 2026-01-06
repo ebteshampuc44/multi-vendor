@@ -1,426 +1,311 @@
+// Cart.jsx - Mobile Responsive
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { 
-  ShoppingCart, Trash2, Plus, Minus, Heart, 
-  ArrowRight, Tag, Shield, Truck, RefreshCw, X, AlertCircle
-} from "lucide-react";
+import { ShoppingCart, Trash2, Plus, Minus, ArrowLeft, Tag, Clock, MapPin, Heart } from "lucide-react";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [couponCode, setCouponCode] = useState("");
-  const [discount, setDiscount] = useState(0);
-  const [shippingCost, setShippingCost] = useState(5.99);
-  const [message, setMessage] = useState("");
+  const [subtotal, setSubtotal] = useState(0);
+  const [tax, setTax] = useState(0);
+  const [total, setTotal] = useState(0);
   const navigate = useNavigate();
 
-  // লোকাল স্টোরেজ থেকে ডেটা লোড করার ফাংশন
-  const loadCartData = () => {
-    try {
-      const savedCart = localStorage.getItem("shopickCart");
-      console.log("Loading cart from localStorage:", savedCart);
-      
-      if (savedCart) {
-        const parsedData = JSON.parse(savedCart);
-        setCartItems(Array.isArray(parsedData) ? parsedData : []);
-      } else {
-        setCartItems([]);
-      }
-    } catch (error) {
-      console.error("Error loading cart:", error);
-      setCartItems([]);
+  useEffect(() => {
+    loadCart();
+  }, []);
+
+  const loadCart = () => {
+    setLoading(true);
+    const savedCart = localStorage.getItem("shopickCart");
+    if (savedCart) {
+      const items = JSON.parse(savedCart);
+      setCartItems(items);
+      calculateTotals(items);
     }
     setLoading(false);
   };
 
-  // লোকাল স্টোরেজে সেভ
-  const saveCartData = (items) => {
-    try {
-      localStorage.setItem("shopickCart", JSON.stringify(items));
-      console.log("Saved cart to localStorage:", items);
-    } catch (error) {
-      console.error("Error saving cart:", error);
-    }
+  const calculateTotals = (items) => {
+    const sub = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    setSubtotal(sub);
+    
+    const taxAmount = sub * 0.05; // 5% tax
+    setTax(taxAmount);
+    
+    setTotal(sub + taxAmount);
   };
 
-  // লোকাল স্টোরেজ থেকে ডেটা লোড
-  useEffect(() => {
-    loadCartData();
-
-    // লোকাল স্টোরেজ পরিবর্তনের জন্য ইভেন্ট লিসেনার
-    const handleStorageChange = (e) => {
-      if (e.key === "shopickCart") {
-        console.log("Cart storage changed, reloading...");
-        loadCartData();
-      }
-    };
-
-    // কাস্টম ইভেন্টের জন্য লিসেনার
-    const handleCustomEvent = () => {
-      console.log("Custom cart event received");
-      loadCartData();
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    window.addEventListener('cartUpdated', handleCustomEvent);
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('cartUpdated', handleCustomEvent);
-    };
-  }, []);
-
-  // লোকাল স্টোরেজে সেভ যখন cartItems পরিবর্তন হয়
-  useEffect(() => {
-    if (!loading) {
-      saveCartData(cartItems);
-      // ইভেন্ট ডিসপ্যাচ করুন অন্য কম্পোনেন্টগুলো আপডেট করার জন্য
-      window.dispatchEvent(new Event('cartUpdated'));
-      window.dispatchEvent(new Event('storage'));
-    }
-  }, [cartItems, loading]);
-
-  // কোয়ান্টিটি ইনক্রিমেন্ট
-  const incrementQuantity = (id) => {
-    setCartItems(prev => prev.map(item => {
-      if (item.id === id && item.quantity < (item.maxQuantity || 10)) {
-        return { ...item, quantity: item.quantity + 1 };
+  const updateQuantity = (id, newQuantity) => {
+    if (newQuantity < 1) return;
+    
+    const updatedItems = cartItems.map(item => {
+      if (item.id === id) {
+        const quantity = Math.min(newQuantity, item.maxQuantity || 10);
+        return { ...item, quantity };
       }
       return item;
-    }));
-    showMessage("Quantity updated", "success");
-  };
-
-  // কোয়ান্টিটি ডিক্রিমেন্ট
-  const decrementQuantity = (id) => {
-    setCartItems(prev => prev.map(item => {
-      if (item.id === id && item.quantity > 1) {
-        return { ...item, quantity: item.quantity - 1 };
-      }
-      return item;
-    }));
-    showMessage("Quantity updated", "success");
-  };
-
-  // আইটেম রিমুভ
-  const removeItem = (id) => {
-    const item = cartItems.find(item => item.id === id);
-    setCartItems(prev => prev.filter(item => item.id !== id));
-    showMessage(`"${item?.name || 'Item'}" removed from cart`, "success");
-  };
-
-  // আইটেম উইশলিস্টে যোগ
-  const moveToWishlist = (item) => {
-    try {
-      const wishlist = JSON.parse(localStorage.getItem("shopickWishlist")) || [];
-      const existingItem = wishlist.find(wishlistItem => wishlistItem.id === item.id);
-      
-      if (!existingItem) {
-        const wishlistItem = {
-          ...item,
-          addedDate: new Date().toISOString().split('T')[0],
-          inStock: true
-        };
-        // কোয়ান্টিটি ফিল্ড রিমুভ করুন
-        delete wishlistItem.quantity;
-        delete wishlistItem.maxQuantity;
-        
-        wishlist.push(wishlistItem);
-        localStorage.setItem("shopickWishlist", JSON.stringify(wishlist));
-        removeItem(item.id);
-        showMessage(`"${item.name}" moved to wishlist!`, "success");
-        
-        // Wishlist আপডেট ইভেন্ট ট্রিগার
-        window.dispatchEvent(new Event('wishlistUpdated'));
-        window.dispatchEvent(new Event('storage'));
-      } else {
-        showMessage(`"${item.name}" is already in wishlist!`, "info");
-      }
-    } catch (error) {
-      console.error("Error moving to wishlist:", error);
-      showMessage("Failed to move item to wishlist", "error");
-    }
-  };
-
-  // সিঙ্গেল আইটেম প্রাইস
-  const getItemTotal = (item) => {
-    return (item.price || 0) * (item.quantity || 1);
-  };
-
-  // সাবটোটাল
-  const subtotal = cartItems.reduce((sum, item) => sum + getItemTotal(item), 0);
-
-  // টোটাল
-  const total = subtotal + shippingCost - discount;
-
-  // কুপন প্রয়োগ
-  const applyCoupon = () => {
-    if (!couponCode.trim()) {
-      showMessage("Please enter a coupon code", "warning");
-      return;
-    }
+    });
     
-    if (couponCode.toUpperCase() === "SHOPICK10") {
-      const discountAmount = subtotal * 0.1;
-      setDiscount(discountAmount);
-      showMessage(`Coupon applied! $${discountAmount.toFixed(2)} discount added.`, "success");
-    } else if (couponCode.toUpperCase() === "WELCOME20") {
-      const discountAmount = subtotal * 0.2;
-      setDiscount(discountAmount);
-      showMessage(`Coupon applied! $${discountAmount.toFixed(2)} discount added.`, "success");
-    } else {
-      showMessage("Invalid coupon code! Try SHOPICK10 or WELCOME20", "error");
-    }
-  };
-
-  // সবকিছু ডিলিট
-  const clearCart = () => {
-    if (cartItems.length === 0) {
-      showMessage("Cart is already empty", "info");
-      return;
-    }
-    
-    setCartItems([]);
-    localStorage.removeItem("shopickCart");
-    setDiscount(0);
-    setCouponCode("");
-    showMessage("Cart cleared successfully", "success");
-    
-    // ইভেন্ট ডিসপ্যাচ
+    setCartItems(updatedItems);
+    localStorage.setItem("shopickCart", JSON.stringify(updatedItems));
     window.dispatchEvent(new Event('cartUpdated'));
-    window.dispatchEvent(new Event('storage'));
+    calculateTotals(updatedItems);
   };
 
-  // মেসেজ শো করার ফাংশন
-  const showMessage = (messageText, type) => {
-    setMessage(messageText);
-    setTimeout(() => setMessage(""), 3000);
+  const removeFromCart = (id) => {
+    const updatedItems = cartItems.filter(item => item.id !== id);
+    setCartItems(updatedItems);
+    localStorage.setItem("shopickCart", JSON.stringify(updatedItems));
+    window.dispatchEvent(new Event('cartUpdated'));
+    calculateTotals(updatedItems);
   };
 
-  // রিফ্রেশ বাটন
-  const refreshCart = () => {
-    loadCartData();
-    showMessage("Cart refreshed", "info");
+  const moveToWishlist = (item) => {
+    const wishlist = JSON.parse(localStorage.getItem("shopickWishlist")) || [];
+    
+    const existingItem = wishlist.find(wishlistItem => wishlistItem.id === item.id);
+    if (!existingItem) {
+      const wishlistItem = {
+        ...item,
+        addedToWishlist: new Date().toISOString()
+      };
+      wishlist.push(wishlistItem);
+      localStorage.setItem("shopickWishlist", JSON.stringify(wishlist));
+      window.dispatchEvent(new Event('wishlistUpdated'));
+    }
+    
+    removeFromCart(item.id);
+    alert(`${item.name} moved to wishlist!`);
+  };
+
+  const clearCart = () => {
+    if (cartItems.length === 0) return;
+    
+    if (window.confirm("Are you sure you want to clear your cart?")) {
+      localStorage.setItem("shopickCart", JSON.stringify([]));
+      window.dispatchEvent(new Event('cartUpdated'));
+      setCartItems([]);
+      calculateTotals([]);
+      alert("Cart cleared!");
+    }
+  };
+
+  const proceedToCheckout = () => {
+    if (cartItems.length === 0) {
+      alert("Your cart is empty!");
+      return;
+    }
+    
+    alert("Proceeding to checkout!");
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-pink-600"></div>
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-green-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading your cart...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-8">
-      <div className="container mx-auto px-4">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      <style jsx global>{`
+        .fade-in {
+          animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(10px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+      `}</style>
+
+      <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8">
+        {/* Header - Mobile Optimized */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 sm:mb-8 gap-4">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => navigate(-1)}
+              className="p-2 rounded-full bg-white shadow-sm hover:shadow-md transition-shadow"
+            >
+              <ArrowLeft size={20} className="text-gray-600" />
+            </button>
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-                <ShoppingCart className="text-pink-600" size={28} />
-                Shopping Cart
-              </h1>
-              <p className="text-gray-600 mt-2">
-                {cartItems.length} {cartItems.length === 1 ? "item" : "items"} in your cart
-              </p>
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Shopping Cart</h1>
+              <p className="text-sm sm:text-base text-gray-600 mt-1">Review your items and checkout</p>
             </div>
-            <div className="flex items-center gap-4">
+          </div>
+          
+          <div className="flex items-center justify-between sm:justify-end gap-3">
+            <span className="text-sm text-gray-500">
+              {cartItems.length} {cartItems.length === 1 ? 'item' : 'items'}
+            </span>
+            {cartItems.length > 0 && (
               <button
-                onClick={refreshCart}
-                className="text-gray-600 hover:text-blue-600 font-medium flex items-center gap-2"
-                title="Refresh cart"
+                onClick={clearCart}
+                className="px-3 sm:px-4 py-2 bg-gradient-to-r from-gray-200 to-gray-300 text-gray-700 rounded-lg hover:from-gray-300 hover:to-gray-400 transition-all flex items-center gap-2 text-sm sm:text-base"
               >
-                ↻ Refresh
+                <Trash2 className="w-4 h-4" />
+                <span className="hidden sm:inline">Clear Cart</span>
+                <span className="sm:hidden">Clear</span>
               </button>
-              <Link
-                to="/"
-                className="text-pink-600 hover:text-pink-700 font-medium flex items-center gap-2"
-              >
-                Continue Shopping
-                <ArrowRight size={18} />
-              </Link>
-            </div>
+            )}
           </div>
         </div>
 
-        {/* Message */}
-        {message && (
-          <div className={`mb-6 p-4 rounded-xl flex items-center gap-3 ${
-            message.includes("success") || message.includes("applied") 
-              ? "bg-green-50 border border-green-200 text-green-700"
-              : message.includes("error") || message.includes("Invalid")
-              ? "bg-red-50 border border-red-200 text-red-700"
-              : "bg-blue-50 border border-blue-200 text-blue-700"
-          }`}>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-              message.includes("success") || message.includes("applied") 
-                ? "bg-green-100"
-                : message.includes("error") || message.includes("Invalid")
-                ? "bg-red-100"
-                : "bg-blue-100"
-            }`}>
-              {message.includes("success") || message.includes("applied") ? (
-                <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-              ) : (
-                <AlertCircle className="w-5 h-5" />
-              )}
-            </div>
-            <span className="font-medium">{message}</span>
-          </div>
-        )}
-
-        {/* Empty State */}
-        {cartItems.length === 0 ? (
-          <div className="text-center py-16 bg-white rounded-2xl shadow-sm border border-gray-200">
-            <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-gray-100 flex items-center justify-center">
-              <ShoppingCart className="w-12 h-12 text-gray-400" />
-            </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-3">Your cart is empty</h3>
-            <p className="text-gray-600 mb-8 max-w-md mx-auto">
-              Looks like you haven't added any items to your cart yet. Start shopping to fill it up!
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                to="/"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-pink-600 to-pink-700 text-white font-semibold px-8 py-3.5 rounded-full hover:shadow-lg transition-all duration-300"
-              >
-                Start Shopping
-                <ArrowRight size={20} />
-              </Link>
-              <Link
-                to="/wishlist"
-                className="inline-flex items-center gap-2 border border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold px-8 py-3.5 rounded-full transition-all duration-300"
-              >
-                <Heart size={20} />
-                View Wishlist
-              </Link>
-            </div>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Left Column - Cart Items */}
-            <div className="lg:col-span-2">
-              {/* Actions Bar */}
-              <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 mb-6">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <div className="text-gray-700 font-medium">
-                    Total: <span className="text-pink-600">${total.toFixed(2)}</span>
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 sm:gap-8">
+          {/* Main Content */}
+          <div className="lg:col-span-3">
+            {/* Cart Items */}
+            <div className="fade-in">
+              {cartItems.length === 0 ? (
+                <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-12 text-center">
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-4 sm:mb-6 rounded-full bg-gradient-to-br from-blue-50 to-cyan-50 flex items-center justify-center">
+                    <ShoppingCart className="w-10 h-10 sm:w-12 sm:h-12 text-blue-400" strokeWidth={1.5} />
                   </div>
-                  <div className="flex items-center gap-3">
+                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 sm:mb-3">Your cart is empty</h3>
+                  <p className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8 max-w-md mx-auto px-4">
+                    Looks like you haven't added any items to your cart yet.
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
                     <button
-                      onClick={refreshCart}
-                      className="text-gray-600 hover:text-blue-600 font-medium flex items-center gap-2 px-4 py-2 hover:bg-blue-50 rounded-lg transition-colors"
+                      onClick={() => navigate('/')}
+                      className="px-5 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-pink-600 to-pink-700 text-white rounded-xl hover:from-pink-700 hover:to-pink-800 transition-all font-medium text-sm sm:text-base"
                     >
-                      ↻ Refresh Cart
+                      Continue Shopping
                     </button>
                     <button
-                      onClick={clearCart}
-                      className="text-red-600 hover:text-red-700 font-medium flex items-center gap-2 px-4 py-2 hover:bg-red-50 rounded-lg transition-colors"
+                      onClick={() => navigate('/wishlist')}
+                      className="px-5 sm:px-6 py-2.5 sm:py-3 bg-white border-2 border-pink-600 text-pink-600 rounded-xl hover:bg-pink-50 transition-all font-medium text-sm sm:text-base"
                     >
-                      <Trash2 size={18} />
-                      Clear Cart
+                      View Wishlist
                     </button>
                   </div>
                 </div>
-              </div>
+              ) : (
+                <div className="space-y-3 sm:space-y-4">
+                  {cartItems.map((item, index) => (
+                    <div
+                      key={item.id}
+                      className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 overflow-hidden group hover:shadow-xl transition-all duration-300 fade-in"
+                      style={{ animationDelay: `${index * 0.1}s` }}
+                    >
+                      <div className="p-4 sm:p-6">
+                        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                          {/* Product Image - Mobile Optimized */}
+                          <div className="relative flex-shrink-0">
+                            <div className="w-full h-48 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-xl overflow-hidden">
+                              <img
+                                src={item.image}
+                                alt={item.name}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                              />
+                            </div>
+                            
+                            {/* Quantity Badge - Mobile Optimized */}
+                            <div className="absolute top-2 left-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-bold">
+                              x{item.quantity}
+                            </div>
+                          </div>
 
-              {/* Cart Items */}
-              <div className="space-y-6">
-                {cartItems.map((item) => (
-                  <div
-                    key={item.id}
-                    className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden"
-                  >
-                    <div className="p-6">
-                      <div className="flex flex-col md:flex-row gap-6">
-                        {/* Image */}
-                        <div 
-                          className="w-full md:w-32 h-32 flex-shrink-0 rounded-xl overflow-hidden cursor-pointer"
-                          onClick={() => navigate(`/product/${item.id}`)}
-                        >
-                          <img
-                            src={item.image}
-                            alt={item.name}
-                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                          />
-                        </div>
-
-                        {/* Details */}
-                        <div className="flex-1">
-                          <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
-                            <div className="flex-1">
-                              <h3 
-                                className="font-bold text-gray-900 text-xl mb-1 hover:text-pink-600 cursor-pointer"
-                                onClick={() => navigate(`/product/${item.id}`)}
-                              >
-                                {item.name}
-                              </h3>
-                              <p className="text-gray-500 mb-3">{item.category}</p>
-                              
-                              <div className="flex items-center gap-4 mb-4">
-                                <div className="flex items-center border border-gray-300 rounded-lg overflow-hidden">
-                                  <button
-                                    onClick={() => decrementQuantity(item.id)}
-                                    disabled={item.quantity <= 1}
-                                    className={`px-4 py-2 ${
-                                      item.quantity <= 1
-                                        ? "text-gray-300 cursor-not-allowed"
-                                        : "text-gray-700 hover:bg-gray-100"
-                                    }`}
-                                  >
-                                    <Minus size={18} />
-                                  </button>
-                                  <span className="px-4 py-2 font-medium min-w-[40px] text-center">
-                                    {item.quantity}
-                                  </span>
-                                  <button
-                                    onClick={() => incrementQuantity(item.id)}
-                                    disabled={item.quantity >= (item.maxQuantity || 10)}
-                                    className={`px-4 py-2 ${
-                                      item.quantity >= (item.maxQuantity || 10)
-                                        ? "text-gray-300 cursor-not-allowed"
-                                        : "text-gray-700 hover:bg-gray-100"
-                                    }`}
-                                  >
-                                    <Plus size={18} />
-                                  </button>
+                          {/* Product Info - Mobile Optimized */}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-3 gap-2 sm:gap-0">
+                              <div className="flex-1">
+                                <h3 className="font-bold text-base sm:text-lg text-gray-900 mb-1 line-clamp-1">{item.name}</h3>
+                                <p className="text-gray-600 text-xs sm:text-sm mb-2 line-clamp-1">{item.category || item.cuisine}</p>
+                                
+                                {/* Details - Mobile Optimized */}
+                                <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-4 text-xs sm:text-sm text-gray-500 mb-3">
+                                  {item.restaurant && (
+                                    <span className="flex items-center gap-1">
+                                      <span className="hidden sm:inline">🏪</span>
+                                      <span className="truncate">{item.restaurant}</span>
+                                    </span>
+                                  )}
+                                  {item.location && (
+                                    <span className="flex items-center gap-1">
+                                      <MapPin className="w-3 h-3 sm:w-4 sm:h-4" />
+                                      <span className="truncate">{item.location}</span>
+                                    </span>
+                                  )}
+                                  {item.deliveryTime && (
+                                    <span className="flex items-center gap-1">
+                                      <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
+                                      <span>{item.deliveryTime}</span>
+                                    </span>
+                                  )}
                                 </div>
-
-                                <span className="px-3 py-1 bg-green-50 text-green-700 rounded-full text-sm font-medium">
-                                  In Stock
-                                </span>
+                              </div>
+                              <div className="text-left sm:text-right">
+                                <div className="text-xl sm:text-2xl font-bold text-gray-900">
+                                  ${(item.price * item.quantity).toFixed(2)}
+                                </div>
+                                <div className="text-xs sm:text-sm text-gray-500">
+                                  ${item.price.toFixed(2)} each
+                                </div>
                               </div>
                             </div>
 
-                            {/* Price & Actions */}
-                            <div className="flex flex-col items-end gap-4">
-                              <div className="text-right">
-                                <div className="font-bold text-2xl text-gray-900">
-                                  ${getItemTotal(item).toFixed(2)}
+                            {/* Actions - Mobile Optimized */}
+                            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                              <div className="flex items-center justify-between sm:justify-start gap-3">
+                                {/* Quantity Control */}
+                                <div className="flex items-center gap-2">
+                                  <button
+                                    onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                    className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
+                                  >
+                                    <Minus className="w-3 h-3 sm:w-4 sm:h-4 text-gray-700" />
+                                  </button>
+                                  
+                                  <span className="w-10 sm:w-12 text-center font-medium text-base sm:text-lg text-gray-900">
+                                    {item.quantity}
+                                  </span>
+                                  
+                                  <button
+                                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                    className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
+                                  >
+                                    <Plus className="w-3 h-3 sm:w-4 sm:h-4 text-gray-700" />
+                                  </button>
                                 </div>
-                                <div className="text-gray-500 text-sm">
-                                  ${(item.price || 0).toFixed(2)} × {item.quantity}
-                                </div>
+                                
+                                {/* Max Quantity Warning */}
+                                {item.quantity >= (item.maxQuantity || 10) && (
+                                  <span className="text-xs text-amber-600 font-medium hidden sm:inline">
+                                    Max quantity reached
+                                  </span>
+                                )}
                               </div>
-
-                              <div className="flex items-center gap-3">
+                              
+                              <div className="flex flex-wrap gap-2 sm:gap-3">
                                 <button
                                   onClick={() => moveToWishlist(item)}
-                                  className="text-gray-600 hover:text-pink-600 p-2 hover:bg-pink-50 rounded-lg transition-colors"
-                                  title="Move to Wishlist"
+                                  className="flex-1 sm:flex-none px-3 sm:px-4 py-2 bg-gradient-to-r from-pink-50 to-pink-100 text-pink-700 rounded-xl hover:from-pink-100 hover:to-pink-200 transition-all flex items-center justify-center gap-2 font-medium text-sm"
                                 >
-                                  <Heart size={20} />
+                                  <Heart className="w-4 h-4" />
+                                  <span className="hidden sm:inline">Save for Later</span>
+                                  <span className="sm:hidden">Save</span>
                                 </button>
+                                
                                 <button
-                                  onClick={() => removeItem(item.id)}
-                                  className="text-gray-600 hover:text-red-600 p-2 hover:bg-red-50 rounded-lg transition-colors"
-                                  title="Remove Item"
+                                  onClick={() => removeFromCart(item.id)}
+                                  className="flex-1 sm:flex-none px-3 sm:px-4 py-2 bg-gradient-to-r from-gray-200 to-gray-300 text-gray-700 rounded-xl hover:from-gray-300 hover:to-gray-400 transition-all flex items-center justify-center gap-2 font-medium text-sm"
                                 >
-                                  <Trash2 size={20} />
+                                  <Trash2 className="w-4 h-4" />
+                                  <span className="hidden sm:inline">Remove</span>
+                                  <span className="sm:hidden">Remove</span>
                                 </button>
                               </div>
                             </div>
@@ -428,155 +313,121 @@ const Cart = () => {
                         </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Trust Badges */}
-              <div className="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="bg-white p-4 rounded-xl border border-gray-200 text-center">
-                  <Shield className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                  <div className="font-medium text-gray-900">Secure Payment</div>
+                  ))}
                 </div>
-                <div className="bg-white p-4 rounded-xl border border-gray-200 text-center">
-                  <Truck className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                  <div className="font-medium text-gray-900">Free Shipping</div>
-                </div>
-                <div className="bg-white p-4 rounded-xl border border-gray-200 text-center">
-                  <RefreshCw className="w-8 h-8 text-orange-600 mx-auto mb-2" />
-                  <div className="font-medium text-gray-900">Easy Returns</div>
-                </div>
-                <div className="bg-white p-4 rounded-xl border border-gray-200 text-center">
-                  <Tag className="w-8 h-8 text-pink-600 mx-auto mb-2" />
-                  <div className="font-medium text-gray-900">Best Price</div>
-                </div>
-              </div>
+              )}
             </div>
 
-            {/* Right Column - Order Summary */}
-            <div className="lg:col-span-1">
-              <div className="sticky top-8">
-                <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-                  {/* Header */}
-                  <div className="bg-gradient-to-r from-gray-900 to-gray-800 px-6 py-5">
-                    <h2 className="font-bold text-xl text-white flex items-center gap-3">
-                      <ShoppingCart size={24} />
-                      Order Summary
-                    </h2>
+            {/* Promo Code Section - Mobile Optimized */}
+            {cartItems.length > 0 && (
+              <div className="mt-6 sm:mt-8 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-xl sm:rounded-2xl border border-blue-100 p-4 sm:p-6 fade-in">
+                <h3 className="font-bold text-gray-900 mb-3 sm:mb-4 text-lg">Have a promo code?</h3>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <input
+                    type="text"
+                    placeholder="Enter promo code"
+                    className="flex-1 px-4 py-3 bg-white border-2 border-blue-200 rounded-xl focus:border-blue-400 focus:outline-none text-sm sm:text-base"
+                  />
+                  <button className="px-5 sm:px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all font-medium text-sm sm:text-base">
+                    Apply
+                  </button>
+                </div>
+                <div className="mt-4 flex flex-wrap gap-2">
+                  <span className="px-3 py-1 bg-white text-blue-700 text-xs sm:text-sm rounded-full border border-blue-200">
+                    SAVE10
+                  </span>
+                  <span className="px-3 py-1 bg-white text-blue-700 text-xs sm:text-sm rounded-full border border-blue-200">
+                    WELCOME20
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Order Summary Sidebar - Mobile Optimized */}
+          <div className="lg:col-span-1">
+            <div className="sticky top-20 sm:top-6 space-y-4 sm:space-y-6">
+              {/* Order Summary Card - Mobile Optimized */}
+              <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-gray-200 p-4 sm:p-6 fade-in">
+                <h3 className="font-bold text-gray-900 mb-4 sm:mb-6 text-lg">Order Summary</h3>
+                
+                <div className="space-y-3 sm:space-y-4 mb-4 sm:mb-6">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm sm:text-base text-gray-600">Subtotal</span>
+                    <span className="font-medium text-gray-900 text-sm sm:text-base">${subtotal.toFixed(2)}</span>
                   </div>
-
-                  {/* Content */}
-                  <div className="p-6">
-                    {/* Price Breakdown */}
-                    <div className="space-y-4 mb-6">
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Subtotal</span>
-                        <span className="font-medium">${subtotal.toFixed(2)}</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Shipping</span>
-                        <span className="font-medium">${shippingCost.toFixed(2)}</span>
-                      </div>
-                      {discount > 0 && (
-                        <div className="flex justify-between">
-                          <span className="text-gray-600">Discount</span>
-                          <span className="font-medium text-green-600">-${discount.toFixed(2)}</span>
-                        </div>
-                      )}
-                      <div className="border-t pt-4">
-                        <div className="flex justify-between">
-                          <span className="font-bold text-lg">Total</span>
-                          <span className="font-bold text-2xl text-pink-600">
-                            ${total.toFixed(2)}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Coupon */}
-                    <div className="mb-6">
-                      <div className="flex items-center gap-2 mb-3">
-                        <Tag className="text-gray-500" size={18} />
-                        <span className="font-medium text-gray-700">Have a coupon?</span>
-                      </div>
-                      <div className="flex gap-2">
-                        <input
-                          type="text"
-                          value={couponCode}
-                          onChange={(e) => setCouponCode(e.target.value)}
-                          placeholder="Enter coupon code"
-                          className="flex-1 border border-gray-300 rounded-lg px-4 py-3 focus:outline-none focus:ring-2 focus:ring-pink-500"
-                        />
-                        <button
-                          onClick={applyCoupon}
-                          className="bg-gray-900 hover:bg-black text-white px-6 py-3 rounded-lg font-medium transition-colors"
-                        >
-                          Apply
-                        </button>
-                      </div>
-                      <div className="mt-3 text-sm text-gray-500">
-                        Try: <span className="font-medium">SHOPICK10</span> (10% off) or <span className="font-medium">WELCOME20</span> (20% off)
-                      </div>
-                    </div>
-
-                    {/* Checkout Button */}
-                    <button 
-                      onClick={() => {
-                        showMessage("Proceeding to checkout...", "success");
-                        // এখানে চেকআউট লজিক যোগ করুন
-                      }}
-                      className="w-full bg-gradient-to-r from-pink-600 to-pink-700 hover:from-pink-700 hover:to-pink-800 text-white font-bold py-4 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 mb-4"
-                    >
-                      Proceed to Checkout
-                    </button>
-
-                    <Link
-                      to="/wishlist"
-                      className="w-full border border-gray-300 text-gray-700 hover:bg-gray-50 font-medium py-3.5 rounded-xl transition-colors flex items-center justify-center gap-2"
-                    >
-                      <Heart size={18} />
-                      View Wishlist
-                    </Link>
-
-                    {/* Payment Methods */}
-                    <div className="mt-8 pt-6 border-t border-gray-200">
-                      <h4 className="font-medium text-gray-700 mb-3">We Accept</h4>
-                      <div className="flex gap-3">
-                        <div className="w-12 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                          <span className="text-xs font-bold text-blue-800">VISA</span>
-                        </div>
-                        <div className="w-12 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
-                          <span className="text-xs font-bold text-blue-600">MC</span>
-                        </div>
-                        <div className="w-12 h-8 bg-yellow-100 rounded-lg flex items-center justify-center">
-                          <span className="text-xs font-bold text-yellow-800">PP</span>
-                        </div>
-                        <div className="w-12 h-8 bg-gray-100 rounded-lg flex items-center justify-center">
-                          <span className="text-xs font-bold text-gray-800">COD</span>
-                        </div>
-                      </div>
+                  
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm sm:text-base text-gray-600">Tax (5%)</span>
+                    <span className="font-medium text-gray-900 text-sm sm:text-base">${tax.toFixed(2)}</span>
+                  </div>
+                  
+                  <div className="border-t border-gray-200 pt-3 sm:pt-4">
+                    <div className="flex justify-between items-center">
+                      <span className="text-base sm:text-lg font-bold text-gray-900">Total</span>
+                      <span className="text-xl sm:text-2xl font-bold text-gray-900">${total.toFixed(2)}</span>
                     </div>
                   </div>
                 </div>
-
-                {/* Continue Shopping */}
-                <div className="mt-6 p-4 bg-gradient-to-r from-blue-50 to-cyan-50 rounded-2xl border border-blue-100">
-                  <h4 className="font-bold text-gray-900 mb-2">Need more items?</h4>
-                  <p className="text-gray-600 text-sm mb-4">
-                    Continue shopping to discover more amazing products.
-                  </p>
-                  <Link
-                    to="/"
-                    className="text-blue-600 hover:text-blue-700 font-medium flex items-center gap-2"
-                  >
-                    Browse Products
-                    <ArrowRight size={16} />
+                
+                {/* Checkout Button - Mobile Optimized */}
+                <button
+                  onClick={proceedToCheckout}
+                  disabled={cartItems.length === 0}
+                  className={`w-full py-3 sm:py-4 rounded-xl font-bold text-base sm:text-lg transition-all mb-3 sm:mb-4 ${
+                    cartItems.length === 0
+                      ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                      : 'bg-gradient-to-r from-green-600 to-emerald-600 text-white hover:from-green-700 hover:to-emerald-700 hover:shadow-xl'
+                  }`}
+                >
+                  {cartItems.length === 0 ? 'Cart is Empty' : 'Proceed to Checkout'}
+                </button>
+                
+                <div className="text-center">
+                  <Link to="/" className="text-xs sm:text-sm text-blue-600 hover:text-blue-700 font-medium">
+                    Continue Shopping
                   </Link>
+                </div>
+              </div>
+
+              {/* Security & Support - Mobile Hidden on Small Screens */}
+              <div className="hidden sm:block bg-white rounded-2xl shadow-sm border border-gray-200 p-6 fade-in">
+                <h4 className="font-bold text-gray-900 mb-4">Secure Checkout</h4>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3 text-sm text-gray-600">
+                    <div className="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center">
+                      <span className="text-green-600">🔒</span>
+                    </div>
+                    <span>SSL Secure Payment</span>
+                  </div>
+                  
+                  <div className="flex items-center gap-3 text-sm text-gray-600">
+                    <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
+                      <span className="text-blue-600">🔄</span>
+                    </div>
+                    <span>Easy Returns</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Payment Methods - Mobile Hidden on Small Screens */}
+              <div className="hidden sm:block bg-gradient-to-br from-gray-50 to-gray-100 rounded-2xl border border-gray-200 p-6 fade-in">
+                <h4 className="font-bold text-gray-900 mb-4">We Accept</h4>
+                <div className="flex flex-wrap gap-3">
+                  <div className="w-10 h-6 sm:w-12 sm:h-8 bg-white rounded flex items-center justify-center">
+                    <span className="font-bold text-blue-600 text-xs sm:text-sm">VISA</span>
+                  </div>
+                  <div className="w-10 h-6 sm:w-12 sm:h-8 bg-white rounded flex items-center justify-center">
+                    <span className="font-bold text-blue-400 text-xs sm:text-sm">MC</span>
+                  </div>
+                  <div className="w-10 h-6 sm:w-12 sm:h-8 bg-white rounded flex items-center justify-center">
+                    <span className="font-bold text-yellow-600 text-xs sm:text-sm">PP</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

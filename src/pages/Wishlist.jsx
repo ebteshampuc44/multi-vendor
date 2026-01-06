@@ -1,520 +1,394 @@
+// Wishlist.jsx - Mobile Responsive
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Heart, Trash2, ShoppingCart, Star, X, ArrowRight, AlertCircle } from "lucide-react";
+import { Heart, Trash2, ShoppingCart, ArrowLeft, Star, Clock } from "lucide-react";
 
 const Wishlist = () => {
   const [wishlistItems, setWishlistItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedItems, setSelectedItems] = useState([]);
-  const [cartMessage, setCartMessage] = useState("");
+  const [totalPrice, setTotalPrice] = useState(0);
   const navigate = useNavigate();
 
-  // লোকাল স্টোরেজ থেকে ডেটা লোড করার ফাংশন
-  const loadWishlistData = () => {
-    try {
-      const savedWishlist = localStorage.getItem("shopickWishlist");
-      console.log("Loading wishlist from localStorage:", savedWishlist);
+  useEffect(() => {
+    loadWishlist();
+  }, []);
+
+  const loadWishlist = () => {
+    setLoading(true);
+    const savedWishlist = localStorage.getItem("shopickWishlist");
+    if (savedWishlist) {
+      const items = JSON.parse(savedWishlist);
+      setWishlistItems(items);
       
-      if (savedWishlist) {
-        const parsedData = JSON.parse(savedWishlist);
-        setWishlistItems(Array.isArray(parsedData) ? parsedData : []);
-      } else {
-        setWishlistItems([]);
-      }
-    } catch (error) {
-      console.error("Error loading wishlist:", error);
-      setWishlistItems([]);
+      const total = items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      setTotalPrice(total);
     }
     setLoading(false);
   };
 
-  // লোকাল স্টোরেজে সেভ
-  const saveWishlistData = (items) => {
-    try {
-      localStorage.setItem("shopickWishlist", JSON.stringify(items));
-      console.log("Saved wishlist to localStorage:", items);
-    } catch (error) {
-      console.error("Error saving wishlist:", error);
-    }
+  const removeFromWishlist = (id) => {
+    const updatedItems = wishlistItems.filter(item => item.id !== id);
+    setWishlistItems(updatedItems);
+    localStorage.setItem("shopickWishlist", JSON.stringify(updatedItems));
+    window.dispatchEvent(new Event('wishlistUpdated'));
+    
+    const total = updatedItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    setTotalPrice(total);
   };
 
-  // লোকাল স্টোরেজ থেকে ডেটা লোড
-  useEffect(() => {
-    loadWishlistData();
-
-    // লোকাল স্টোরেজ পরিবর্তনের জন্য ইভেন্ট লিসেনার
-    const handleStorageChange = (e) => {
-      if (e.key === "shopickWishlist") {
-        console.log("Wishlist storage changed, reloading...");
-        loadWishlistData();
-      }
-    };
-
-    // কাস্টম ইভেন্টের জন্য লিসেনার
-    const handleCustomEvent = () => {
-      console.log("Custom wishlist event received");
-      loadWishlistData();
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    window.addEventListener('wishlistUpdated', handleCustomEvent);
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('wishlistUpdated', handleCustomEvent);
-    };
-  }, []);
-
-  // লোকাল স্টোরেজে সেভ যখন wishlistItems পরিবর্তন হয়
-  useEffect(() => {
-    if (!loading) {
-      saveWishlistData(wishlistItems);
-      // ইভেন্ট ডিসপ্যাচ করুন অন্য কম্পোনেন্টগুলো আপডেট করার জন্য
-      window.dispatchEvent(new Event('wishlistUpdated'));
-      window.dispatchEvent(new Event('storage'));
-    }
-  }, [wishlistItems, loading]);
-
-  // আইটেম রিমুভ
-  const removeItem = (id) => {
-    setWishlistItems(prev => prev.filter(item => item.id !== id));
-    setSelectedItems(prev => prev.filter(itemId => itemId !== id));
-    showMessage(`Item removed from wishlist`, "success");
-  };
-
-  // সিলেক্ট/আনসিলেক্ট
-  const toggleSelectItem = (id) => {
-    setSelectedItems(prev => 
-      prev.includes(id) 
-        ? prev.filter(itemId => itemId !== id)
-        : [...prev, id]
+  const moveToCart = (item) => {
+    const cart = JSON.parse(localStorage.getItem("shopickCart")) || [];
+    
+    const existingItemIndex = cart.findIndex(cartItem => 
+      cartItem.restaurantId === item.restaurantId && cartItem.name === item.name
     );
-  };
-
-  // সিলেক্ট অল
-  const selectAllItems = () => {
-    if (selectedItems.length === wishlistItems.length) {
-      setSelectedItems([]);
+    
+    let updatedCart;
+    if (existingItemIndex !== -1) {
+      updatedCart = [...cart];
+      updatedCart[existingItemIndex] = {
+        ...updatedCart[existingItemIndex],
+        quantity: Math.min(
+          updatedCart[existingItemIndex].quantity + item.quantity,
+          updatedCart[existingItemIndex].maxQuantity
+        )
+      };
     } else {
-      setSelectedItems(wishlistItems.map(item => item.id));
-    }
-  };
-
-  // কার্টে যোগ
-  const addToCart = (item) => {
-    try {
-      const cart = JSON.parse(localStorage.getItem("shopickCart")) || [];
-      const existingItem = cart.find(cartItem => cartItem.id === item.id);
-      
-      if (!existingItem) {
-        const cartItem = {
-          ...item,
-          quantity: 1,
-          maxQuantity: 10,
-          inStock: true
-        };
-        cart.push(cartItem);
-        localStorage.setItem("shopickCart", JSON.stringify(cart));
-        console.log("Added to cart:", cartItem);
-        showMessage(`"${item.name}" added to cart!`, "success");
-        
-        // কার্ট আপডেট ইভেন্ট ট্রিগার
-        window.dispatchEvent(new Event('cartUpdated'));
-        window.dispatchEvent(new Event('storage'));
-      } else {
-        showMessage(`"${item.name}" is already in cart!`, "info");
-      }
-    } catch (error) {
-      console.error("Error adding to cart:", error);
-      showMessage("Failed to add item to cart", "error");
-    }
-  };
-
-  // সিলেক্টেড আইটেম কার্টে যোগ
-  const addSelectedToCart = () => {
-    if (selectedItems.length === 0) {
-      showMessage("Please select items to add to cart", "warning");
-      return;
+      updatedCart = [...cart, item];
     }
     
-    try {
-      const cart = JSON.parse(localStorage.getItem("shopickCart")) || [];
-      let addedCount = 0;
-      
-      selectedItems.forEach(itemId => {
-        const item = wishlistItems.find(w => w.id === itemId);
-        const existingItem = cart.find(cartItem => cartItem.id === itemId);
-        
-        if (item && !existingItem) {
-          const cartItem = {
-            ...item,
-            quantity: 1,
-            maxQuantity: 10,
-            inStock: true
-          };
-          cart.push(cartItem);
-          addedCount++;
-        }
-      });
-      
-      localStorage.setItem("shopickCart", JSON.stringify(cart));
-      console.log("Added selected items to cart:", addedCount);
-      
-      if (addedCount > 0) {
-        showMessage(`${addedCount} item(s) added to cart!`, "success");
-        // কার্ট আপডেট ইভেন্ট ট্রিগার
-        window.dispatchEvent(new Event('cartUpdated'));
-        window.dispatchEvent(new Event('storage'));
-      } else {
-        showMessage("Selected items are already in cart", "info");
-      }
-    } catch (error) {
-      console.error("Error adding selected to cart:", error);
-      showMessage("Failed to add items to cart", "error");
-    }
-  };
-
-  // সিলেক্টেড আইটেম ডিলিট
-  const deleteSelectedItems = () => {
-    if (selectedItems.length === 0) {
-      showMessage("Please select items to remove", "warning");
-      return;
-    }
+    localStorage.setItem("shopickCart", JSON.stringify(updatedCart));
+    window.dispatchEvent(new Event('cartUpdated'));
     
-    setWishlistItems(prev => prev.filter(item => !selectedItems.includes(item.id)));
-    setSelectedItems([]);
-    showMessage(`${selectedItems.length} item(s) removed from wishlist`, "success");
+    removeFromWishlist(item.id);
+    alert(`${item.name} moved to cart!`);
   };
 
-  // সবকিছু ডিলিট
-  const clearWishlist = () => {
+  const moveAllToCart = () => {
     if (wishlistItems.length === 0) {
-      showMessage("Wishlist is already empty", "info");
+      alert("Your wishlist is empty!");
       return;
     }
+    
+    const cart = JSON.parse(localStorage.getItem("shopickCart")) || [];
+    
+    wishlistItems.forEach(item => {
+      const existingItemIndex = cart.findIndex(cartItem => 
+        cartItem.restaurantId === item.restaurantId && cartItem.name === item.name
+      );
+      
+      if (existingItemIndex !== -1) {
+        cart[existingItemIndex] = {
+          ...cart[existingItemIndex],
+          quantity: Math.min(
+            cart[existingItemIndex].quantity + item.quantity,
+            cart[existingItemIndex].maxQuantity
+          )
+        };
+      } else {
+        cart.push(item);
+      }
+    });
+    
+    localStorage.setItem("shopickCart", JSON.stringify(cart));
+    localStorage.setItem("shopickWishlist", JSON.stringify([]));
+    window.dispatchEvent(new Event('cartUpdated'));
+    window.dispatchEvent(new Event('wishlistUpdated'));
     
     setWishlistItems([]);
-    setSelectedItems([]);
-    localStorage.removeItem("shopickWishlist");
-    showMessage("Wishlist cleared successfully", "success");
-    
-    // ইভেন্ট ডিসপ্যাচ
-    window.dispatchEvent(new Event('wishlistUpdated'));
-    window.dispatchEvent(new Event('storage'));
+    setTotalPrice(0);
+    alert(`All ${wishlistItems.length} items moved to cart!`);
   };
 
-  // মেসেজ শো করার ফাংশন
-  const showMessage = (message, type) => {
-    setCartMessage(message);
-    setTimeout(() => setCartMessage(""), 3000);
+  const clearWishlist = () => {
+    if (wishlistItems.length === 0) return;
+    
+    if (window.confirm("Are you sure you want to clear your entire wishlist?")) {
+      localStorage.setItem("shopickWishlist", JSON.stringify([]));
+      window.dispatchEvent(new Event('wishlistUpdated'));
+      setWishlistItems([]);
+      setTotalPrice(0);
+      alert("Wishlist cleared!");
+    }
   };
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-pink-600"></div>
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-green-600 border-t-transparent rounded-full animate-spin mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading your wishlist...</p>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-8">
-      <div className="container mx-auto px-4">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
-                <Heart className="text-pink-600 fill-pink-600" size={28} />
-                My Wishlist
-              </h1>
-              <p className="text-gray-600 mt-2">
-                {wishlistItems.length} {wishlistItems.length === 1 ? "item" : "items"} saved for later
-              </p>
-            </div>
-            <Link
-              to="/"
-              className="text-pink-600 hover:text-pink-700 font-medium flex items-center gap-2"
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+      <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-8">
+        {/* Header - Mobile Optimized */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 sm:mb-8 gap-4">
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => navigate(-1)}
+              className="p-2 rounded-full bg-white shadow-sm hover:shadow-md transition-shadow"
             >
-              Continue Shopping
-              <ArrowRight size={18} />
-            </Link>
+              <ArrowLeft size={20} className="text-gray-600" />
+            </button>
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">My Wishlist</h1>
+              <p className="text-sm sm:text-base text-gray-600 mt-1">Items you've saved for later</p>
+            </div>
+          </div>
+          
+          <div className="flex items-center justify-between sm:justify-end gap-3">
+            <span className="text-sm text-gray-500">
+              {wishlistItems.length} {wishlistItems.length === 1 ? 'item' : 'items'}
+            </span>
           </div>
         </div>
 
-        {/* Message */}
-        {cartMessage && (
-          <div className={`mb-6 p-4 rounded-xl flex items-center gap-3 ${
-            cartMessage.includes("success") || cartMessage.includes("added") 
-              ? "bg-green-50 border border-green-200 text-green-700"
-              : cartMessage.includes("error") || cartMessage.includes("Failed")
-              ? "bg-red-50 border border-red-200 text-red-700"
-              : "bg-blue-50 border border-blue-200 text-blue-700"
-          }`}>
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
-              cartMessage.includes("success") || cartMessage.includes("added") 
-                ? "bg-green-100"
-                : cartMessage.includes("error") || cartMessage.includes("Failed")
-                ? "bg-red-100"
-                : "bg-blue-100"
-            }`}>
-              {cartMessage.includes("success") || cartMessage.includes("added") ? (
-                <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path>
-                </svg>
-              ) : (
-                <AlertCircle className="w-5 h-5" />
-              )}
-            </div>
-            <span className="font-medium">{cartMessage}</span>
-          </div>
-        )}
-
-        {/* Empty State */}
-        {wishlistItems.length === 0 ? (
-          <div className="text-center py-16 bg-white rounded-2xl shadow-sm border border-gray-200">
-            <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-pink-50 flex items-center justify-center">
-              <Heart className="w-12 h-12 text-pink-400" />
-            </div>
-            <h3 className="text-2xl font-bold text-gray-900 mb-3">Your wishlist is empty</h3>
-            <p className="text-gray-600 mb-8 max-w-md mx-auto">
-              Save items you love to your wishlist. Review them anytime and easily add to cart.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                to="/"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-pink-600 to-pink-700 text-white font-semibold px-8 py-3.5 rounded-full hover:shadow-lg transition-all duration-300"
-              >
-                Start Shopping
-                <ArrowRight size={20} />
-              </Link>
-              <button
-                onClick={() => {
-                  loadWishlistData();
-                  showMessage("Refreshed wishlist data", "info");
-                }}
-                className="inline-flex items-center gap-2 border border-gray-300 text-gray-700 hover:bg-gray-50 font-semibold px-8 py-3.5 rounded-full transition-all duration-300"
-              >
-                Refresh
-              </button>
-            </div>
-          </div>
-        ) : (
-          <>
-            {/* Actions Bar */}
-            <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 mb-6">
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                <div className="flex items-center gap-4">
-                  <label className="flex items-center cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={selectedItems.length === wishlistItems.length && wishlistItems.length > 0}
-                      onChange={selectAllItems}
-                      className="w-5 h-5 text-pink-600 rounded border-gray-300 focus:ring-pink-500"
-                    />
-                    <span className="ml-2 text-gray-700 font-medium">
-                      Select all ({selectedItems.length}/{wishlistItems.length})
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 sm:gap-8">
+          {/* Main Content */}
+          <div className="lg:col-span-3">
+            {/* Actions Bar - Mobile Optimized */}
+            {wishlistItems.length > 0 && (
+              <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 p-4 mb-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="flex items-center gap-2">
+                    <Heart className="w-5 h-5 text-pink-600" fill="currentColor" />
+                    <span className="font-medium text-gray-900 text-sm sm:text-base">
+                      Total: <span className="text-pink-600">${totalPrice.toFixed(2)}</span>
                     </span>
-                  </label>
+                  </div>
                   
-                  {selectedItems.length > 0 && (
-                    <div className="flex items-center gap-2">
-                      <button
-                        onClick={addSelectedToCart}
-                        className="flex items-center gap-2 px-4 py-2 bg-pink-50 text-pink-700 hover:bg-pink-100 rounded-lg font-medium transition-colors"
-                      >
-                        <ShoppingCart size={18} />
-                        Add to Cart
-                      </button>
-                      <button
-                        onClick={deleteSelectedItems}
-                        className="flex items-center gap-2 px-4 py-2 bg-red-50 text-red-600 hover:bg-red-100 rounded-lg font-medium transition-colors"
-                      >
-                        <Trash2 size={18} />
-                        Remove
-                      </button>
-                    </div>
-                  )}
-                </div>
-                
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={loadWishlistData}
-                    className="text-gray-600 hover:text-blue-600 font-medium flex items-center gap-2 px-4 py-2 hover:bg-blue-50 rounded-lg transition-colors"
-                    title="Refresh wishlist"
-                  >
-                    ↻ Refresh
-                  </button>
-                  <button
-                    onClick={clearWishlist}
-                    className="text-gray-500 hover:text-red-600 font-medium flex items-center gap-2 px-4 py-2 hover:bg-red-50 rounded-lg transition-colors"
-                  >
-                    <Trash2 size={18} />
-                    Clear All
-                  </button>
+                  <div className="flex flex-wrap gap-3">
+                    <button
+                      onClick={moveAllToCart}
+                      className="px-3 sm:px-4 py-2 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-lg hover:from-green-700 hover:to-emerald-700 transition-all flex items-center gap-2 text-sm"
+                    >
+                      <ShoppingCart className="w-4 h-4" />
+                      <span className="hidden sm:inline">Move All to Cart</span>
+                      <span className="sm:hidden">Move All</span>
+                    </button>
+                    
+                    <button
+                      onClick={clearWishlist}
+                      className="px-3 sm:px-4 py-2 bg-gradient-to-r from-gray-200 to-gray-300 text-gray-700 rounded-lg hover:from-gray-300 hover:to-gray-400 transition-all flex items-center gap-2 text-sm"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                      <span className="hidden sm:inline">Clear All</span>
+                      <span className="sm:hidden">Clear</span>
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
+            )}
 
-            {/* Wishlist Items */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-              {wishlistItems.map((item) => (
-                <div
-                  key={item.id}
-                  className={`bg-white rounded-2xl shadow-sm border ${
-                    selectedItems.includes(item.id) ? 'border-pink-500 ring-2 ring-pink-100' : 'border-gray-200'
-                  } overflow-hidden transition-all duration-300 hover:shadow-lg`}
-                >
-                  {/* Item Header */}
-                  <div className="p-4 border-b border-gray-100 flex items-center justify-between">
-                    <label className="flex items-center cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={selectedItems.includes(item.id)}
-                        onChange={() => toggleSelectItem(item.id)}
-                        className="w-5 h-5 text-pink-600 rounded border-gray-300 focus:ring-pink-500"
-                      />
-                    </label>
-                    
-                    <div className="flex items-center gap-2">
-                      {item.addedDate && (
-                        <span className="text-xs text-gray-500">
-                          Added on {new Date(item.addedDate).toLocaleDateString()}
-                        </span>
-                      )}
-                      <button
-                        onClick={() => removeItem(item.id)}
-                        className="text-gray-400 hover:text-red-500 p-2 hover:bg-red-50 rounded-lg transition-colors"
-                      >
-                        <X size={18} />
-                      </button>
-                    </div>
+            {/* Wishlist Items - Mobile Optimized */}
+            <div>
+              {wishlistItems.length === 0 ? (
+                <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 p-6 sm:p-12 text-center">
+                  <div className="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-4 sm:mb-6 rounded-full bg-gradient-to-br from-pink-50 to-red-50 flex items-center justify-center">
+                    <Heart className="w-10 h-10 sm:w-12 sm:h-12 text-pink-400" strokeWidth={1.5} />
                   </div>
-
-                  {/* Item Content */}
-                  <div className="p-6">
-                    <div className="flex gap-4">
-                      {/* Image */}
-                      <div className="w-24 h-24 flex-shrink-0 rounded-xl overflow-hidden cursor-pointer"
-                           onClick={() => navigate(`/product/${item.id}`)}>
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                        />
-                      </div>
-
-                      {/* Details */}
-                      <div className="flex-1">
-                        <h3 
-                          className="font-bold text-gray-900 text-lg mb-1 hover:text-pink-600 cursor-pointer line-clamp-2"
-                          onClick={() => navigate(`/product/${item.id}`)}
-                        >
-                          {item.name}
-                        </h3>
-                        <p className="text-gray-500 text-sm mb-2">{item.category}</p>
-                        
-                        <div className="flex items-center gap-2 mb-3">
-                          <div className="flex items-center">
-                            {[...Array(5)].map((_, i) => (
-                              <Star
-                                key={i}
-                                className={`w-4 h-4 ${
-                                  i < Math.floor(item.rating || 4)
-                                    ? "text-yellow-400 fill-yellow-400"
-                                    : "text-gray-300"
-                                }`}
+                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 sm:mb-3">Your wishlist is empty</h3>
+                  <p className="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8 max-w-md mx-auto px-4">
+                    Start exploring and add your favorites!
+                  </p>
+                  <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
+                    <button
+                      onClick={() => navigate('/')}
+                      className="px-5 sm:px-6 py-2.5 sm:py-3 bg-gradient-to-r from-pink-600 to-pink-700 text-white rounded-xl hover:from-pink-700 hover:to-pink-800 transition-all font-medium text-sm sm:text-base"
+                    >
+                      Continue Shopping
+                    </button>
+                    <button
+                      onClick={() => navigate('/cart')}
+                      className="px-5 sm:px-6 py-2.5 sm:py-3 bg-white border-2 border-pink-600 text-pink-600 rounded-xl hover:bg-pink-50 transition-all font-medium text-sm sm:text-base"
+                    >
+                      View Cart
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <div className="space-y-3 sm:space-y-4">
+                  {wishlistItems.map((item, index) => (
+                    <div
+                      key={item.id}
+                      className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 overflow-hidden group hover:shadow-xl transition-all duration-300"
+                      style={{ animationDelay: `${index * 0.1}s` }}
+                    >
+                      <div className="p-4 sm:p-6">
+                        <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
+                          {/* Product Image - Mobile Optimized */}
+                          <div className="relative flex-shrink-0">
+                            <div className="w-full h-48 sm:w-32 sm:h-32 md:w-40 md:h-40 rounded-xl overflow-hidden">
+                              <img
+                                src={item.image}
+                                alt={item.name}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                               />
-                            ))}
-                          </div>
-                          <span className="text-sm text-gray-600">{item.rating || 4.0}</span>
-                        </div>
-
-                        {/* Stock Status */}
-                        <div className="mb-4">
-                          <span className="inline-flex items-center gap-1 px-3 py-1 bg-green-50 text-green-700 rounded-full text-sm">
-                            <div className="w-2 h-2 rounded-full bg-green-500"></div>
-                            In Stock
-                          </span>
-                        </div>
-
-                        {/* Price */}
-                        <div className="flex items-center justify-between">
-                          <div>
-                            <div className="font-bold text-xl text-gray-900">
-                              ${(item.price || 0).toFixed(2)}
                             </div>
-                            {item.originalPrice && (
-                              <div className="text-sm text-gray-500 line-through">
-                                ${item.originalPrice.toFixed(2)}
+                            
+                            {/* Discount Badge - Mobile Optimized */}
+                            {item.discount && (
+                              <div className="absolute top-2 left-2 bg-gradient-to-r from-green-500 to-emerald-500 text-white px-2 sm:px-3 py-1 rounded-full text-xs sm:text-sm font-bold">
+                                {item.discount}
                               </div>
                             )}
                           </div>
 
-                          <div className="flex items-center gap-2">
-                            <button
-                              onClick={() => addToCart(item)}
-                              className="px-4 py-2 rounded-lg font-medium transition-all duration-300 flex items-center gap-2 bg-gradient-to-r from-pink-600 to-pink-700 hover:from-pink-700 hover:to-pink-800 text-white hover:shadow-lg"
-                            >
-                              <ShoppingCart size={18} />
-                              Add to Cart
-                            </button>
+                          {/* Product Info - Mobile Optimized */}
+                          <div className="flex-1 min-w-0">
+                            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start mb-3 gap-2 sm:gap-0">
+                              <div className="flex-1">
+                                <h3 className="font-bold text-base sm:text-lg text-gray-900 mb-1 line-clamp-1">{item.name}</h3>
+                                <p className="text-gray-600 text-xs sm:text-sm mb-2 line-clamp-1">{item.category || item.cuisine}</p>
+                              </div>
+                              <div className="text-left sm:text-right">
+                                <div className="text-xl sm:text-2xl font-bold text-gray-900">
+                                  ${item.price.toFixed(2)}
+                                </div>
+                                {item.originalPrice && (
+                                  <div className="text-xs sm:text-sm text-gray-500 line-through">
+                                    ${item.originalPrice.toFixed(2)}
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+
+                            {/* Tags and Rating - Mobile Optimized */}
+                            <div className="flex flex-wrap gap-1 sm:gap-2 mb-3 sm:mb-4">
+                              {item.tags && item.tags.slice(0, 2).map((tag, tagIndex) => (
+                                <span
+                                  key={tagIndex}
+                                  className="px-2 py-1 bg-gray-100 text-gray-700 text-xs rounded-full"
+                                >
+                                  {tag}
+                                </span>
+                              ))}
+                              
+                              {item.rating && (
+                                <span className="px-2 py-1 bg-amber-100 text-amber-700 text-xs rounded-full flex items-center gap-1">
+                                  <Star className="w-3 h-3 fill-amber-500" />
+                                  {item.rating}
+                                </span>
+                              )}
+                            </div>
+
+                            {/* Details - Mobile Optimized */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-4 mb-4 sm:mb-6 text-xs sm:text-sm text-gray-500">
+                              {item.location && (
+                                <div className="flex items-center gap-1">
+                                  <span>📍</span>
+                                  <span className="truncate">{item.location}</span>
+                                </div>
+                              )}
+                              
+                              {item.deliveryTime && (
+                                <div className="flex items-center gap-1">
+                                  <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
+                                  <span>{item.deliveryTime}</span>
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Actions - Mobile Optimized */}
+                            <div className="flex flex-col sm:flex-row gap-3">
+                              <button
+                                onClick={() => moveToCart(item)}
+                                className="flex-1 px-3 sm:px-5 py-2.5 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl hover:from-green-700 hover:to-emerald-700 transition-all flex items-center justify-center gap-2 font-medium text-sm"
+                              >
+                                <ShoppingCart className="w-4 h-4" />
+                                <span className="hidden sm:inline">Add to Cart</span>
+                                <span className="sm:hidden">Add to Cart</span>
+                              </button>
+                              
+                              <button
+                                onClick={() => removeFromWishlist(item.id)}
+                                className="flex-1 px-3 sm:px-5 py-2.5 bg-gradient-to-r from-gray-200 to-gray-300 text-gray-700 rounded-xl hover:from-gray-300 hover:to-gray-400 transition-all flex items-center justify-center gap-2 font-medium text-sm"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                                <span className="hidden sm:inline">Remove</span>
+                                <span className="sm:hidden">Remove</span>
+                              </button>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                  ))}
                 </div>
-              ))}
+              )}
             </div>
+          </div>
 
-            {/* Summary */}
-            <div className="mt-8 bg-white rounded-2xl shadow-sm border border-gray-200 p-6">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="text-center p-4 bg-pink-50 rounded-xl">
-                  <div className="text-2xl font-bold text-pink-700">{wishlistItems.length}</div>
-                  <div className="text-gray-600">Total Items</div>
-                </div>
-                <div className="text-center p-4 bg-blue-50 rounded-xl">
-                  <div className="text-2xl font-bold text-blue-700">
-                    ${wishlistItems.reduce((sum, item) => sum + (item.price || 0), 0).toFixed(2)}
+          {/* Sidebar - Mobile Optimized */}
+          <div className="lg:col-span-1">
+            <div className="sticky top-20 sm:top-6 space-y-4 sm:space-y-6">
+              {/* Summary Card - Mobile Optimized */}
+              <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm border border-gray-200 p-4 sm:p-6">
+                <h3 className="font-bold text-gray-900 mb-4 text-lg">Wishlist Summary</h3>
+                
+                <div className="space-y-3 mb-4 sm:mb-6">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm sm:text-base text-gray-600">Items</span>
+                    <span className="font-medium text-sm sm:text-base">{wishlistItems.length}</span>
                   </div>
-                  <div className="text-gray-600">Total Value</div>
-                </div>
-                <div className="text-center p-4 bg-green-50 rounded-xl">
-                  <div className="text-2xl font-bold text-green-700">
-                    ${wishlistItems.reduce((sum, item) => 
-                      sum + ((item.originalPrice || item.price || 0) - (item.price || 0)), 0).toFixed(2)}
+                  
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm sm:text-base text-gray-600">Estimated Total</span>
+                    <span className="text-xl sm:text-2xl font-bold text-pink-600">${totalPrice.toFixed(2)}</span>
                   </div>
-                  <div className="text-gray-600">Total Savings</div>
+                </div>
+                
+                <div className="space-y-3">
+                  <button
+                    onClick={moveAllToCart}
+                    disabled={wishlistItems.length === 0}
+                    className={`w-full py-3 rounded-xl font-medium transition-all text-sm sm:text-base ${
+                      wishlistItems.length === 0
+                        ? 'bg-gray-200 text-gray-500 cursor-not-allowed'
+                        : 'bg-gradient-to-r from-green-600 to-emerald-600 text-white hover:from-green-700 hover:to-emerald-700'
+                    }`}
+                  >
+                    Add All to Cart
+                  </button>
+                  
+                  <button
+                    onClick={() => navigate('/cart')}
+                    className="w-full py-3 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all font-medium text-sm sm:text-base"
+                  >
+                    Go to Cart
+                  </button>
                 </div>
               </div>
-              
-              <div className="mt-6 flex flex-col sm:flex-row gap-4 justify-center">
-                <button
-                  onClick={addSelectedToCart}
-                  disabled={selectedItems.length === 0}
-                  className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-3 ${
-                    selectedItems.length > 0
-                      ? "bg-gradient-to-r from-pink-600 to-pink-700 hover:from-pink-700 hover:to-pink-800 text-white hover:shadow-lg"
-                      : "bg-gray-100 text-gray-400 cursor-not-allowed"
-                  }`}
-                >
-                  <ShoppingCart size={20} />
-                  Add Selected to Cart ({selectedItems.length})
-                </button>
-                
-                <Link
-                  to="/cart"
-                  className="px-8 py-3 bg-gradient-to-r from-gray-900 to-gray-800 hover:from-black hover:to-gray-900 text-white rounded-xl font-semibold hover:shadow-lg transition-all duration-300 flex items-center justify-center gap-3"
-                >
-                  Go to Cart
-                  <ArrowRight size={20} />
-                </Link>
+
+              {/* Tips Card - Mobile Hidden on Small Screens */}
+              <div className="hidden sm:block bg-gradient-to-br from-pink-50 to-red-50 rounded-2xl border border-pink-100 p-6">
+                <h4 className="font-bold text-gray-900 mb-3 flex items-center gap-2">
+                  <Heart className="w-5 h-5 text-pink-600" fill="currentColor" />
+                  Wishlist Tips
+                </h4>
+                <ul className="space-y-2 text-sm text-gray-700">
+                  <li className="flex items-start gap-2">
+                    <span className="text-pink-500 mt-0.5">•</span>
+                    Items stay in your wishlist until you remove them
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-pink-500 mt-0.5">•</span>
+                    Get notified when items go on sale
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="text-pink-500 mt-0.5">•</span>
+                    Share your wishlist with friends
+                  </li>
+                </ul>
               </div>
             </div>
-          </>
-        )}
+          </div>
+        </div>
       </div>
     </div>
   );
