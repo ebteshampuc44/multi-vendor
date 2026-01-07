@@ -58,84 +58,84 @@ const categories = [
   },
 ];
 
-// Top Brands Data - Updated with correct URLs
+// Top Brands Data - Updated with menu page URLs
 const topBrands = [
   {
     id: 1,
     name: "Sultan's Dine",
     logo: "https://i.postimg.cc/kXBXmy7x/sd.jpg",
     description: "Authentic Bengali cuisine",
-    url: "/restaurant/sultans-dine" // Restaurant menu page
+    url: "/restaurant/sultans-dine"
   },
   {
     id: 2,
     name: "Kacchi Bhai",
     logo: "https://i.postimg.cc/Y2XqZPBL/kb.png",
     description: "Best Kacchi in town",
-    url: "/restaurant/kacchi-bhai" // Changed from /brand/kacchi-bhai to /restaurant/kacchi-bhai
+    url: "/restaurant/kacchi-bhai"
   },
   {
     id: 3,
-    name: "7 Days Restaurant",
-    logo: "https://i.postimg.cc/2jH8MtRg/7days.jpg",
-    description: "Open 7 days a week",
-    url: "/brand/7days-restaurant"
-  },
-  {
-    id: 4,
     name: "Chillox",
     logo: "https://i.postimg.cc/2jH8MtNr/chillox.png",
     description: "Famous for burgers",
-    url: "/brand/chillox"
+    url: "/restaurant/chillox"
+  },
+  {
+    id: 4,
+    name: "Pizza Hut",
+    logo: "https://i.postimg.cc/fTJTNvMV/Pizza-Hut.png",
+    description: "International pizza chain",
+    url: "/restaurant/pizza-hut"
   },
   {
     id: 5,
-    name: "PizzaBurg",
-    logo: "https://i.postimg.cc/qBmMSFHK/logo-1727.jpg",
-    description: "Pizza & Burgers",
-    url: "/brand/pizzaburg"
+    name: "7 Days Restaurant",
+    logo: "https://i.postimg.cc/2jH8MtRg/7days.jpg",
+    description: "Open 7 days a week",
+    url: "/restaurant/7days-restaurant"
   },
   {
     id: 6,
-    name: "Kacchi Dine",
-    logo: "https://i.postimg.cc/sfnDqLCg/Kacchi-Dine.jpg",
-    description: "Fast food chain",
-    url: "/brand/kacchi-dine"
+    name: "PizzaBurg",
+    logo: "https://i.postimg.cc/qBmMSFHK/logo-1727.jpg",
+    description: "Pizza & Burgers",
+    url: "/restaurant/pizzaburg"
   },
   {
     id: 7,
-    name: "sadia's kitchen",
-    logo: "https://i.postimg.cc/SNJNhGm8/sadia-s-kitchen.jpg",
-    description: "Popular local brand",
-    url: "/brand/sadias-kitchen"  
+    name: "Kacchi Dine",
+    logo: "https://i.postimg.cc/sfnDqLCg/Kacchi-Dine.jpg",
+    description: "Fast food chain",
+    url: "/restaurant/kacchi-dine"
   },
   {
     id: 8,
-    name: "Pizza Hut Bangladesh",
-    logo: "https://i.postimg.cc/fTJTNvMV/Pizza-Hut.png",
-    description: "International pizza chain",
-    url: "/brand/pizza-hut"
+    name: "sadia's kitchen",
+    logo: "https://i.postimg.cc/SNJNhGm8/sadia-s-kitchen.jpg",
+    description: "Popular local brand",
+    url: "/restaurant/sadias-kitchen"
   },
   {
     id: 9,
     name: "Domino's Pizza Bangladesh",
     logo: "https://i.postimg.cc/ZYfK2Qzn/Dominos-pizza.png",
     description: "World famous pizza",
-    url: "/brand/dominos-pizza"
+    url: "/restaurant/dominos-pizza"
   },
   {
     id: 10,
     name: "KFC",
     logo: "https://i.postimg.cc/pXpXHBPy/KFC.png",
     description: "Finger lickin' good",
-    url: "/brand/kfc"
+    url: "/restaurant/kfc"
   },
   {
     id: 11,
     name: "Peyari Tehari",
     logo: "https://i.postimg.cc/Bn9NQ691/Peyari-Tehari.jpg",
     description: "Famous for Tehari",
-    url: "/brand/peyari-tehari"
+    url: "/restaurant/peyari-tehari"
   }
 ];
 
@@ -199,7 +199,7 @@ const allRestaurants = [
     tags: ["Biryani", "Kacchi", "Traditional"],
     featured: true,
     discount: "20% OFF",
-    url: "/restaurant/sultans-dine" // Restaurant menu page
+    url: "/restaurant/sultans-dine"
   },
   {
     id: 2,
@@ -213,7 +213,7 @@ const allRestaurants = [
     tags: ["Special Kacchi", "Biryani", "Popular"],
     featured: true,
     discount: "15% OFF",
-    url: "/restaurant/kacchi-bhai" // Changed to restaurant menu page
+    url: "/restaurant/kacchi-bhai"
   },
   {
     id: 3,
@@ -245,6 +245,76 @@ const allRestaurants = [
   },
   {
     id: 5,
+    name: "7 Days Restaurant",
+    image: "https://images.unsplash.com/photo-1552566626-52f8b828add9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    cuisine: "Bangladeshi, Indian",
+    rating: 4.2,
+    deliveryTime: "30-40 min",
+    priceRange: "$",
+    location: "Various locations, Dhaka",
+    tags: ["Bangladeshi", "Indian", "Fast Food"],
+    featured: false,
+    discount: "15% OFF",
+    url: "/restaurant/7days-restaurant"
+  },
+  {
+    id: 6,
+    name: "PizzaBurg",
+    image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    cuisine: "Pizza, Burgers",
+    rating: 4.4,
+    deliveryTime: "25-35 min",
+    priceRange: "$",
+    location: "Gulshan, Dhaka",
+    tags: ["Pizza", "Burgers", "Fast Food"],
+    featured: false,
+    discount: "Combo Deal",
+    url: "/restaurant/pizzaburg"
+  },
+  {
+    id: 7,
+    name: "Kacchi Dine",
+    image: "https://images.unsplash.com/photo-1552566626-52f8b828add9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    cuisine: "Fast Food, Biryani",
+    rating: 4.1,
+    deliveryTime: "20-30 min",
+    priceRange: "$",
+    location: "Various locations, Dhaka",
+    tags: ["Fast Food", "Biryani", "Bangladeshi"],
+    featured: false,
+    discount: "10% OFF",
+    url: "/restaurant/kacchi-dine"
+  },
+  {
+    id: 8,
+    name: "sadia's kitchen",
+    image: "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    cuisine: "Bangladeshi, Home Style",
+    rating: 4.3,
+    deliveryTime: "35-45 min",
+    priceRange: "$",
+    location: "Dhanmondi, Dhaka",
+    tags: ["Home Style", "Bangladeshi", "Traditional"],
+    featured: false,
+    discount: "",
+    url: "/restaurant/sadias-kitchen"
+  },
+  {
+    id: 9,
+    name: "Domino's Pizza",
+    image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    cuisine: "Pizza, Fast Food",
+    rating: 4.0,
+    deliveryTime: "30-40 min",
+    priceRange: "$$",
+    location: "Mirpur 10, Dhaka",
+    tags: ["Pizza", "Fast Delivery", "Italian"],
+    featured: false,
+    discount: "30 min delivery",
+    url: "/restaurant/dominos-pizza"
+  },
+  {
+    id: 10,
     name: "KFC",
     image: "https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
     cuisine: "Fried Chicken, Fast Food",
@@ -258,7 +328,21 @@ const allRestaurants = [
     url: "/restaurant/kfc"
   },
   {
-    id: 6,
+    id: 11,
+    name: "Peyari Tehari",
+    image: "https://images.unsplash.com/photo-1552566626-52f8b828add9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+    cuisine: "Tehari, Bangladeshi",
+    rating: 4.6,
+    deliveryTime: "35-45 min",
+    priceRange: "$",
+    location: "Old Dhaka",
+    tags: ["Tehari", "Spicy", "Traditional"],
+    featured: true,
+    discount: "Free Salad",
+    url: "/restaurant/peyari-tehari"
+  },
+  {
+    id: 12,
     name: "Baskin Robbins",
     image: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
     cuisine: "Ice Cream, Desserts",
@@ -270,90 +354,6 @@ const allRestaurants = [
     featured: false,
     discount: "",
     url: "/restaurant/baskin-robbins"
-  },
-  {
-    id: 7,
-    name: "Star Kabab",
-    image: "https://images.unsplash.com/photo-1603360946369-dc9bb6258143?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    cuisine: "Kabab, Bangladeshi",
-    rating: 4.3,
-    deliveryTime: "35-45 min",
-    priceRange: "$",
-    location: "Old Dhaka",
-    tags: ["Kabab", "Traditional", "Spicy"],
-    featured: false,
-    discount: "Free Delivery",
-    url: "/restaurant/star-kabab"
-  },
-  {
-    id: 8,
-    name: "Bombay Sweets",
-    image: "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    cuisine: "Indian, Sweets",
-    rating: 4.2,
-    deliveryTime: "30-40 min",
-    priceRange: "$",
-    location: "Farmgate, Dhaka",
-    tags: ["Sweets", "Indian", "Vegetarian"],
-    featured: false,
-    discount: "",
-    url: "/restaurant/bombay-sweets"
-  },
-  {
-    id: 9,
-    name: "Nando's",
-    image: "https://images.unsplash.com/photo-1603360946369-dc9bb6258143?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    cuisine: "Grilled Chicken, Portuguese",
-    rating: 4.4,
-    deliveryTime: "40-50 min",
-    priceRange: "$$$",
-    location: "Gulshan 2, Dhaka",
-    tags: ["Grilled", "Chicken", "Portuguese"],
-    featured: true,
-    discount: "25% OFF",
-    url: "/restaurant/nandos"
-  },
-  {
-    id: 10,
-    name: "Coffee World",
-    image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    cuisine: "Coffee, Bakery",
-    rating: 4.1,
-    deliveryTime: "25-35 min",
-    priceRange: "$$",
-    location: "Dhanmondi 32, Dhaka",
-    tags: ["Coffee", "Bakery", "Cafe"],
-    featured: false,
-    discount: "",
-    url: "/restaurant/coffee-world"
-  },
-  {
-    id: 11,
-    name: "Burger King",
-    image: "https://images.unsplash.com/photo-1571091718767-18b5b1457add?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    cuisine: "Burgers, Fast Food",
-    rating: 4.2,
-    deliveryTime: "30-40 min",
-    priceRange: "$$",
-    location: "Basundhara City, Dhaka",
-    tags: ["Burgers", "Whopper", "Fast Food"],
-    featured: false,
-    discount: "Combo Deal",
-    url: "/restaurant/burger-king"
-  },
-  {
-    id: 12,
-    name: "Domino's Pizza",
-    image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-    cuisine: "Pizza, Fast Food",
-    rating: 4.0,
-    deliveryTime: "30-40 min",
-    priceRange: "$$",
-    location: "Mirpur 10, Dhaka",
-    tags: ["Pizza", "Fast Delivery", "Italian"],
-    featured: false,
-    discount: "30 min delivery",
-    url: "/restaurant/dominos-pizza"
   }
 ];
 
@@ -1140,7 +1140,7 @@ const Home = () => {
           font-weight: 600 !important;
         }
 
-        /* Mobile Bottom Navigation স্টাইল - SultansDineMenu.jsx এবং KacchiBhaiMenu.jsx এর মতোই */
+        /* Mobile Bottom Navigation স্টাইল */
         .mobile-bottom-nav {
           position: fixed;
           bottom: 0;
@@ -1661,7 +1661,7 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Mobile Bottom Navigation - SultansDineMenu.jsx এবং KacchiBhaiMenu.jsx এর মতোই */}
+      {/* Mobile Bottom Navigation */}
       <div className="lg:hidden mobile-bottom-nav">
         <div className="nav-buttons">
           <button

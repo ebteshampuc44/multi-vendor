@@ -1,11 +1,11 @@
-// PizzaBurgMenu.jsx - Pizza & Burgers Menu
+// PizzaHutMenu.jsx - Pizza & Italian Menu
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ShoppingCart, Star, Clock, ChevronRight, ChefHat, Heart, Menu, Home, User } from "lucide-react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const PizzaBurgMenu = () => {
+const PizzaHutMenu = () => {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
   const [activeCategory, setActiveCategory] = useState("all");
@@ -134,107 +134,207 @@ const PizzaBurgMenu = () => {
     }, 500);
   };
 
-  // মেনু আইটেম ডেটা - PizzaBurg এর জন্য
+  // মেনু আইটেম ডেটা - Pizza Hut এর জন্য
   const menuItems = [
     {
-      id: 501,
-      name: "PizzaBurg Special Pizza",
-      description: "Signature pizza with multiple toppings",
-      price: 850,
+      id: 301,
+      name: "Pepperoni Pizza (Large)",
+      description: "Classic pepperoni with extra cheese",
+      price: 950,
+      image: "https://images.unsplash.com/photo-1628840042765-356cda07504e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "pizza",
+      rating: 4.8,
+      prepTime: "25-30 min"
+    },
+    {
+      id: 302,
+      name: "Pepperoni Pizza (Medium)",
+      description: "Medium size pepperoni pizza",
+      price: 750,
       image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
       category: "pizza",
       rating: 4.7,
       prepTime: "20-25 min"
     },
     {
-      id: 502,
-      name: "Chicken BBQ Pizza",
-      description: "BBQ sauce with chicken toppings",
-      price: 750,
-      image: "https://images.unsplash.com/photo-1593246049226-ded77bf90326?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      id: 303,
+      name: "Chicken Supreme Pizza",
+      description: "Chicken, mushrooms, onions, peppers",
+      price: 1050,
+      image: "https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "pizza",
+      rating: 4.9,
+      prepTime: "25-30 min"
+    },
+    {
+      id: 304,
+      name: "Veggie Pizza",
+      description: "Mixed vegetables with cheese",
+      price: 850,
+      image: "https://images.unsplash.com/photo-1595708684082-a173bb3a06c5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
       category: "pizza",
       rating: 4.6,
       prepTime: "20-25 min"
     },
     {
-      id: 503,
-      name: "PizzaBurg Beef Burger",
-      description: "Signature beef burger with special sauce",
-      price: 320,
-      image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      category: "burgers",
-      rating: 4.8,
-      prepTime: "15-20 min"
-    },
-    {
-      id: 504,
-      name: "Chicken Cheese Burger",
-      description: "Crispy chicken burger with cheese",
-      price: 280,
-      image: "https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      category: "burgers",
+      id: 305,
+      name: "Beef Pizza",
+      description: "Beef topping with special sauce",
+      price: 1100,
+      image: "https://images.unsplash.com/photo-1552539618-7e79ce6bc0c6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "pizza",
       rating: 4.7,
+      prepTime: "25-30 min"
+    },
+    {
+      id: 306,
+      name: "BBQ Chicken Pizza",
+      description: "BBQ sauce with chicken",
+      price: 1000,
+      image: "https://images.unsplash.com/photo-1593246049226-ded77bf90326?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "pizza",
+      rating: 4.8,
+      prepTime: "25-30 min"
+    },
+    {
+      id: 307,
+      name: "Margherita Pizza",
+      description: "Classic tomato and mozzarella",
+      price: 700,
+      image: "https://images.unsplash.com/photo-1604068549290-dea0e4a305ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "pizza",
+      rating: 4.5,
       prepTime: "15-20 min"
     },
     {
-      id: 505,
+      id: 308,
+      name: "Chicken Pasta",
+      description: "Creamy chicken pasta",
+      price: 550,
+      image: "https://images.unsplash.com/photo-1551183053-bf91a1d81141?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "pasta",
+      rating: 4.6,
+      prepTime: "20-25 min"
+    },
+    {
+      id: 309,
+      name: "Beef Pasta",
+      description: "Beef in tomato sauce pasta",
+      price: 600,
+      image: "https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "pasta",
+      rating: 4.5,
+      prepTime: "20-25 min"
+    },
+    {
+      id: 310,
+      name: "Spaghetti Bolognese",
+      description: "Classic spaghetti with meat sauce",
+      price: 500,
+      image: "https://images.unsplash.com/photo-1563379926898-05f4575a45d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "pasta",
+      rating: 4.7,
+      prepTime: "20-25 min"
+    },
+    {
+      id: 311,
+      name: "Garlic Bread",
+      description: "Fresh baked garlic bread",
+      price: 200,
+      image: "https://images.unsplash.com/photo-1573140247632-f8fd74997d5c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "sides",
+      rating: 4.4,
+      prepTime: "10-15 min"
+    },
+    {
+      id: 312,
+      name: "Cheese Garlic Bread",
+      description: "Garlic bread with cheese",
+      price: 250,
+      image: "https://images.unsplash.com/photo-1528207776546-365bb710ee93?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "sides",
+      rating: 4.6,
+      prepTime: "10-15 min"
+    },
+    {
+      id: 313,
       name: "French Fries",
       description: "Crispy golden fries",
-      price: 120,
+      price: 150,
       image: "https://images.unsplash.com/photo-1576107232684-1279f7b71308?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
       category: "sides",
       rating: 4.3,
       prepTime: "10-15 min"
     },
     {
-      id: 506,
+      id: 314,
       name: "Chicken Wings (6 pcs)",
       description: "Spicy chicken wings",
-      price: 300,
+      price: 350,
       image: "https://images.unsplash.com/photo-1567620832903-9fc6debc209f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
       category: "sides",
-      rating: 4.5,
+      rating: 4.7,
       prepTime: "15-20 min"
     },
     {
-      id: 507,
-      name: "Onion Rings",
-      description: "Crispy battered onion rings",
-      price: 150,
-      image: "https://images.unsplash.com/photo-1639024471285-88d6a66c15ba?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      category: "sides",
-      rating: 4.4,
+      id: 315,
+      name: "Chicken Caesar Salad",
+      description: "Fresh salad with chicken",
+      price: 400,
+      image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "salads",
+      rating: 4.5,
       prepTime: "10-15 min"
     },
     {
-      id: 508,
+      id: 316,
+      name: "Garden Salad",
+      description: "Fresh vegetable salad",
+      price: 250,
+      image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "salads",
+      rating: 4.3,
+      prepTime: "5-10 min"
+    },
+    {
+      id: 317,
+      name: "Chocolate Brownie",
+      description: "Warm chocolate brownie",
+      price: 300,
+      image: "https://images.unsplash.com/photo-1564355808539-22fda35c7d0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "desserts",
+      rating: 4.8,
+      prepTime: "5-10 min"
+    },
+    {
+      id: 318,
+      name: "Chocolate Mousse",
+      description: "Creamy chocolate mousse",
+      price: 350,
+      image: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "desserts",
+      rating: 4.6,
+      prepTime: "5-10 min"
+    },
+    {
+      id: 319,
       name: "Soft Drinks",
       description: "Various soft drinks",
-      price: 80,
+      price: 100,
       image: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
       category: "drinks",
       rating: 4.2,
       prepTime: "2 min"
     },
     {
-      id: 509,
-      name: "Chocolate Milkshake",
-      description: "Creamy chocolate milkshake",
+      id: 320,
+      name: "Fresh Lemonade",
+      description: "Freshly made lemonade",
       price: 200,
-      image: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      image: "https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
       category: "drinks",
-      rating: 4.6,
-      prepTime: "5-10 min"
-    },
-    {
-      id: 510,
-      name: "Ice Cream Sundae",
-      description: "Chocolate ice cream sundae",
-      price: 180,
-      image: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      category: "desserts",
       rating: 4.5,
-      prepTime: "5-10 min"
+      prepTime: "5 min"
     }
   ];
 
@@ -242,10 +342,11 @@ const PizzaBurgMenu = () => {
   const categories = [
     { id: "all", name: "All Items", count: menuItems.length },
     { id: "pizza", name: "Pizza", count: menuItems.filter(item => item.category === "pizza").length },
-    { id: "burgers", name: "Burgers", count: menuItems.filter(item => item.category === "burgers").length },
+    { id: "pasta", name: "Pasta", count: menuItems.filter(item => item.category === "pasta").length },
     { id: "sides", name: "Sides", count: menuItems.filter(item => item.category === "sides").length },
-    { id: "drinks", name: "Drinks", count: menuItems.filter(item => item.category === "drinks").length },
-    { id: "desserts", name: "Desserts", count: menuItems.filter(item => item.category === "desserts").length }
+    { id: "salads", name: "Salads", count: menuItems.filter(item => item.category === "salads").length },
+    { id: "desserts", name: "Desserts", count: menuItems.filter(item => item.category === "desserts").length },
+    { id: "drinks", name: "Drinks", count: menuItems.filter(item => item.category === "drinks").length }
   ];
 
   // ফিল্টার করা মেনু আইটেম
@@ -261,12 +362,12 @@ const PizzaBurgMenu = () => {
       price: item.price,
       image: item.image,
       category: item.category,
-      restaurant: "PizzaBurg",
+      restaurant: "Pizza Hut",
       quantity: quantity[item.id] || 1,
       maxQuantity: 10,
-      restaurantId: 6,
-      deliveryTime: "25-35 min",
-      location: "Various locations in Dhaka",
+      restaurantId: 4,
+      deliveryTime: "35-45 min",
+      location: "Uttara, Dhaka",
       description: item.description
     };
     
@@ -332,8 +433,8 @@ const PizzaBurgMenu = () => {
           price: item.price,
           image: item.image,
           category: item.category,
-          restaurant: "PizzaBurg",
-          restaurantId: 6
+          restaurant: "Pizza Hut",
+          restaurantId: 4
         };
         toast.success(`${item.name} added to wishlist! ❤️`, {
           position: "top-right",
@@ -363,19 +464,19 @@ const PizzaBurgMenu = () => {
 
   // রেস্টুরেন্ট ডিটেইল
   const restaurantInfo = {
-    name: "PizzaBurg",
-    rating: 4.4,
-    deliveryTime: "25-35 min",
-    minOrder: 300,
-    deliveryFee: 50,
-    locations: ["Gulshan", "Dhanmondi", "Uttara", "Mirpur"],
-    cuisine: ["Pizza", "Burgers", "Fast Food"],
-    openingHours: "11:00 AM - 11:00 PM",
-    established: "2015"
+    name: "Pizza Hut",
+    rating: 4.3,
+    deliveryTime: "35-45 min",
+    minOrder: 400,
+    deliveryFee: 70,
+    locations: ["Uttara", "Gulshan", "Banani", "Dhanmondi"],
+    cuisine: ["Italian", "Pizza", "Pasta", "Fast Food"],
+    openingHours: "10:00 AM - 11:00 PM",
+    established: "1958"
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white pb-20">
+    <div className="min-h-screen bg-gradient-to-b from-red-50 to-white pb-20">
       <style jsx global>{`
         @keyframes fadeIn {
           from {
@@ -402,9 +503,9 @@ const PizzaBurgMenu = () => {
         }
         
         .category-btn.active {
-          background: linear-gradient(135deg, #f97316, #ea580c);
+          background: linear-gradient(135deg, #dc2626, #b91c1c);
           color: white;
-          box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
+          box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
         }
         
         /* কালো + এবং - বাটনের স্টাইল */
@@ -646,39 +747,39 @@ const PizzaBurgMenu = () => {
       {/* Main Content */}
       <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6">
         {/* Restaurant Info Card */}
-        <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-orange-200 p-4 sm:p-6 mb-6 sm:mb-8 fade-in">
+        <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-red-200 p-4 sm:p-6 mb-6 sm:mb-8 fade-in">
           <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6 restaurant-info-mobile">
             <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto">
-              <div className="logo-mobile w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden border-2 sm:border-4 border-orange-100 shadow-md">
+              <div className="logo-mobile w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden border-2 sm:border-4 border-red-100 shadow-md">
                 <img 
-                  src="https://i.postimg.cc/qBmMSFHK/logo-1727.jpg" 
-                  alt="PizzaBurg Logo"
+                  src="https://i.postimg.cc/fTJTNvMV/Pizza-Hut.png" 
+                  alt="Pizza Hut Logo"
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="flex-1">
                 <h2 className="title-mobile text-2xl sm:text-3xl font-bold text-gray-900">{restaurantInfo.name}</h2>
-                <p className="subtitle-mobile text-sm sm:text-lg text-gray-600 mt-1">Pizza & Burgers since {restaurantInfo.established}</p>
+                <p className="subtitle-mobile text-sm sm:text-lg text-gray-600 mt-1">World famous pizza since {restaurantInfo.established}</p>
               </div>
             </div>
             
             <div className="w-full">
               <div className="flex flex-wrap gap-2 sm:gap-4 mt-2 stats-mobile">
-                <div className="stat-item-mobile flex items-center gap-1 bg-orange-50 px-3 py-2 rounded-lg">
-                  <Star className="w-4 h-4 sm:w-5 sm:h-5 fill-orange-400 text-orange-400" />
+                <div className="stat-item-mobile flex items-center gap-1 bg-red-50 px-3 py-2 rounded-lg">
+                  <Star className="w-4 h-4 sm:w-5 sm:h-5 fill-red-400 text-red-400" />
                   <span className="font-bold text-base sm:text-lg text-gray-900">{restaurantInfo.rating}</span>
-                  <span className="text-xs sm:text-sm text-gray-500">(400+)</span>
+                  <span className="text-xs sm:text-sm text-gray-500">(1500+)</span>
                 </div>
-                <div className="stat-item-mobile flex items-center gap-1 bg-orange-50 px-3 py-2 rounded-lg">
+                <div className="stat-item-mobile flex items-center gap-1 bg-red-50 px-3 py-2 rounded-lg">
                   <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500" />
                   <span className="font-medium text-sm sm:text-base text-gray-900">{restaurantInfo.deliveryTime}</span>
                 </div>
-                <div className="stat-item-mobile flex items-center gap-1 bg-orange-50 px-3 py-2 rounded-lg">
+                <div className="stat-item-mobile flex items-center gap-1 bg-red-50 px-3 py-2 rounded-lg">
                   <span className="text-sm sm:text-base text-gray-900">
                     Min: <span className="font-bold">৳{restaurantInfo.minOrder}</span>
                   </span>
                 </div>
-                <div className="stat-item-mobile flex items-center gap-1 bg-orange-50 px-3 py-2 rounded-lg">
+                <div className="stat-item-mobile flex items-center gap-1 bg-red-50 px-3 py-2 rounded-lg">
                   <span className="text-sm sm:text-base text-gray-900">
                     Fee: <span className="font-bold">৳{restaurantInfo.deliveryFee}</span>
                   </span>
@@ -686,26 +787,26 @@ const PizzaBurgMenu = () => {
               </div>
               
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mt-4 sm:mt-6 info-grid-mobile">
-                <div className="bg-orange-50 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
+                <div className="bg-red-50 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
                   <div className="text-xs sm:text-sm text-gray-600 font-medium mb-1">Cuisine</div>
                   <div className="font-medium text-sm sm:text-base text-gray-800 truncate">{restaurantInfo.cuisine.join(", ")}</div>
                 </div>
-                <div className="bg-orange-50 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
+                <div className="bg-red-50 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
                   <div className="text-xs sm:text-sm text-gray-600 font-medium mb-1">Locations</div>
                   <div className="font-medium text-sm sm:text-base text-gray-800 truncate">{restaurantInfo.locations.join(", ")}</div>
                 </div>
-                <div className="bg-orange-50 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
+                <div className="bg-red-50 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
                   <div className="text-xs sm:text-sm text-gray-600 font-medium mb-1">Open Hours</div>
                   <div className="font-medium text-sm sm:text-base text-gray-800">{restaurantInfo.openingHours}</div>
                 </div>
               </div>
               
-              <div className="special-offer-mobile bg-gradient-to-br from-orange-100 to-amber-100 rounded-lg sm:rounded-xl p-4 sm:p-5 border border-orange-200 shadow-md mt-4 sm:mt-0">
+              <div className="special-offer-mobile bg-gradient-to-br from-red-100 to-orange-100 rounded-lg sm:rounded-xl p-4 sm:p-5 border border-red-200 shadow-md mt-4 sm:mt-0">
                 <div className="flex items-center gap-3">
-                  <ChefHat className="w-8 h-8 sm:w-10 sm:h-10 text-orange-600" />
+                  <ChefHat className="w-8 h-8 sm:w-10 sm:h-10 text-red-600" />
                   <div>
-                    <div className="text-lg sm:text-xl font-bold text-orange-800">Special Offer</div>
-                    <div className="text-sm sm:text-lg text-orange-700 font-medium">Buy 1 Pizza Get 1 Burger Free</div>
+                    <div className="text-lg sm:text-xl font-bold text-red-800">Special Offer</div>
+                    <div className="text-sm sm:text-lg text-red-700 font-medium">Buy 1 Get 1 Free on Pizzas</div>
                     <div className="text-xs sm:text-sm text-gray-700 mt-1 bg-white/50 py-1 px-2 sm:px-3 rounded-full inline-block">
                       Limited time offer
                     </div>
@@ -804,7 +905,7 @@ const PizzaBurgMenu = () => {
                       {item.description}
                     </p>
                   </div>
-                  <div className="text-orange-600 font-bold text-xl sm:text-2xl ml-2 item-price-mobile">
+                  <div className="text-red-600 font-bold text-xl sm:text-2xl ml-2 item-price-mobile">
                     ৳{item.price}
                   </div>
                 </div>
@@ -819,7 +920,7 @@ const PizzaBurgMenu = () => {
                       <Star className="w-3 h-3 sm:w-4 sm:h-4 fill-amber-400 text-amber-400" />
                       <span className="font-medium text-gray-800">{item.rating}</span>
                     </div>
-                    <div className="capitalize bg-orange-100 text-orange-800 px-2 py-1 rounded-md text-xs font-medium">
+                    <div className="capitalize bg-red-100 text-red-800 px-2 py-1 rounded-md text-xs font-medium">
                       {item.category}
                     </div>
                   </div>
@@ -849,7 +950,7 @@ const PizzaBurgMenu = () => {
                   
                   <button
                     onClick={() => addToCart(item)}
-                    className="w-full sm:flex-1 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-semibold py-2.5 sm:py-3 md:py-3.5 rounded-lg sm:rounded-xl transition-all duration-300 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 text-sm sm:text-base add-to-cart-btn-mobile"
+                    className="w-full sm:flex-1 bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-semibold py-2.5 sm:py-3 md:py-3.5 rounded-lg sm:rounded-xl transition-all duration-300 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 text-sm sm:text-base add-to-cart-btn-mobile"
                   >
                     <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
                     Add to Cart
@@ -863,14 +964,14 @@ const PizzaBurgMenu = () => {
         {/* Empty State */}
         {filteredItems.length === 0 && (
           <div className="text-center py-12 sm:py-16">
-            <div className="w-20 h-20 sm:w-28 sm:h-28 mx-auto mb-4 sm:mb-6 rounded-full bg-orange-100 flex items-center justify-center shadow-lg">
-              <ChefHat className="w-10 h-10 sm:w-14 sm:h-14 text-orange-500" />
+            <div className="w-20 h-20 sm:w-28 sm:h-28 mx-auto mb-4 sm:mb-6 rounded-full bg-red-100 flex items-center justify-center shadow-lg">
+              <ChefHat className="w-10 h-10 sm:w-14 sm:h-14 text-red-500" />
             </div>
             <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 sm:mb-3">No items found</h3>
             <p className="text-gray-600 mb-6 sm:mb-8 text-sm sm:text-lg">Try selecting a different category</p>
             <button
               onClick={() => setActiveCategory("all")}
-              className="px-6 py-2.5 sm:px-8 sm:py-3.5 bg-gradient-to-r from-orange-500 to-amber-500 text-white font-semibold rounded-full hover:shadow-xl transition-all duration-300 text-sm sm:text-lg"
+              className="px-6 py-2.5 sm:px-8 sm:py-3.5 bg-gradient-to-r from-red-500 to-orange-500 text-white font-semibold rounded-full hover:shadow-xl transition-all duration-300 text-sm sm:text-lg"
             >
               View All Menu Items
             </button>
@@ -937,7 +1038,7 @@ const PizzaBurgMenu = () => {
         </button>
         <button
           onClick={handleViewCartToast}
-          className="bg-gradient-to-r from-orange-500 to-amber-500 text-white font-semibold px-6 py-3.5 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center gap-2"
+          className="bg-gradient-to-r from-red-500 to-orange-500 text-white font-semibold px-6 py-3.5 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center gap-2"
         >
           <ShoppingCart className="w-5 h-5" />
           View Cart ({cartItems.length})
@@ -948,4 +1049,4 @@ const PizzaBurgMenu = () => {
   );
 };
 
-export default PizzaBurgMenu;
+export default PizzaHutMenu;

@@ -1,7 +1,7 @@
-// App.jsx - Updated with KacchiBhaiMenu import
+// App.jsx - Updated with all restaurant menus
 import { Routes, Route } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify'; // এই লাইনটি অ্যাড করুন
-import 'react-toastify/dist/ReactToastify.css'; // এই লাইনটি অ্যাড করুন
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Root from './Root';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -11,7 +11,10 @@ import UserRegister from './pages/UserRegister';
 import RestaurantPartnerRegister from './pages/RestaurantPartnerRegister';
 import BusinessAccountRegister from './pages/BusinessAccountRegister';
 import SultansDineMenu from './pages/brands/SultansDineMenu';
-import KacchiBhaiMenu from './pages/brands/KacchiBhaiMenu'; // Added import
+import KacchiBhaiMenu from './pages/brands/KacchiBhaiMenu';
+import ChilloxMenu from './pages/brands/ChilloxMenu';
+import PizzaHutMenu from './pages/brands/PizzaHutMenu';
+
 
 // Simple brand page component
 const BrandPage = ({ brandName = "Brand" }) => (
@@ -46,7 +49,9 @@ function App() {
           
           {/* Restaurant Menu Routes */}
           <Route path="restaurant/sultans-dine" element={<SultansDineMenu />} />
-          <Route path="restaurant/kacchi-bhai" element={<KacchiBhaiMenu />} /> {/* Added route */}
+          <Route path="restaurant/kacchi-bhai" element={<KacchiBhaiMenu />} />
+          <Route path="restaurant/chillox" element={<ChilloxMenu />} />
+          <Route path="restaurant/pizza-hut" element={<PizzaHutMenu />} />
           
           {/* Simple brand routes */}
           <Route path="brand/sultans-dine" element={<BrandPage brandName="Sultan's Dine" />} />
