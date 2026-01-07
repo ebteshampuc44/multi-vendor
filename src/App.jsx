@@ -1,5 +1,7 @@
 // App.jsx - Updated with KacchiBhaiMenu import
 import { Routes, Route } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify'; // এই লাইনটি অ্যাড করুন
+import 'react-toastify/dist/ReactToastify.css'; // এই লাইনটি অ্যাড করুন
 import Root from './Root';
 import Home from './pages/Home';
 import Login from './pages/Login';
@@ -29,35 +31,51 @@ const BrandPage = ({ brandName = "Brand" }) => (
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<Root />}>
-        <Route index element={<Home />} />
-        <Route path="login" element={<Login />} />
-        <Route path="cart" element={<Cart />} />
-        <Route path="wishlist" element={<Wishlist />} />
+    <>
+      <Routes>
+        <Route path="/" element={<Root />}>
+          <Route index element={<Home />} />
+          <Route path="login" element={<Login />} />
+          <Route path="cart" element={<Cart />} />
+          <Route path="wishlist" element={<Wishlist />} />
 
-        {/* Registration Routes */}
-        <Route path="register/user" element={<UserRegister />} />
-        <Route path="register/restaurant-partner" element={<RestaurantPartnerRegister />} />
-        <Route path="register/business-account" element={<BusinessAccountRegister />} />
-        
-        {/* Restaurant Menu Routes */}
-        <Route path="restaurant/sultans-dine" element={<SultansDineMenu />} />
-        <Route path="restaurant/kacchi-bhai" element={<KacchiBhaiMenu />} /> {/* Added route */}
-        
-        {/* Simple brand routes */}
-        <Route path="brand/sultans-dine" element={<BrandPage brandName="Sultan's Dine" />} />
-        <Route path="brand/kacchi-bhai" element={<BrandPage brandName="Kacchi Bhai" />} />
-        <Route path="brand/7days-restaurant" element={<BrandPage brandName="7 Days Restaurant" />} />
-        <Route path="brand/chillox" element={<BrandPage brandName="Chillox" />} />
-        <Route path="brand/pizzaburg" element={<BrandPage brandName="PizzaBurg" />} />
-        <Route path="brand/kacchi-dine" element={<BrandPage brandName="Kacchi Dine" />} />
-        <Route path="brand/sadias-kitchen" element={<BrandPage brandName="sadia's kitchen" />} />
-        <Route path="brand/pizza-hut" element={<BrandPage brandName="Pizza Hut" />} />
-        <Route path="brand/dominos-pizza" element={<BrandPage brandName="Domino's Pizza" />} />
-        <Route path="brand/kfc" element={<BrandPage brandName="KFC" />} />
-      </Route>
-    </Routes>
+          {/* Registration Routes */}
+          <Route path="register/user" element={<UserRegister />} />
+          <Route path="register/restaurant-partner" element={<RestaurantPartnerRegister />} />
+          <Route path="register/business-account" element={<BusinessAccountRegister />} />
+          
+          {/* Restaurant Menu Routes */}
+          <Route path="restaurant/sultans-dine" element={<SultansDineMenu />} />
+          <Route path="restaurant/kacchi-bhai" element={<KacchiBhaiMenu />} /> {/* Added route */}
+          
+          {/* Simple brand routes */}
+          <Route path="brand/sultans-dine" element={<BrandPage brandName="Sultan's Dine" />} />
+          <Route path="brand/kacchi-bhai" element={<BrandPage brandName="Kacchi Bhai" />} />
+          <Route path="brand/7days-restaurant" element={<BrandPage brandName="7 Days Restaurant" />} />
+          <Route path="brand/chillox" element={<BrandPage brandName="Chillox" />} />
+          <Route path="brand/pizzaburg" element={<BrandPage brandName="PizzaBurg" />} />
+          <Route path="brand/kacchi-dine" element={<BrandPage brandName="Kacchi Dine" />} />
+          <Route path="brand/sadias-kitchen" element={<BrandPage brandName="sadia's kitchen" />} />
+          <Route path="brand/pizza-hut" element={<BrandPage brandName="Pizza Hut" />} />
+          <Route path="brand/dominos-pizza" element={<BrandPage brandName="Domino's Pizza" />} />
+          <Route path="brand/kfc" element={<BrandPage brandName="KFC" />} />
+        </Route>
+      </Routes>
+      
+      {/* Toast Container for notifications */}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
+    </>
   );
 }
 

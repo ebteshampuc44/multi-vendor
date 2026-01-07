@@ -1,7 +1,9 @@
-// KacchiBhaiMenu.jsx - Updated with black + and - buttons
+// KacchiBhaiMenu.jsx - Updated with black + and - buttons and mobile navigation
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ShoppingCart, Star, Clock, ChevronRight, ChefHat, Heart, Menu } from "lucide-react";
+import { ShoppingCart, Star, Clock, ChevronRight, ChefHat, Heart, Menu, Home, User } from "lucide-react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const KacchiBhaiMenu = () => {
   const navigate = useNavigate();
@@ -35,6 +37,102 @@ const KacchiBhaiMenu = () => {
     localStorage.setItem("shopickWishlist", JSON.stringify(wishlist));
     window.dispatchEvent(new Event('wishlistUpdated'));
   }, [wishlist]);
+
+  // Shopping cart button টোস্ট সহকারে - Home.jsx থেকে
+  const handleViewCartToast = () => {
+    if (cartItems.length > 0) {
+      toast.info(`🛒 You have ${cartItems.length} items in cart`, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        style: {
+          background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+          color: 'white',
+          fontWeight: '600',
+          fontSize: '14px',
+          borderRadius: '12px',
+          boxShadow: '0 4px 12px rgba(217, 119, 6, 0.3)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+        },
+      });
+    } else {
+      toast.info(`🛒 Your cart is empty`, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        style: {
+          background: 'linear-gradient(135deg, #6b7280 0%, #4b5563 100%)',
+          color: 'white',
+          fontWeight: '600',
+          fontSize: '14px',
+          borderRadius: '12px',
+          boxShadow: '0 4px 12px rgba(75, 85, 99, 0.3)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+        },
+      });
+    }
+    setTimeout(() => {
+      navigate('/cart');
+    }, 500);
+  };
+
+  // Wishlist button টোস্ট সহকারে - Home.jsx থেকে
+  const handleViewWishlistToast = () => {
+    if (wishlist.length > 0) {
+      toast.info(`❤️ You have ${wishlist.length} items in wishlist`, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        style: {
+          background: 'linear-gradient(135deg, #ec4899 0%, #db2777 100%)',
+          color: 'white',
+          fontWeight: '600',
+          fontSize: '14px',
+          borderRadius: '12px',
+          boxShadow: '0 4px 12px rgba(219, 39, 119, 0.3)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+        },
+      });
+    } else {
+      toast.info(`❤️ Your wishlist is empty`, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        style: {
+          background: 'linear-gradient(135deg, #6b7280 0%, #4b5563 100%)',
+          color: 'white',
+          fontWeight: '600',
+          fontSize: '14px',
+          borderRadius: '12px',
+          boxShadow: '0 4px 12px rgba(75, 85, 99, 0.3)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+        },
+      });
+    }
+    setTimeout(() => {
+      navigate('/wishlist');
+    }, 500);
+  };
 
   // মেনু আইটেম ডেটা - Kacchi Bhai এর জন্য
   const menuItems = [
@@ -296,7 +394,26 @@ const KacchiBhaiMenu = () => {
     });
     
     setQuantity(prev => ({ ...prev, [item.id]: 1 }));
-    alert(`${item.name} added to cart!`);
+    toast.success(`${item.name} added to cart! 🎉`, {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      icon: "🛒",
+      style: {
+        background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
+        color: 'white',
+        fontWeight: '600',
+        fontSize: '14px',
+        borderRadius: '12px',
+        boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+      },
+    });
   };
 
   // Wishlist ফাংশন
@@ -307,6 +424,11 @@ const KacchiBhaiMenu = () => {
       if (existingItemIndex !== -1) {
         const updatedItems = [...prev];
         updatedItems.splice(existingItemIndex, 1);
+        toast.info(`${item.name} removed from wishlist`, {
+          position: "top-right",
+          autoClose: 2000,
+          theme: "dark",
+        });
         return updatedItems;
       } else {
         const wishlistItem = {
@@ -318,6 +440,11 @@ const KacchiBhaiMenu = () => {
           restaurant: "Kacchi Bhai",
           restaurantId: 2
         };
+        toast.success(`${item.name} added to wishlist! ❤️`, {
+          position: "top-right",
+          autoClose: 2000,
+          theme: "dark",
+        });
         return [...prev, wishlistItem];
       }
     });
@@ -363,7 +490,7 @@ const KacchiBhaiMenu = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-red-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-red-50 to-white pb-20">
       <style jsx global>{`
         @keyframes fadeIn {
           from {
@@ -466,6 +593,55 @@ const KacchiBhaiMenu = () => {
           color: #000000 !important;
         }
         
+        /* মোবাইল বটম নেভিগেশন স্টাইল */
+        .mobile-bottom-nav {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background: white;
+          border-top: 1px solid #e5e7eb;
+          padding: 0.75rem 1rem;
+          z-index: 50;
+          box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .mobile-bottom-nav .nav-buttons {
+          display: flex;
+          justify-content: space-around;
+          width: 100%;
+        }
+        
+        .mobile-bottom-nav .nav-btn {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0.25rem;
+          padding: 0.5rem;
+          border-radius: 0.5rem;
+          transition: background-color 0.2s;
+          position: relative;
+        }
+        
+        .mobile-bottom-nav .nav-btn:hover {
+          background-color: #f9fafb;
+        }
+        
+        .mobile-bottom-nav .badge {
+          position: absolute;
+          top: -5px;
+          right: -5px;
+          background-color: #ef4444;
+          color: white;
+          font-size: 0.75rem;
+          border-radius: 50%;
+          width: 18px;
+          height: 18px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        
         /* মোবাইল জন্য বিশেষ স্টাইল */
         @media (max-width: 640px) {
           .restaurant-info-mobile {
@@ -560,38 +736,6 @@ const KacchiBhaiMenu = () => {
           
           .add-to-cart-btn-mobile {
             width: 100%;
-          }
-          
-          .mobile-bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: white;
-            border-top: 1px solid #e5e7eb;
-            padding: 0.75rem 1rem;
-            z-index: 50;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-          }
-          
-          .nav-buttons-mobile {
-            display: flex;
-            justify-content: space-around;
-            width: 100%;
-          }
-          
-          .nav-btn-mobile {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.25rem;
-            padding: 0.5rem;
-            border-radius: 0.5rem;
-            transition: background-color 0.2s;
-          }
-          
-          .nav-btn-mobile.active {
-            background-color: #fee2e2;
           }
         }
         
@@ -849,12 +993,20 @@ const KacchiBhaiMenu = () => {
         )}
       </div>
 
-      {/* Mobile Bottom Navigation */}
+      {/* Mobile Bottom Navigation - Home.jsx এর মতোই */}
       <div className="lg:hidden mobile-bottom-nav">
-        <div className="nav-buttons-mobile">
+        <div className="nav-buttons">
           <button
-            onClick={viewWishlist}
-            className={`nav-btn-mobile ${activeCategory === 'wishlist' ? 'active' : ''}`}
+            onClick={() => navigate('/')}
+            className="nav-btn text-gray-600 hover:text-green-600"
+          >
+            <Home className="w-5 h-5" />
+            <span className="text-xs font-medium">Home</span>
+          </button>
+          
+          <button
+            onClick={handleViewWishlistToast}
+            className="nav-btn text-gray-600 hover:text-pink-600"
           >
             <Heart 
               className="w-5 h-5" 
@@ -863,31 +1015,27 @@ const KacchiBhaiMenu = () => {
             />
             <span className="text-xs font-medium">Wishlist</span>
             {wishlist.length > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                {wishlist.length}
-              </span>
+              <span className="badge">{wishlist.length}</span>
             )}
           </button>
           
           <button
-            onClick={() => setShowCategories(!showCategories)}
-            className={`nav-btn-mobile ${showCategories ? 'active' : ''}`}
-          >
-            <Menu className="w-5 h-5" />
-            <span className="text-xs font-medium">Categories</span>
-          </button>
-          
-          <button
-            onClick={viewCart}
-            className="nav-btn-mobile relative"
+            onClick={handleViewCartToast}
+            className="nav-btn text-gray-600 hover:text-blue-600"
           >
             <ShoppingCart className="w-5 h-5" />
             <span className="text-xs font-medium">Cart</span>
             {cartItems.length > 0 && (
-              <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
-                {cartItems.length}
-              </span>
+              <span className="badge">{cartItems.length}</span>
             )}
+          </button>
+          
+          <button
+            onClick={() => navigate('/profile')}
+            className="nav-btn text-gray-600 hover:text-purple-600"
+          >
+            <User className="w-5 h-5" />
+            <span className="text-xs font-medium">Profile</span>
           </button>
         </div>
       </div>
@@ -895,7 +1043,7 @@ const KacchiBhaiMenu = () => {
       {/* Desktop Floating Buttons */}
       <div className="hidden lg:flex fixed bottom-8 right-8 z-40 gap-3">
         <button
-          onClick={viewWishlist}
+          onClick={handleViewWishlistToast}
           className="relative bg-white text-gray-700 font-medium px-5 py-3 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center gap-2 border border-gray-200"
         >
           <Heart className="w-5 h-5" fill={wishlist.length > 0 ? "#ef4444" : "none"} 
@@ -903,7 +1051,7 @@ const KacchiBhaiMenu = () => {
           <span>Wishlist ({wishlist.length})</span>
         </button>
         <button
-          onClick={viewCart}
+          onClick={handleViewCartToast}
           className="bg-gradient-to-r from-red-500 to-red-600 text-white font-semibold px-6 py-3.5 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center gap-2"
         >
           <ShoppingCart className="w-5 h-5" />

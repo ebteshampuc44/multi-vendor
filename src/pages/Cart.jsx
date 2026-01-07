@@ -1,7 +1,7 @@
-// Cart.jsx - Mobile Responsive
+// Cart.jsx - Mobile Responsive with Bottom Navigation
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ShoppingCart, Trash2, Plus, Minus, ArrowLeft, Tag, Clock, MapPin, Heart } from "lucide-react";
+import { ShoppingCart, Trash2, Plus, Minus, ArrowLeft, Tag, Clock, MapPin, Heart, Home, User, Menu } from "lucide-react";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -9,10 +9,12 @@ const Cart = () => {
   const [subtotal, setSubtotal] = useState(0);
   const [tax, setTax] = useState(0);
   const [total, setTotal] = useState(0);
+  const [wishlistItems, setWishlistItems] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     loadCart();
+    loadWishlist();
   }, []);
 
   const loadCart = () => {
@@ -24,6 +26,13 @@ const Cart = () => {
       calculateTotals(items);
     }
     setLoading(false);
+  };
+
+  const loadWishlist = () => {
+    const savedWishlist = localStorage.getItem("shopickWishlist");
+    if (savedWishlist) {
+      setWishlistItems(JSON.parse(savedWishlist));
+    }
   };
 
   const calculateTotals = (items) => {
@@ -73,6 +82,7 @@ const Cart = () => {
       wishlist.push(wishlistItem);
       localStorage.setItem("shopickWishlist", JSON.stringify(wishlist));
       window.dispatchEvent(new Event('wishlistUpdated'));
+      setWishlistItems(wishlist);
     }
     
     removeFromCart(item.id);
@@ -112,7 +122,7 @@ const Cart = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pb-20">
       <style jsx global>{`
         .fade-in {
           animation: fadeIn 0.5s ease-out;
@@ -126,6 +136,61 @@ const Cart = () => {
           to {
             opacity: 1;
             transform: translateY(0);
+          }
+        }
+        
+        /* মোবাইল বটম নেভিগেশন স্টাইল */
+        .mobile-bottom-nav {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background: white;
+          border-top: 1px solid #e5e7eb;
+          padding: 0.75rem 1rem;
+          z-index: 50;
+          box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .mobile-bottom-nav .nav-buttons {
+          display: flex;
+          justify-content: space-around;
+          width: 100%;
+        }
+        
+        .mobile-bottom-nav .nav-btn {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0.25rem;
+          padding: 0.5rem;
+          border-radius: 0.5rem;
+          transition: background-color 0.2s;
+          position: relative;
+        }
+        
+        .mobile-bottom-nav .nav-btn:hover {
+          background-color: #f9fafb;
+        }
+        
+        .mobile-bottom-nav .badge {
+          position: absolute;
+          top: -5px;
+          right: -5px;
+          background-color: #ef4444;
+          color: white;
+          font-size: 0.75rem;
+          border-radius: 50%;
+          width: 18px;
+          height: 18px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        @media (min-width: 1024px) {
+          .mobile-bottom-nav {
+            display: none;
           }
         }
       `}</style>
@@ -427,6 +492,53 @@ const Cart = () => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Mobile Bottom Navigation - KacchiBhaiMenu.jsx এর মতোই */}
+      <div className="lg:hidden mobile-bottom-nav">
+        <div className="nav-buttons">
+          <button
+            onClick={() => navigate('/')}
+            className="nav-btn text-gray-600 hover:text-green-600"
+          >
+            <Home className="w-5 h-5" />
+            <span className="text-xs font-medium">Home</span>
+          </button>
+          
+          <button
+            onClick={() => navigate('/wishlist')}
+            className="nav-btn text-gray-600 hover:text-pink-600"
+          >
+            <Heart 
+              className="w-5 h-5" 
+              fill={wishlistItems.length > 0 ? "#ef4444" : "none"}
+              color={wishlistItems.length > 0 ? "#ef4444" : "#6b7280"}
+            />
+            <span className="text-xs font-medium">Wishlist</span>
+            {wishlistItems.length > 0 && (
+              <span className="badge">{wishlistItems.length}</span>
+            )}
+          </button>
+          
+          <button
+            onClick={() => navigate('/cart')}
+            className="nav-btn text-blue-600"
+          >
+            <ShoppingCart className="w-5 h-5" />
+            <span className="text-xs font-medium">Cart</span>
+            {cartItems.length > 0 && (
+              <span className="badge">{cartItems.length}</span>
+            )}
+          </button>
+          
+          <button
+            onClick={() => navigate('/profile')}
+            className="nav-btn text-gray-600 hover:text-purple-600"
+          >
+            <User className="w-5 h-5" />
+            <span className="text-xs font-medium">Profile</span>
+          </button>
         </div>
       </div>
     </div>

@@ -1,6 +1,8 @@
 import { useState, useEffect, useRef } from "react";
-import { ChevronLeft, ChevronRight, Clock, Tag, Heart, Star, MapPin, Timer, ShoppingCart } from "lucide-react";
+import { ChevronLeft, ChevronRight, Clock, Tag, Heart, Star, MapPin, Timer, ShoppingCart, Home as HomeIcon, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const sliderImages = [
   "https://i.ibb.co.com/fdNr8h41/wallpaperflare-com-wallpaper-2.jpg",
@@ -412,31 +414,100 @@ const Home = () => {
     setIndex(slideIndex);
   };
 
-  // ব্র্যান্ড ক্লিক হ্যান্ডলার
+  // ব্র্যান্ড ক্লিক হ্যান্ডলার - উন্নত টোস্ট ডিজাইন সহ
   const handleBrandClick = (brand) => {
-    navigate(brand.url, { state: { brandName: brand.name, brandDescription: brand.description } });
-  };
-
-  // শপ ক্লিক হ্যান্ডলার
-  const handleShopClick = (shop) => {
-    navigate(shop.url, { state: { shopName: shop.name, shopDescription: shop.description } });
-  };
-
-  // রেস্তোরাঁ ক্লিক হ্যান্ডলার
-  const handleRestaurantClick = (restaurant) => {
-    navigate(restaurant.url, { 
-      state: { 
-        restaurantName: restaurant.name, 
-        cuisine: restaurant.cuisine,
-        rating: restaurant.rating,
-        deliveryTime: restaurant.deliveryTime,
-        location: restaurant.location
-      } 
+    toast.info(`🚀 Opening ${brand.name}...`, {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      style: {
+        background: 'linear-gradient(135deg, #1e40af 0%, #3b82f6 100%)',
+        color: 'white',
+        fontWeight: '600',
+        fontSize: '14px',
+        borderRadius: '12px',
+        boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+      },
     });
+    
+    setTimeout(() => {
+      navigate(brand.url, { state: { brandName: brand.name, brandDescription: brand.description } });
+    }, 500);
   };
 
-  // Add to Cart ফাংশন
+  // শপ ক্লিক হ্যান্ডলার - উন্নত টোস্ট ডিজাইন সহ
+  const handleShopClick = (shop) => {
+    toast.info(`🛍️ Opening ${shop.name}...`, {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      style: {
+        background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
+        color: 'white',
+        fontWeight: '600',
+        fontSize: '14px',
+        borderRadius: '12px',
+        boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+      },
+    });
+    
+    setTimeout(() => {
+      navigate(shop.url, { state: { shopName: shop.name, shopDescription: shop.description } });
+    }, 500);
+  };
+
+  // রেস্তোরাঁ ক্লিক হ্যান্ডলার - উন্নত টোস্ট ডিজাইন সহ
+  const handleRestaurantClick = (restaurant) => {
+    toast.info(`🍽️ Opening ${restaurant.name} menu...`, {
+      position: "top-right",
+      autoClose: 1500,
+      hideProgressBar: true,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      style: {
+        background: 'linear-gradient(135deg, #7c3aed 0%, #8b5cf6 100%)',
+        color: 'white',
+        fontWeight: '600',
+        fontSize: '14px',
+        borderRadius: '12px',
+        boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+      },
+    });
+    
+    setTimeout(() => {
+      navigate(restaurant.url, { 
+        state: { 
+          restaurantName: restaurant.name, 
+          cuisine: restaurant.cuisine,
+          rating: restaurant.rating,
+          deliveryTime: restaurant.deliveryTime,
+          location: restaurant.location
+        } 
+      });
+    }, 500);
+  };
+
+  // Add to Cart ফাংশন - শুধু একবার টোস্ট দেখাবে
   const addToCart = (restaurant) => {
+    // আগের সব টোস্ট ক্লিয়ার করুন (যদি থাকে)
+    toast.dismiss();
+    
     const cartItem = {
       id: Date.now(), // Unique ID
       name: restaurant.name,
@@ -452,27 +523,157 @@ const Home = () => {
       priceRange: restaurant.priceRange
     };
     
-    setCartItems(prev => {
-      const existingItemIndex = prev.findIndex(item => 
-        item.restaurantId === restaurant.id && item.name === restaurant.name
-      );
-      
-      if (existingItemIndex !== -1) {
-        const updatedItems = [...prev];
-        updatedItems[existingItemIndex] = {
-          ...updatedItems[existingItemIndex],
-          quantity: Math.min(
-            updatedItems[existingItemIndex].quantity + 1,
-            updatedItems[existingItemIndex].maxQuantity
-          )
-        };
-        return updatedItems;
-      } else {
-        return [...prev, cartItem];
-      }
-    });
+    // প্রথমে কার্ট আইটেম আপডেট করুন
+    const updatedCartItems = [...cartItems];
+    const existingItemIndex = updatedCartItems.findIndex(item => 
+      item.restaurantId === restaurant.id && item.name === restaurant.name
+    );
     
-    alert(`${restaurant.name} added to cart!`);
+    let message = "";
+    let icon = "🛒";
+    
+    if (existingItemIndex !== -1) {
+      // আইটেম ইতিমধ্যে কার্টে আছে, ক্যোয়ান্টিটি বাড়ান
+      updatedCartItems[existingItemIndex] = {
+        ...updatedCartItems[existingItemIndex],
+        quantity: Math.min(
+          updatedCartItems[existingItemIndex].quantity + 1,
+          updatedCartItems[existingItemIndex].maxQuantity
+        )
+      };
+      message = `Increased quantity for ${restaurant.name} in cart!`;
+      icon = "📈";
+    } else {
+      // নতুন আইটেম অ্যাড করুন
+      updatedCartItems.push(cartItem);
+      message = `${restaurant.name} added to cart! 🎉`;
+      icon = "🛒";
+    }
+    
+    // স্টেট আপডেট করুন
+    setCartItems(updatedCartItems);
+    
+    // টোস্ট মেসেজ শো করুন
+    toast.success(message, {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+      icon: icon,
+      style: {
+        background: 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
+        color: 'white',
+        fontWeight: '600',
+        fontSize: '14px',
+        borderRadius: '12px',
+        boxShadow: '0 4px 12px rgba(16, 185, 129, 0.3)',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+      },
+    });
+  };
+
+  // Shopping cart button টোস্ট সহকারে
+  const handleViewCartToast = () => {
+    toast.dismiss();
+    
+    if (cartItems.length > 0) {
+      toast.info(`🛒 You have ${cartItems.length} items in cart`, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        style: {
+          background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+          color: 'white',
+          fontWeight: '600',
+          fontSize: '14px',
+          borderRadius: '12px',
+          boxShadow: '0 4px 12px rgba(217, 119, 6, 0.3)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+        },
+      });
+    } else {
+      toast.info(`🛒 Your cart is empty`, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        style: {
+          background: 'linear-gradient(135deg, #6b7280 0%, #4b5563 100%)',
+          color: 'white',
+          fontWeight: '600',
+          fontSize: '14px',
+          borderRadius: '12px',
+          boxShadow: '0 4px 12px rgba(75, 85, 99, 0.3)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+        },
+      });
+    }
+    setTimeout(() => {
+      navigate('/cart');
+    }, 500);
+  };
+
+  // Wishlist button টোস্ট সহকারে
+  const handleViewWishlistToast = () => {
+    toast.dismiss();
+    
+    if (wishlist.length > 0) {
+      toast.info(`❤️ You have ${wishlist.length} items in wishlist`, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        style: {
+          background: 'linear-gradient(135deg, #ec4899 0%, #db2777 100%)',
+          color: 'white',
+          fontWeight: '600',
+          fontSize: '14px',
+          borderRadius: '12px',
+          boxShadow: '0 4px 12px rgba(219, 39, 119, 0.3)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+        },
+      });
+    } else {
+      toast.info(`❤️ Your wishlist is empty`, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        style: {
+          background: 'linear-gradient(135deg, #6b7280 0%, #4b5563 100%)',
+          color: 'white',
+          fontWeight: '600',
+          fontSize: '14px',
+          borderRadius: '12px',
+          boxShadow: '0 4px 12px rgba(75, 85, 99, 0.3)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+        },
+      });
+    }
+    setTimeout(() => {
+      navigate('/wishlist');
+    }, 500);
   };
 
   // স্ক্রল করে আরো রেস্তোরাঁ লোড করার ফাংশন
@@ -650,7 +851,7 @@ const Home = () => {
   }, [visibleRestaurants, loadingMore]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white pb-20">
       <style jsx global>{`
         @keyframes bounce-once-strong {
           0%, 100% {
@@ -881,6 +1082,116 @@ const Home = () => {
           border-radius: 0.5rem;
           border: 1px dashed #d1d5db;
         }
+        
+        /* Custom Toast Styles - উন্নত ভার্সন */
+        .Toastify__toast {
+          border-radius: 12px !important;
+          font-family: 'Segoe UI', system-ui, -apple-system, sans-serif !important;
+          box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2) !important;
+          border: 1px solid rgba(255, 255, 255, 0.1) !important;
+          backdrop-filter: blur(10px) !important;
+          font-weight: 500 !important;
+        }
+        
+        .Toastify__toast--success {
+          background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+          color: white !important;
+        }
+        
+        .Toastify__toast--info {
+          background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+          color: white !important;
+        }
+        
+        .Toastify__toast--warning {
+          background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%) !important;
+          color: white !important;
+        }
+        
+        .Toastify__toast--error {
+          background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+          color: white !important;
+        }
+        
+        .Toastify__progress-bar {
+          height: 4px !important;
+          background: rgba(255, 255, 255, 0.7) !important;
+        }
+        
+        .Toastify__close-button {
+          color: white !important;
+          opacity: 0.8 !important;
+        }
+        
+        .Toastify__close-button:hover {
+          opacity: 1 !important;
+          transform: scale(1.1);
+        }
+        
+        .Toastify__toast-body {
+          padding: 12px 16px !important;
+          font-weight: 500 !important;
+        }
+        
+        /* Brand toast specific */
+        .brand-toast {
+          background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%) !important;
+          color: white !important;
+          font-weight: 600 !important;
+        }
+
+        /* Mobile Bottom Navigation স্টাইল - SultansDineMenu.jsx এবং KacchiBhaiMenu.jsx এর মতোই */
+        .mobile-bottom-nav {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background: white;
+          border-top: 1px solid #e5e7eb;
+          padding: 0.75rem 1rem;
+          z-index: 50;
+          box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+
+        .mobile-bottom-nav .nav-buttons {
+          display: flex;
+          justify-content: space-around;
+          width: 100%;
+        }
+
+        .mobile-bottom-nav .nav-btn {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0.25rem;
+          padding: 0.5rem;
+          border-radius: 0.5rem;
+          transition: background-color 0.2s;
+          position: relative;
+        }
+
+        .mobile-bottom-nav .nav-btn:hover {
+          background-color: #f9fafb;
+        }
+
+        .mobile-bottom-nav .nav-btn.active {
+          background-color: #f3f4f6;
+        }
+
+        .mobile-bottom-nav .badge {
+          position: absolute;
+          top: -5px;
+          right: -5px;
+          background-color: #ef4444;
+          color: white;
+          font-size: 0.75rem;
+          border-radius: 50%;
+          width: 18px;
+          height: 18px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
       `}</style>
 
       <div className="container mx-auto px-4 py-8">
@@ -1008,13 +1319,13 @@ const Home = () => {
                   </p>
                   <div className="flex flex-wrap gap-4">
                     <button 
-                      onClick={() => navigate('/cart')}
+                      onClick={handleViewCartToast}
                       className="bg-white text-gray-900 hover:bg-gray-100 font-semibold px-8 py-3.5 rounded-full shadow-lg transition-all duration-300 hover:scale-105 flex items-center"
                     >
                       View Cart <ChevronRight className="ml-2 w-5 h-5" />
                     </button>
                     <button 
-                      onClick={() => navigate('/wishlist')}
+                      onClick={handleViewWishlistToast}
                       className="bg-transparent border-2 border-white text-white hover:bg-white/10 font-semibold px-8 py-3.5 rounded-full transition-all duration-300 hover:scale-105 flex items-center"
                     >
                       View Wishlist <Heart className="ml-2 w-5 h-5" />
@@ -1059,6 +1370,7 @@ const Home = () => {
             <div className="mt-10">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-900">Top Brands</h2>
+                <p className="text-sm text-gray-600">Click on any brand to explore</p>
               </div>
               
               <div className="relative">
@@ -1110,15 +1422,16 @@ const Home = () => {
                       <div
                         key={brand.id}
                         onClick={() => handleBrandClick(brand)}
-                        className="brand-card bg-white rounded-xl p-3 shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 cursor-pointer"
+                        className="brand-card bg-white rounded-xl p-3 shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 cursor-pointer group"
                       >
                         <div className="relative w-full h-full rounded-lg overflow-hidden bg-white p-3 flex items-center justify-center">
                           <img 
                             src={brand.logo} 
                             alt={brand.name}
-                            className="w-full h-full object-contain max-h-[80px] max-w-[80px] transition-transform duration-300 hover:scale-105"
-                            title={brand.name}
+                            className="w-full h-full object-contain max-h-[80px] max-w-[80px] transition-transform duration-300 group-hover:scale-105"
+                            title={`${brand.name} - ${brand.description}`}
                           />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
                         </div>
                       </div>
                     ))}
@@ -1133,6 +1446,7 @@ const Home = () => {
             <div className="mt-12">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-2xl font-bold text-gray-900">Top Shops</h2>
+                <p className="text-sm text-gray-600">Click on any shop to explore</p>
               </div>
               
               <div className="relative">
@@ -1184,15 +1498,16 @@ const Home = () => {
                       <div
                         key={shop.id}
                         onClick={() => handleShopClick(shop)}
-                        className="brand-card bg-white rounded-xl p-3 shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 cursor-pointer"
+                        className="brand-card bg-white rounded-xl p-3 shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 cursor-pointer group"
                       >
                         <div className="relative w-full h-full rounded-lg overflow-hidden bg-white p-3 flex items-center justify-center">
                           <img 
                             src={shop.logo} 
                             alt={shop.name}
-                            className="w-full h-full object-contain max-h-[80px] max-w-[80px] transition-transform duration-300 hover:scale-105"
-                            title={shop.name}
+                            className="w-full h-full object-contain max-h-[80px] max-w-[80px] transition-transform duration-300 group-hover:scale-105"
+                            title={`${shop.name} - ${shop.description}`}
                           />
+                          <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-lg"></div>
                         </div>
                       </div>
                     ))}
@@ -1344,6 +1659,73 @@ const Home = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Mobile Bottom Navigation - SultansDineMenu.jsx এবং KacchiBhaiMenu.jsx এর মতোই */}
+      <div className="lg:hidden mobile-bottom-nav">
+        <div className="nav-buttons">
+          <button
+            onClick={() => navigate('/')}
+            className="nav-btn text-gray-600 hover:text-green-600"
+          >
+            <HomeIcon className="w-5 h-5" />
+            <span className="text-xs font-medium">Home</span>
+          </button>
+          
+          <button
+            onClick={handleViewWishlistToast}
+            className="nav-btn text-gray-600 hover:text-pink-600"
+          >
+            <Heart 
+              className="w-5 h-5" 
+              fill={wishlist.length > 0 ? "#ef4444" : "none"}
+              color={wishlist.length > 0 ? "#ef4444" : "#6b7280"}
+            />
+            <span className="text-xs font-medium">Wishlist</span>
+            {wishlist.length > 0 && (
+              <span className="badge">{wishlist.length}</span>
+            )}
+          </button>
+          
+          <button
+            onClick={handleViewCartToast}
+            className="nav-btn text-gray-600 hover:text-blue-600"
+          >
+            <ShoppingCart className="w-5 h-5" />
+            <span className="text-xs font-medium">Cart</span>
+            {cartItems.length > 0 && (
+              <span className="badge">{cartItems.length}</span>
+            )}
+          </button>
+          
+          <button
+            onClick={() => navigate('/profile')}
+            className="nav-btn text-gray-600 hover:text-purple-600"
+          >
+            <User className="w-5 h-5" />
+            <span className="text-xs font-medium">Profile</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Desktop Floating Buttons */}
+      <div className="hidden lg:flex fixed bottom-8 right-8 z-40 gap-3">
+        <button
+          onClick={handleViewWishlistToast}
+          className="relative bg-white text-gray-700 font-medium px-5 py-3 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center gap-2 border border-gray-200"
+        >
+          <Heart className="w-5 h-5" fill={wishlist.length > 0 ? "#ef4444" : "none"} 
+            color={wishlist.length > 0 ? "#ef4444" : "#6b7280"} />
+          <span>Wishlist ({wishlist.length})</span>
+        </button>
+        <button
+          onClick={handleViewCartToast}
+          className="bg-gradient-to-r from-green-500 to-emerald-500 text-white font-semibold px-6 py-3.5 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center gap-2"
+        >
+          <ShoppingCart className="w-5 h-5" />
+          View Cart ({cartItems.length})
+          <ChevronRight className="w-5 h-5" />
+        </button>
       </div>
     </div>
   );
