@@ -1,11 +1,11 @@
-// KacchiDineMenu.jsx - Fast Food Chain Menu
+// SevenDaysRestaurantMenu.jsx - Updated with black + and - buttons and mobile navigation
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ShoppingCart, Star, Clock, ChevronRight, ChefHat, Heart, Menu, Home, User } from "lucide-react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const KacchiDineMenu = () => {
+const SevenDaysRestaurantMenu = () => {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
   const [activeCategory, setActiveCategory] = useState("all");
@@ -134,107 +134,207 @@ const KacchiDineMenu = () => {
     }, 500);
   };
 
-  // মেনু আইটেম ডেটা - Kacchi Dine এর জন্য
+  // মেনু আইটেম ডেটা - 7 Days Restaurant
   const menuItems = [
     {
-      id: 601,
-      name: "Kacchi Dine Special Biryani",
-      description: "Signature biryani with special spices",
-      price: 380,
-      image: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      id: 1,
+      name: "Chicken Biryani",
+      description: "Fragrant rice with tender chicken pieces",
+      price: 280,
+      image: "https://images.unsplash.com/photo-1563379091339-03246963d9d6?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
       category: "biryani",
       rating: 4.5,
       prepTime: "25-30 min"
     },
     {
-      id: 602,
-      name: "Chicken Fried Rice",
-      description: "Fried rice with chicken pieces",
-      price: 220,
-      image: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      category: "rice",
-      rating: 4.3,
-      prepTime: "15-20 min"
+      id: 2,
+      name: "Mutton Biryani",
+      description: "Traditional mutton biryani with spices",
+      price: 350,
+      image: "https://images.unsplash.com/photo-1589302168068-964664d93dc0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "biryani",
+      rating: 4.6,
+      prepTime: "30-35 min"
     },
     {
-      id: 603,
-      name: "Chicken Chowmein",
-      description: "Noodles with chicken and vegetables",
-      price: 200,
-      image: "https://images.unsplash.com/photo-1563245372-f21724e3856d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      category: "noodles",
+      id: 3,
+      name: "Beef Tehari",
+      description: "Spicy beef tehari with aromatic rice",
+      price: 320,
+      image: "https://images.unsplash.com/photo-1606491956689-2ea866880c84?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "tehari",
+      rating: 4.7,
+      prepTime: "20-25 min"
+    },
+    {
+      id: 4,
+      name: "Chicken Roast",
+      description: "Crispy roasted chicken with masala",
+      price: 250,
+      image: "https://images.unsplash.com/photo-1598103442097-8b7434b04f2a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "roast",
       rating: 4.4,
       prepTime: "15-20 min"
     },
     {
-      id: 604,
-      name: "Chicken Burger",
-      description: "Crispy chicken burger",
+      id: 5,
+      name: "Beef Rezala",
+      description: "Creamy beef rezala in rich gravy",
+      price: 300,
+      image: "https://images.unsplash.com/photo-1606491956689-2ea866880c84?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "beef",
+      rating: 4.6,
+      prepTime: "25-30 min"
+    },
+    {
+      id: 6,
+      name: "Mixed Vegetable",
+      description: "Fresh vegetables cooked with spices",
       price: 180,
-      image: "https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      category: "burgers",
+      image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "vegetarian",
       rating: 4.2,
-      prepTime: "10-15 min"
+      prepTime: "12-15 min"
     },
     {
-      id: 605,
-      name: "French Fries",
-      description: "Crispy golden fries",
-      price: 100,
-      image: "https://images.unsplash.com/photo-1576107232684-1279f7b71308?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      category: "sides",
-      rating: 4.1,
-      prepTime: "10-15 min"
-    },
-    {
-      id: 606,
-      name: "Chicken Nuggets (6 pcs)",
-      description: "Crispy chicken nuggets",
-      price: 150,
-      image: "https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      category: "sides",
+      id: 7,
+      name: "Chicken Curry",
+      description: "Spicy chicken curry with gravy",
+      price: 220,
+      image: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "curry",
       rating: 4.3,
-      prepTime: "10-15 min"
+      prepTime: "18-22 min"
     },
     {
-      id: 607,
-      name: "Chicken Roll",
-      description: "Chicken wrap with veggies",
+      id: 8,
+      name: "Fish Curry",
+      description: "Traditional Bangladeshi fish curry",
+      price: 280,
+      image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "fish",
+      rating: 4.5,
+      prepTime: "20-25 min"
+    },
+    {
+      id: 9,
+      name: "Plain Rice",
+      description: "Steamed basmati rice",
+      price: 80,
+      image: "https://images.unsplash.com/photo-1516684732162-798a0062be99?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "rice",
+      rating: 4.0,
+      prepTime: "8-10 min"
+    },
+    {
+      id: 10,
+      name: "Chicken Fried Rice",
+      description: "Fried rice with chicken and vegetables",
+      price: 200,
+      image: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "fried-rice",
+      rating: 4.4,
+      prepTime: "15-18 min"
+    },
+    {
+      id: 11,
+      name: "Chicken Soup",
+      description: "Hot chicken soup with herbs",
       price: 120,
-      image: "https://images.unsplash.com/photo-1608039755401-742074f0548d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      category: "wraps",
-      rating: 4.2,
-      prepTime: "10-15 min"
+      image: "https://images.unsplash.com/photo-1547592166-23ac45744acd?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "soup",
+      rating: 4.3,
+      prepTime: "10-12 min"
     },
     {
-      id: 608,
-      name: "Soft Drinks",
-      description: "Various soft drinks",
-      price: 60,
+      id: 12,
+      name: "Vegetable Soup",
+      description: "Healthy vegetable soup",
+      price: 100,
+      image: "https://images.unsplash.com/photo-1547592166-23ac45744acd?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "soup",
+      rating: 4.1,
+      prepTime: "8-10 min"
+    },
+    {
+      id: 13,
+      name: "Mixed Salad",
+      description: "Fresh salad with vegetables",
+      price: 90,
+      image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "salad",
+      rating: 4.2,
+      prepTime: "5-7 min"
+    },
+    {
+      id: 14,
+      name: "Firni",
+      description: "Traditional rice pudding dessert",
+      price: 100,
+      image: "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "dessert",
+      rating: 4.6,
+      prepTime: "10-12 min"
+    },
+    {
+      id: 15,
+      name: "Borhani",
+      description: "Spicy yogurt drink",
+      price: 70,
       image: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
       category: "drinks",
-      rating: 4.0,
-      prepTime: "2 min"
+      rating: 4.5,
+      prepTime: "3-5 min"
     },
     {
-      id: 609,
+      id: 16,
       name: "Mineral Water",
-      description: "Pure mineral water",
+      description: "500ml mineral water",
       price: 30,
       image: "https://images.unsplash.com/photo-1523362628745-0c100150b504?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
       category: "drinks",
-      rating: 4.1,
+      rating: 4.0,
       prepTime: "1 min"
     },
     {
-      id: 610,
-      name: "Chocolate Brownie",
-      description: "Warm chocolate brownie",
-      price: 120,
-      image: "https://images.unsplash.com/photo-1564355808539-22fda35c7d0a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      category: "desserts",
+      id: 17,
+      name: "Lassi",
+      description: "Sweet yogurt drink",
+      price: 80,
+      image: "https://images.unsplash.com/photo-1626645738196-c2a7c87a8f58?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "drinks",
       rating: 4.4,
-      prepTime: "5-10 min"
+      prepTime: "4-6 min"
+    },
+    {
+      id: 18,
+      name: "Chicken Noodles",
+      description: "Stir-fried noodles with chicken",
+      price: 180,
+      image: "https://images.unsplash.com/photo-1559314809-2b99056a8c4a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "noodles",
+      rating: 4.3,
+      prepTime: "12-15 min"
+    },
+    {
+      id: 19,
+      name: "Egg Fried Rice",
+      description: "Fried rice with egg and vegetables",
+      price: 150,
+      image: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "fried-rice",
+      rating: 4.2,
+      prepTime: "10-12 min"
+    },
+    {
+      id: 20,
+      name: "Chicken Platter",
+      description: "Complete meal with rice, curry & salad",
+      price: 350,
+      image: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "combo",
+      rating: 4.7,
+      prepTime: "20-25 min"
     }
   ];
 
@@ -242,13 +342,17 @@ const KacchiDineMenu = () => {
   const categories = [
     { id: "all", name: "All Items", count: menuItems.length },
     { id: "biryani", name: "Biryani", count: menuItems.filter(item => item.category === "biryani").length },
-    { id: "rice", name: "Rice", count: menuItems.filter(item => item.category === "rice").length },
+    { id: "tehari", name: "Tehari", count: menuItems.filter(item => item.category === "tehari").length },
+    { id: "roast", name: "Roast", count: menuItems.filter(item => item.category === "roast").length },
+    { id: "curry", name: "Curry", count: menuItems.filter(item => item.category === "curry").length },
+    { id: "fried-rice", name: "Fried Rice", count: menuItems.filter(item => item.category === "fried-rice").length },
     { id: "noodles", name: "Noodles", count: menuItems.filter(item => item.category === "noodles").length },
-    { id: "burgers", name: "Burgers", count: menuItems.filter(item => item.category === "burgers").length },
-    { id: "sides", name: "Sides", count: menuItems.filter(item => item.category === "sides").length },
-    { id: "wraps", name: "Wraps", count: menuItems.filter(item => item.category === "wraps").length },
-    { id: "drinks", name: "Drinks", count: menuItems.filter(item => item.category === "drinks").length },
-    { id: "desserts", name: "Desserts", count: menuItems.filter(item => item.category === "desserts").length }
+    { id: "vegetarian", name: "Vegetarian", count: menuItems.filter(item => item.category === "vegetarian").length },
+    { id: "combo", name: "Combo Meals", count: menuItems.filter(item => item.category === "combo").length },
+    { id: "soup", name: "Soup", count: menuItems.filter(item => item.category === "soup").length },
+    { id: "salad", name: "Salad", count: menuItems.filter(item => item.category === "salad").length },
+    { id: "dessert", name: "Dessert", count: menuItems.filter(item => item.category === "dessert").length },
+    { id: "drinks", name: "Drinks", count: menuItems.filter(item => item.category === "drinks").length }
   ];
 
   // ফিল্টার করা মেনু আইটেম
@@ -264,12 +368,12 @@ const KacchiDineMenu = () => {
       price: item.price,
       image: item.image,
       category: item.category,
-      restaurant: "Kacchi Dine",
+      restaurant: "7 Days Restaurant",
       quantity: quantity[item.id] || 1,
       maxQuantity: 10,
-      restaurantId: 7,
-      deliveryTime: "20-30 min",
-      location: "Various locations in Dhaka",
+      restaurantId: 5,
+      deliveryTime: "30-40 min",
+      location: "Various locations, Dhaka",
       description: item.description
     };
     
@@ -335,8 +439,8 @@ const KacchiDineMenu = () => {
           price: item.price,
           image: item.image,
           category: item.category,
-          restaurant: "Kacchi Dine",
-          restaurantId: 7
+          restaurant: "7 Days Restaurant",
+          restaurantId: 5
         };
         toast.success(`${item.name} added to wishlist! ❤️`, {
           position: "top-right",
@@ -366,19 +470,18 @@ const KacchiDineMenu = () => {
 
   // রেস্টুরেন্ট ডিটেইল
   const restaurantInfo = {
-    name: "Kacchi Dine",
-    rating: 4.1,
-    deliveryTime: "20-30 min",
+    name: "7 Days Restaurant",
+    rating: 4.2,
+    deliveryTime: "30-40 min",
     minOrder: 200,
-    deliveryFee: 30,
-    locations: ["Gulshan", "Dhanmondi", "Mirpur", "Uttara"],
-    cuisine: ["Fast Food", "Bangladeshi", "Biryani"],
-    openingHours: "10:00 AM - 10:00 PM",
-    established: "2012"
+    deliveryFee: 40,
+    locations: ["All over Dhaka"],
+    cuisine: ["Bangladeshi", "Indian", "Chinese", "Fast Food"],
+    openingHours: "8:00 AM - 11:00 PM"
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-emerald-50 to-white pb-20">
+    <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white pb-20">
       <style jsx global>{`
         @keyframes fadeIn {
           from {
@@ -405,9 +508,9 @@ const KacchiDineMenu = () => {
         }
         
         .category-btn.active {
-          background: linear-gradient(135deg, #059669, #047857);
+          background: linear-gradient(135deg, #2563eb, #3b82f6);
           color: white;
-          box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+          box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
         }
         
         /* কালো + এবং - বাটনের স্টাইল */
@@ -492,7 +595,7 @@ const KacchiDineMenu = () => {
           height: 18px;
           display: flex;
           align-items: center;
-          justifyContent: center;
+          justify-content: center;
         }
         
         /* মোবাইল জন্য কালো + এবং - */
@@ -649,39 +752,39 @@ const KacchiDineMenu = () => {
       {/* Main Content */}
       <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6">
         {/* Restaurant Info Card */}
-        <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-emerald-200 p-4 sm:p-6 mb-6 sm:mb-8 fade-in">
+        <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-blue-200 p-4 sm:p-6 mb-6 sm:mb-8 fade-in">
           <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6 restaurant-info-mobile">
             <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto">
-              <div className="logo-mobile w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden border-2 sm:border-4 border-emerald-100 shadow-md">
+              <div className="logo-mobile w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden border-2 sm:border-4 border-blue-100 shadow-md">
                 <img 
-                  src="https://i.postimg.cc/sfnDqLCg/Kacchi-Dine.jpg" 
-                  alt="Kacchi Dine Logo"
+                  src="https://i.postimg.cc/2jH8MtRg/7days.jpg" 
+                  alt="7 Days Restaurant Logo"
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="flex-1">
-                <h2 className="title-mobile text-2xl sm:text-3xl font-bold text-gray-900">{restaurantInfo.name}</h2>
-                <p className="subtitle-mobile text-sm sm:text-lg text-gray-600 mt-1">Fast food chain since {restaurantInfo.established}</p>
+                <h2 className="title-mobile text-2xl sm:text-3xl font-bold text-gray-900">7 Days Restaurant</h2>
+                <p className="subtitle-mobile text-sm sm:text-lg text-gray-600 mt-1">Open 7 Days a Week - Home Style Food</p>
               </div>
             </div>
             
             <div className="w-full">
               <div className="flex flex-wrap gap-2 sm:gap-4 mt-2 stats-mobile">
-                <div className="stat-item-mobile flex items-center gap-1 bg-emerald-50 px-3 py-2 rounded-lg">
-                  <Star className="w-4 h-4 sm:w-5 sm:h-5 fill-emerald-400 text-emerald-400" />
+                <div className="stat-item-mobile flex items-center gap-1 bg-blue-50 px-3 py-2 rounded-lg">
+                  <Star className="w-4 h-4 sm:w-5 sm:h-5 fill-blue-400 text-blue-400" />
                   <span className="font-bold text-base sm:text-lg text-gray-900">{restaurantInfo.rating}</span>
-                  <span className="text-xs sm:text-sm text-gray-500">(300+)</span>
+                  <span className="text-xs sm:text-sm text-gray-500">(400+)</span>
                 </div>
-                <div className="stat-item-mobile flex items-center gap-1 bg-emerald-50 px-3 py-2 rounded-lg">
+                <div className="stat-item-mobile flex items-center gap-1 bg-blue-50 px-3 py-2 rounded-lg">
                   <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500" />
                   <span className="font-medium text-sm sm:text-base text-gray-900">{restaurantInfo.deliveryTime}</span>
                 </div>
-                <div className="stat-item-mobile flex items-center gap-1 bg-emerald-50 px-3 py-2 rounded-lg">
+                <div className="stat-item-mobile flex items-center gap-1 bg-blue-50 px-3 py-2 rounded-lg">
                   <span className="text-sm sm:text-base text-gray-900">
                     Min: <span className="font-bold">৳{restaurantInfo.minOrder}</span>
                   </span>
                 </div>
-                <div className="stat-item-mobile flex items-center gap-1 bg-emerald-50 px-3 py-2 rounded-lg">
+                <div className="stat-item-mobile flex items-center gap-1 bg-blue-50 px-3 py-2 rounded-lg">
                   <span className="text-sm sm:text-base text-gray-900">
                     Fee: <span className="font-bold">৳{restaurantInfo.deliveryFee}</span>
                   </span>
@@ -689,28 +792,28 @@ const KacchiDineMenu = () => {
               </div>
               
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mt-4 sm:mt-6 info-grid-mobile">
-                <div className="bg-emerald-50 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
+                <div className="bg-blue-50 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
                   <div className="text-xs sm:text-sm text-gray-600 font-medium mb-1">Cuisine</div>
                   <div className="font-medium text-sm sm:text-base text-gray-800 truncate">{restaurantInfo.cuisine.join(", ")}</div>
                 </div>
-                <div className="bg-emerald-50 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
+                <div className="bg-blue-50 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
                   <div className="text-xs sm:text-sm text-gray-600 font-medium mb-1">Locations</div>
                   <div className="font-medium text-sm sm:text-base text-gray-800 truncate">{restaurantInfo.locations.join(", ")}</div>
                 </div>
-                <div className="bg-emerald-50 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
+                <div className="bg-blue-50 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
                   <div className="text-xs sm:text-sm text-gray-600 font-medium mb-1">Open Hours</div>
                   <div className="font-medium text-sm sm:text-base text-gray-800">{restaurantInfo.openingHours}</div>
                 </div>
               </div>
               
-              <div className="special-offer-mobile bg-gradient-to-br from-emerald-100 to-green-100 rounded-lg sm:rounded-xl p-4 sm:p-5 border border-emerald-200 shadow-md mt-4 sm:mt-0">
+              <div className="special-offer-mobile bg-gradient-to-br from-blue-100 to-indigo-100 rounded-lg sm:rounded-xl p-4 sm:p-5 border border-blue-200 shadow-md mt-4 sm:mt-0">
                 <div className="flex items-center gap-3">
-                  <ChefHat className="w-8 h-8 sm:w-10 sm:h-10 text-emerald-600" />
+                  <ChefHat className="w-8 h-8 sm:w-10 sm:h-10 text-blue-600" />
                   <div>
-                    <div className="text-lg sm:text-xl font-bold text-emerald-800">Special Offer</div>
-                    <div className="text-sm sm:text-lg text-emerald-700 font-medium">10% OFF on all orders</div>
+                    <div className="text-lg sm:text-xl font-bold text-blue-800">Weekend Special</div>
+                    <div className="text-sm sm:text-lg text-blue-700 font-medium">15% OFF on all orders</div>
                     <div className="text-xs sm:text-sm text-gray-700 mt-1 bg-white/50 py-1 px-2 sm:px-3 rounded-full inline-block">
-                      Use code: <span className="font-bold">KACCHI10</span>
+                      Valid: <span className="font-bold">Friday - Sunday</span>
                     </div>
                   </div>
                 </div>
@@ -807,7 +910,7 @@ const KacchiDineMenu = () => {
                       {item.description}
                     </p>
                   </div>
-                  <div className="text-emerald-600 font-bold text-xl sm:text-2xl ml-2 item-price-mobile">
+                  <div className="text-blue-600 font-bold text-xl sm:text-2xl ml-2 item-price-mobile">
                     ৳{item.price}
                   </div>
                 </div>
@@ -819,10 +922,10 @@ const KacchiDineMenu = () => {
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-md">
-                      <Star className="w-3 h-3 sm:w-4 sm:h-4 fill-amber-400 text-amber-400" />
+                      <Star className="w-3 h-3 sm:w-4 sm:h-4 fill-blue-400 text-blue-400" />
                       <span className="font-medium text-gray-800">{item.rating}</span>
                     </div>
-                    <div className="capitalize bg-emerald-100 text-emerald-800 px-2 py-1 rounded-md text-xs font-medium">
+                    <div className="capitalize bg-blue-100 text-blue-800 px-2 py-1 rounded-md text-xs font-medium">
                       {item.category}
                     </div>
                   </div>
@@ -852,7 +955,7 @@ const KacchiDineMenu = () => {
                   
                   <button
                     onClick={() => addToCart(item)}
-                    className="w-full sm:flex-1 bg-gradient-to-r from-emerald-500 to-green-500 hover:from-emerald-600 hover:to-green-600 text-white font-semibold py-2.5 sm:py-3 md:py-3.5 rounded-lg sm:rounded-xl transition-all duration-300 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 text-sm sm:text-base add-to-cart-btn-mobile"
+                    className="w-full sm:flex-1 bg-gradient-to-r from-blue-500 to-indigo-500 hover:from-blue-600 hover:to-indigo-600 text-white font-semibold py-2.5 sm:py-3 md:py-3.5 rounded-lg sm:rounded-xl transition-all duration-300 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 text-sm sm:text-base add-to-cart-btn-mobile"
                   >
                     <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
                     Add to Cart
@@ -866,14 +969,14 @@ const KacchiDineMenu = () => {
         {/* Empty State */}
         {filteredItems.length === 0 && (
           <div className="text-center py-12 sm:py-16">
-            <div className="w-20 h-20 sm:w-28 sm:h-28 mx-auto mb-4 sm:mb-6 rounded-full bg-emerald-100 flex items-center justify-center shadow-lg">
-              <ChefHat className="w-10 h-10 sm:w-14 sm:h-14 text-emerald-500" />
+            <div className="w-20 h-20 sm:w-28 sm:h-28 mx-auto mb-4 sm:mb-6 rounded-full bg-blue-100 flex items-center justify-center shadow-lg">
+              <ChefHat className="w-10 h-10 sm:w-14 sm:h-14 text-blue-500" />
             </div>
             <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 sm:mb-3">No items found</h3>
             <p className="text-gray-600 mb-6 sm:mb-8 text-sm sm:text-lg">Try selecting a different category</p>
             <button
               onClick={() => setActiveCategory("all")}
-              className="px-6 py-2.5 sm:px-8 sm:py-3.5 bg-gradient-to-r from-emerald-500 to-green-500 text-white font-semibold rounded-full hover:shadow-xl transition-all duration-300 text-sm sm:text-lg"
+              className="px-6 py-2.5 sm:px-8 sm:py-3.5 bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-semibold rounded-full hover:shadow-xl transition-all duration-300 text-sm sm:text-lg"
             >
               View All Menu Items
             </button>
@@ -940,7 +1043,7 @@ const KacchiDineMenu = () => {
         </button>
         <button
           onClick={handleViewCartToast}
-          className="bg-gradient-to-r from-emerald-500 to-green-500 text-white font-semibold px-6 py-3.5 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center gap-2"
+          className="bg-gradient-to-r from-blue-500 to-indigo-500 text-white font-semibold px-6 py-3.5 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center gap-2"
         >
           <ShoppingCart className="w-5 h-5" />
           View Cart ({cartItems.length})
@@ -951,4 +1054,4 @@ const KacchiDineMenu = () => {
   );
 };
 
-export default KacchiDineMenu;
+export default SevenDaysRestaurantMenu;

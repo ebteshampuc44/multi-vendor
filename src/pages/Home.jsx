@@ -139,49 +139,49 @@ const topBrands = [
   }
 ];
 
-// Top Shops Data
+// Top Shops Data - UPDATED URLs
 const topShops = [
   {
     id: 1,
     name: "Fruit Zone",
     logo: "https://i.postimg.cc/v8PHkKwB/Fruit-Zone.jpg",
     description: "Premium shopping mall with international brands",
-    url: "/shop/Fruit_Zone.jpg"
+    url: "/shop/fruit-zone" // আপডেট করা
   },
   {
     id: 2,
     name: "Bengal Meat - Dhali (DCC Market)",
     logo: "https://i.postimg.cc/v8PHkKFj/bengal-meat.png",
     description: "Fresh meat and poultry shop",
-    url: "/shop/bengal-meat-dhali"
+    url: "/shop/bengal-meat-dhali" // আপডেট করা
   },
   {
     id: 3,
     name: "RFL Best Buy Pharma (Kalachandpur)",
     logo: "https://i.postimg.cc/J4G4LQR0/rfl-pharma.jpg",
     description: "Pharmacy and medical supplies",
-    url: "/shop/rfl-best-buy-pharma"
+    url: "/shop/rfl-best-buy-pharma" // আপডেট করা
   },
   {
     id: 4,
     name: "Unimart - Gulshan 2",
     logo: "https://i.postimg.cc/m2t2sST3/unimart.jpg",
     description: "Supermarket and grocery store",
-    url: "/shop/unimart-gulshan"
+    url: "/shop/unimart-gulshan" // আপডেট করা
   },
   {
     id: 5,
     name: "Amana Big Bazar - Mohakhali",
     logo: "https://i.postimg.cc/tJmq6sNz/amana-big-bazar.jpg",
     description: "Departmental store with variety of products",
-    url: "/shop/amana-big-bazar"
+    url: "/shop/amana-big-bazar" // আপডেট করা
   },
   {
     id: 6,
     name: "Agora (RM Center)",
     logo: "https://i.postimg.cc/C56h8RsJ/agora.jpg",
     description: "Retail supermarket chain",
-    url: "/shop/agora-rm-center"
+    url: "/shop/agora-rm-center" // আপডেট করা
   }
 ];
 

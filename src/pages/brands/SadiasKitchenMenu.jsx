@@ -1,11 +1,11 @@
-// SevenDaysRestaurantMenu.jsx - All Day Restaurant Menu
+// SadiasKitchenMenu.jsx - Sadia's Kitchen menu page with black + and - buttons and mobile navigation
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ShoppingCart, Star, Clock, ChevronRight, ChefHat, Heart, Menu, Home, User } from "lucide-react";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const SevenDaysRestaurantMenu = () => {
+const SadiasKitchenMenu = () => {
   const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([]);
   const [activeCategory, setActiveCategory] = useState("all");
@@ -134,121 +134,228 @@ const SevenDaysRestaurantMenu = () => {
     }, 500);
   };
 
-  // মেনু আইটেম ডেটা - 7 Days Restaurant এর জন্য
+  // মেনু আইটেম ডেটা - Sadia's Kitchen
   const menuItems = [
     {
-      id: 401,
-      name: "7 Days Special Biryani",
-      description: "Signature biryani with special spices",
-      price: 400,
-      image: "https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      category: "biryani",
-      rating: 4.6,
+      id: 1,
+      name: "Special Home-style Chicken Curry",
+      description: "Traditional Bengali chicken curry with potatoes",
+      price: 320,
+      image: "https://images.unsplash.com/photo-1603360946369-dc9bb6258143?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "chicken",
+      rating: 4.7,
       prepTime: "30-40 min"
     },
     {
-      id: 402,
-      name: "Chicken Roast with Polao",
-      description: "Tender chicken roast with fragrant polao",
-      price: 350,
-      image: "https://images.unsplash.com/photo-1603360946369-dc9bb6258143?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      category: "roast",
-      rating: 4.5,
-      prepTime: "25-35 min"
+      id: 2,
+      name: "Beef Kala Bhuna",
+      description: "Spicy beef bhuna with special masala",
+      price: 380,
+      image: "https://images.unsplash.com/photo-1593560708920-61dd98c46a4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "beef",
+      rating: 4.8,
+      prepTime: "45-55 min"
     },
     {
-      id: 403,
-      name: "Beef Rezala",
-      description: "Creamy beef rezala in rich gravy",
-      price: 320,
-      image: "https://images.unsplash.com/photo-1552566626-52f8b828add9?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      category: "beef",
-      rating: 4.4,
+      id: 3,
+      name: "Mutton Rezala",
+      description: "Creamy mutton rezala with rich gravy",
+      price: 420,
+      image: "https://images.unsplash.com/photo-1565299624946-b28f40a0ca4b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "mutton",
+      rating: 4.6,
+      prepTime: "40-50 min"
+    },
+    {
+      id: 4,
+      name: "Fish Curry",
+      description: "Traditional fish curry with local spices",
+      price: 350,
+      image: "https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "fish",
+      rating: 4.5,
       prepTime: "35-45 min"
     },
     {
-      id: 404,
-      name: "Vegetable Curry",
-      description: "Mixed vegetables in spicy curry",
-      price: 200,
-      image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      category: "vegetarian",
+      id: 5,
+      name: "Mixed Vegetable",
+      description: "Fresh seasonal vegetables cooked with spices",
+      price: 180,
+      image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "vegetable",
       rating: 4.3,
-      prepTime: "20-25 min"
-    },
-    {
-      id: 405,
-      name: "Fish Curry",
-      description: "Fresh fish in traditional curry",
-      price: 280,
-      image: "https://images.unsplash.com/photo-1594041680534-e8c8cdebd659?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      category: "fish",
-      rating: 4.5,
       prepTime: "25-30 min"
     },
     {
-      id: 406,
-      name: "Chicken Tikka",
-      description: "Spicy grilled chicken tikka",
-      price: 250,
-      image: "https://images.unsplash.com/photo-1562967914-608f82629710?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      category: "grilled",
-      rating: 4.6,
+      id: 6,
+      name: "Dal Fry",
+      description: "Fried lentils with garlic and spices",
+      price: 120,
+      image: "https://images.unsplash.com/photo-1585937421612-70ca003675ed?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "dal",
+      rating: 4.2,
       prepTime: "20-25 min"
     },
     {
-      id: 407,
+      id: 7,
       name: "Plain Rice",
       description: "Steamed basmati rice",
       price: 80,
-      image: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
       category: "rice",
-      rating: 4.2,
+      rating: 4.0,
+      prepTime: "15-20 min"
+    },
+    {
+      id: 8,
+      name: "Fried Rice",
+      description: "Vegetable fried rice",
+      price: 150,
+      image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "rice",
+      rating: 4.4,
+      prepTime: "25-30 min"
+    },
+    {
+      id: 9,
+      name: "Chicken Biryani",
+      description: "Aromatic chicken biryani with spices",
+      price: 280,
+      image: "https://images.unsplash.com/photo-1633945274309-2c16c9682a8c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "biryani",
+      rating: 4.7,
+      prepTime: "35-45 min"
+    },
+    {
+      id: 10,
+      name: "Mutton Biryani",
+      description: "Special mutton biryani with basmati rice",
+      price: 380,
+      image: "https://images.unsplash.com/photo-1589302168068-964664d93dc0?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "biryani",
+      rating: 4.8,
+      prepTime: "40-50 min"
+    },
+    {
+      id: 11,
+      name: "Chicken Roast",
+      description: "Crispy roasted chicken with spices",
+      price: 300,
+      image: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "roast",
+      rating: 4.5,
+      prepTime: "30-35 min"
+    },
+    {
+      id: 12,
+      name: "Beef Kabab",
+      description: "Grilled beef kabab with spices",
+      price: 250,
+      image: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "kabab",
+      rating: 4.6,
+      prepTime: "25-30 min"
+    },
+    {
+      id: 13,
+      name: "Chicken Tikka",
+      description: "Grilled chicken tikka pieces",
+      price: 280,
+      image: "https://images.unsplash.com/photo-1603360946369-dc9bb6258143?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "grill",
+      rating: 4.4,
+      prepTime: "30-35 min"
+    },
+    {
+      id: 14,
+      name: "Firni",
+      description: "Creamy rice pudding dessert",
+      price: 100,
+      image: "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "dessert",
+      rating: 4.3,
       prepTime: "10-15 min"
     },
     {
-      id: 408,
-      name: "Mixed Salad",
-      description: "Fresh vegetable salad",
-      price: 120,
-      image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      category: "salad",
-      rating: 4.3,
-      prepTime: "5-10 min"
-    },
-    {
-      id: 409,
-      name: "Milk Shake",
-      description: "Creamy milk shake",
-      price: 150,
-      image: "https://images.unsplash.com/photo-1572490122747-3968b75cc699?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
-      category: "drinks",
-      rating: 4.4,
-      prepTime: "5-10 min"
-    },
-    {
-      id: 410,
-      name: "Firni",
-      description: "Traditional rice pudding",
-      price: 120,
-      image: "https://images.unsplash.com/photo-1563805042-7684c019e1cb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      id: 15,
+      name: "Jilapi",
+      description: "Sweet crispy jilapi",
+      price: 80,
+      image: "https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
       category: "dessert",
       rating: 4.5,
-      prepTime: "10-15 min"
+      prepTime: "5-10 min"
+    },
+    {
+      id: 16,
+      name: "Lassi",
+      description: "Sweet yogurt drink",
+      price: 70,
+      image: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "drinks",
+      rating: 4.6,
+      prepTime: "5 min"
+    },
+    {
+      id: 17,
+      name: "Borhani",
+      description: "Traditional spicy yogurt drink",
+      price: 80,
+      image: "https://images.unsplash.com/photo-1551024709-8f23befc6f87?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "drinks",
+      rating: 4.7,
+      prepTime: "5 min"
+    },
+    {
+      id: 18,
+      name: "Salad",
+      description: "Fresh vegetable salad",
+      price: 90,
+      image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "sides",
+      rating: 4.2,
+      prepTime: "10 min"
+    },
+    {
+      id: 19,
+      name: "Family Combo (4 Persons)",
+      description: "Rice, curry, vegetables, and dessert for 4",
+      price: 1200,
+      image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "combo",
+      rating: 4.9,
+      prepTime: "45-55 min"
+    },
+    {
+      id: 20,
+      name: "Executive Lunch Box",
+      description: "Complete lunch with rice, curry, salad, and dessert",
+      price: 350,
+      image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80",
+      category: "combo",
+      rating: 4.7,
+      prepTime: "30-40 min"
     }
   ];
 
   // ক্যাটেগরি ডেটা
   const categories = [
     { id: "all", name: "All Items", count: menuItems.length },
-    { id: "biryani", name: "Biryani", count: menuItems.filter(item => item.category === "biryani").length },
-    { id: "roast", name: "Roast", count: menuItems.filter(item => item.category === "roast").length },
+    { id: "chicken", name: "Chicken", count: menuItems.filter(item => item.category === "chicken").length },
     { id: "beef", name: "Beef", count: menuItems.filter(item => item.category === "beef").length },
-    { id: "vegetarian", name: "Vegetarian", count: menuItems.filter(item => item.category === "vegetarian").length },
+    { id: "mutton", name: "Mutton", count: menuItems.filter(item => item.category === "mutton").length },
     { id: "fish", name: "Fish", count: menuItems.filter(item => item.category === "fish").length },
-    { id: "grilled", name: "Grilled", count: menuItems.filter(item => item.category === "grilled").length },
+    { id: "vegetable", name: "Vegetable", count: menuItems.filter(item => item.category === "vegetable").length },
+    { id: "biryani", name: "Biryani", count: menuItems.filter(item => item.category === "biryani").length },
+    { id: "rice", name: "Rice", count: menuItems.filter(item => item.category === "rice").length },
+    { id: "dal", name: "Dal", count: menuItems.filter(item => item.category === "dal").length },
+    { id: "roast", name: "Roast", count: menuItems.filter(item => item.category === "roast").length },
+    { id: "kabab", name: "Kabab", count: menuItems.filter(item => item.category === "kabab").length },
+    { id: "grill", name: "Grill", count: menuItems.filter(item => item.category === "grill").length },
+    { id: "combo", name: "Combo Meals", count: menuItems.filter(item => item.category === "combo").length },
+    { id: "dessert", name: "Desserts", count: menuItems.filter(item => item.category === "dessert").length },
     { id: "drinks", name: "Drinks", count: menuItems.filter(item => item.category === "drinks").length },
-    { id: "dessert", name: "Desserts", count: menuItems.filter(item => item.category === "dessert").length }
+    { id: "sides", name: "Sides", count: menuItems.filter(item => item.category === "sides").length }
   ];
 
   // ফিল্টার করা মেনু আইটেম
@@ -264,12 +371,12 @@ const SevenDaysRestaurantMenu = () => {
       price: item.price,
       image: item.image,
       category: item.category,
-      restaurant: "7 Days Restaurant",
+      restaurant: "sadia's kitchen",
       quantity: quantity[item.id] || 1,
       maxQuantity: 10,
-      restaurantId: 5,
-      deliveryTime: "30-40 min",
-      location: "Various locations in Dhaka",
+      restaurantId: 8,
+      deliveryTime: "35-45 min",
+      location: "Dhanmondi, Dhaka",
       description: item.description
     };
     
@@ -335,8 +442,8 @@ const SevenDaysRestaurantMenu = () => {
           price: item.price,
           image: item.image,
           category: item.category,
-          restaurant: "7 Days Restaurant",
-          restaurantId: 5
+          restaurant: "sadia's kitchen",
+          restaurantId: 8
         };
         toast.success(`${item.name} added to wishlist! ❤️`, {
           position: "top-right",
@@ -366,15 +473,14 @@ const SevenDaysRestaurantMenu = () => {
 
   // রেস্টুরেন্ট ডিটেইল
   const restaurantInfo = {
-    name: "7 Days Restaurant",
-    rating: 4.2,
-    deliveryTime: "30-40 min",
-    minOrder: 250,
+    name: "sadia's kitchen",
+    rating: 4.5,
+    deliveryTime: "35-45 min",
+    minOrder: 300,
     deliveryFee: 40,
-    locations: ["Gulshan", "Dhanmondi", "Mirpur", "Uttara"],
-    cuisine: ["Bangladeshi", "Indian", "Fast Food"],
-    openingHours: "7:00 AM - 11:00 PM",
-    established: "2005"
+    locations: ["Dhanmondi", "Gulshan", "Banani"],
+    cuisine: ["Bengali", "Home-style", "Traditional", "Comfort Food"],
+    openingHours: "10:00 AM - 10:00 PM"
   };
 
   return (
@@ -405,9 +511,9 @@ const SevenDaysRestaurantMenu = () => {
         }
         
         .category-btn.active {
-          background: linear-gradient(135deg, #7c3aed, #6d28d9);
+          background: linear-gradient(135deg, #8b5cf6, #7c3aed);
           color: white;
-          box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+          box-shadow: 0 4px 12px rgba(139, 92, 246, 0.3);
         }
         
         /* কালো + এবং - বাটনের স্টাইল */
@@ -492,157 +598,12 @@ const SevenDaysRestaurantMenu = () => {
           height: 18px;
           display: flex;
           align-items: center;
-          justifyContent: center;
-        }
-        
-        /* মোবাইল জন্য কালো + এবং - */
-        @media (max-width: 640px) {
-          .simple-quantity-btn {
-            width: 32px;
-            height: 32px;
-            font-size: 1.125rem;
-            color: #000000 !important;
-          }
-          
-          .quantity-count {
-            font-size: 1rem;
-            color: #000000;
-          }
-        }
-        
-        /* ট্যাবলেট জন্য কালো + এবং - */
-        @media (min-width: 641px) and (max-width: 768px) {
-          .simple-quantity-btn {
-            width: 34px;
-            height: 34px;
-            font-size: 1.125rem;
-            color: #000000 !important;
-          }
-          
-          .quantity-count {
-            font-size: 1.125rem;
-            color: #000000;
-          }
+          justify-content: center;
         }
         
         /* কালো রংয়ের জন্য অতিরিক্ত ক্লাস */
         .text-black-important {
           color: #000000 !important;
-        }
-        
-        /* মোবাইল জন্য বিশেষ স্টাইল */
-        @media (max-width: 640px) {
-          .restaurant-info-mobile {
-            flex-direction: column;
-            align-items: flex-start;
-          }
-          
-          .logo-mobile {
-            width: 80px;
-            height: 80px;
-          }
-          
-          .title-mobile {
-            font-size: 1.75rem;
-          }
-          
-          .subtitle-mobile {
-            font-size: 0.95rem;
-          }
-          
-          .stats-mobile {
-            flex-wrap: wrap;
-            gap: 0.75rem;
-          }
-          
-          .stat-item-mobile {
-            flex: 1 0 45%;
-          }
-          
-          .info-grid-mobile {
-            grid-template-columns: 1fr;
-            gap: 0.75rem;
-          }
-          
-          .special-offer-mobile {
-            margin-top: 1rem;
-            width: 100%;
-          }
-          
-          .category-filter-mobile {
-            position: sticky;
-            top: 0;
-            z-index: 40;
-            background: white;
-            padding: 0.75rem 0;
-          }
-          
-          .categories-toggle-btn {
-            display: flex !important;
-          }
-          
-          .categories-scroll-mobile {
-            max-height: ${showCategories ? '200px' : '0'};
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-          }
-          
-          .menu-grid-mobile {
-            grid-template-columns: 1fr;
-            gap: 1rem;
-          }
-          
-          .menu-card-mobile {
-            margin: 0.5rem;
-          }
-          
-          .image-container-mobile {
-            height: 200px;
-          }
-          
-          .item-details-mobile {
-            padding: 1rem;
-          }
-          
-          .item-name-mobile {
-            font-size: 1.1rem;
-          }
-          
-          .item-price-mobile {
-            font-size: 1.5rem;
-          }
-          
-          .action-buttons-mobile {
-            flex-direction: column;
-            gap: 0.75rem;
-          }
-          
-          .quantity-selector-mobile {
-            width: 100%;
-            justify-content: center;
-          }
-          
-          .add-to-cart-btn-mobile {
-            width: 100%;
-          }
-        }
-        
-        @media (min-width: 641px) and (max-width: 768px) {
-          .menu-grid-tablet {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.25rem;
-          }
-          
-          .image-container-tablet {
-            height: 180px;
-          }
-        }
-        
-        @media (min-width: 769px) and (max-width: 1024px) {
-          .menu-grid-desktop {
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1.5rem;
-          }
         }
       `}</style>
 
@@ -650,45 +611,45 @@ const SevenDaysRestaurantMenu = () => {
       <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6">
         {/* Restaurant Info Card */}
         <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg border border-purple-200 p-4 sm:p-6 mb-6 sm:mb-8 fade-in">
-          <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6 restaurant-info-mobile">
+          <div className="flex flex-col sm:flex-row items-start gap-4 sm:gap-6">
             <div className="flex items-center gap-3 sm:gap-4 w-full sm:w-auto">
-              <div className="logo-mobile w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden border-2 sm:border-4 border-purple-100 shadow-md">
+              <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden border-2 sm:border-4 border-purple-100 shadow-md">
                 <img 
-                  src="https://i.postimg.cc/2jH8MtRg/7days.jpg" 
-                  alt="7 Days Restaurant Logo"
+                  src="https://i.postimg.cc/SNJNhGm8/sadia-s-kitchen.jpg" 
+                  alt="Sadia's Kitchen Logo"
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="flex-1">
-                <h2 className="title-mobile text-2xl sm:text-3xl font-bold text-gray-900">{restaurantInfo.name}</h2>
-                <p className="subtitle-mobile text-sm sm:text-lg text-gray-600 mt-1">Open 7 days a week since {restaurantInfo.established}</p>
+                <h2 className="text-2xl sm:text-3xl font-bold text-gray-900">sadia's kitchen</h2>
+                <p className="text-sm sm:text-lg text-gray-600 mt-1">Home-style Bengali Cuisine</p>
               </div>
             </div>
             
             <div className="w-full">
-              <div className="flex flex-wrap gap-2 sm:gap-4 mt-2 stats-mobile">
-                <div className="stat-item-mobile flex items-center gap-1 bg-purple-50 px-3 py-2 rounded-lg">
+              <div className="flex flex-wrap gap-2 sm:gap-4 mt-2">
+                <div className="flex items-center gap-1 bg-purple-50 px-3 py-2 rounded-lg">
                   <Star className="w-4 h-4 sm:w-5 sm:h-5 fill-purple-400 text-purple-400" />
                   <span className="font-bold text-base sm:text-lg text-gray-900">{restaurantInfo.rating}</span>
-                  <span className="text-xs sm:text-sm text-gray-500">(600+)</span>
+                  <span className="text-xs sm:text-sm text-gray-500">(300+)</span>
                 </div>
-                <div className="stat-item-mobile flex items-center gap-1 bg-purple-50 px-3 py-2 rounded-lg">
+                <div className="flex items-center gap-1 bg-purple-50 px-3 py-2 rounded-lg">
                   <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-gray-500" />
                   <span className="font-medium text-sm sm:text-base text-gray-900">{restaurantInfo.deliveryTime}</span>
                 </div>
-                <div className="stat-item-mobile flex items-center gap-1 bg-purple-50 px-3 py-2 rounded-lg">
+                <div className="flex items-center gap-1 bg-purple-50 px-3 py-2 rounded-lg">
                   <span className="text-sm sm:text-base text-gray-900">
                     Min: <span className="font-bold">৳{restaurantInfo.minOrder}</span>
                   </span>
                 </div>
-                <div className="stat-item-mobile flex items-center gap-1 bg-purple-50 px-3 py-2 rounded-lg">
+                <div className="flex items-center gap-1 bg-purple-50 px-3 py-2 rounded-lg">
                   <span className="text-sm sm:text-base text-gray-900">
                     Fee: <span className="font-bold">৳{restaurantInfo.deliveryFee}</span>
                   </span>
                 </div>
               </div>
               
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mt-4 sm:mt-6 info-grid-mobile">
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mt-4 sm:mt-6">
                 <div className="bg-purple-50 rounded-lg sm:rounded-xl p-3 sm:p-4 shadow-sm">
                   <div className="text-xs sm:text-sm text-gray-600 font-medium mb-1">Cuisine</div>
                   <div className="font-medium text-sm sm:text-base text-gray-800 truncate">{restaurantInfo.cuisine.join(", ")}</div>
@@ -703,14 +664,14 @@ const SevenDaysRestaurantMenu = () => {
                 </div>
               </div>
               
-              <div className="special-offer-mobile bg-gradient-to-br from-purple-100 to-violet-100 rounded-lg sm:rounded-xl p-4 sm:p-5 border border-purple-200 shadow-md mt-4 sm:mt-0">
+              <div className="bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg sm:rounded-xl p-4 sm:p-5 border border-purple-200 shadow-md mt-4 sm:mt-0">
                 <div className="flex items-center gap-3">
                   <ChefHat className="w-8 h-8 sm:w-10 sm:h-10 text-purple-600" />
                   <div>
                     <div className="text-lg sm:text-xl font-bold text-purple-800">Special Offer</div>
-                    <div className="text-sm sm:text-lg text-purple-700 font-medium">15% OFF on orders above ৳500</div>
+                    <div className="text-sm sm:text-lg text-purple-700 font-medium">Free delivery on orders above ৳500</div>
                     <div className="text-xs sm:text-sm text-gray-700 mt-1 bg-white/50 py-1 px-2 sm:px-3 rounded-full inline-block">
-                      Use code: <span className="font-bold">7DAYS15</span>
+                      Code applied automatically
                     </div>
                   </div>
                 </div>
@@ -720,12 +681,12 @@ const SevenDaysRestaurantMenu = () => {
         </div>
 
         {/* Categories Filter */}
-        <div className="category-filter-mobile mb-6 sm:mb-8">
+        <div className="mb-6 sm:mb-8">
           <div className="flex items-center justify-between mb-3 sm:mb-4">
             <h3 className="text-xl sm:text-2xl font-bold text-gray-900">Menu Categories</h3>
             <button
               onClick={() => setShowCategories(!showCategories)}
-              className="categories-toggle-btn sm:hidden flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg transition-colors"
+              className="sm:hidden flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-2 rounded-lg transition-colors"
             >
               <Menu className="w-4 h-4" />
               <span className="text-sm font-medium">Categories</span>
@@ -735,7 +696,7 @@ const SevenDaysRestaurantMenu = () => {
             </div>
           </div>
           
-          <div className="categories-scroll-mobile sm:block">
+          <div className={`${showCategories ? 'block' : 'hidden'} sm:block`}>
             <div className="flex gap-1 sm:gap-2 overflow-x-auto pb-2 min-w-max sm:min-w-0">
               {categories.map(category => (
                 <button
@@ -765,19 +726,19 @@ const SevenDaysRestaurantMenu = () => {
         </div>
 
         {/* Menu Items Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6 menu-grid-mobile menu-grid-tablet menu-grid-desktop">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
           {filteredItems.map((item, index) => (
             <div 
               key={item.id}
-              className="menu-item-card bg-white rounded-xl sm:rounded-2xl shadow-sm sm:shadow-md border border-gray-200 overflow-hidden fade-in menu-card-mobile"
+              className="menu-item-card bg-white rounded-xl sm:rounded-2xl shadow-sm sm:shadow-md border border-gray-200 overflow-hidden fade-in"
               style={{ animationDelay: `${index * 0.05}s` }}
             >
               {/* Item Image */}
-              <div className="relative h-48 sm:h-56 overflow-hidden food-image-container image-container-mobile image-container-tablet">
+              <div className="relative h-48 sm:h-56 overflow-hidden">
                 <img 
                   src={item.image} 
                   alt={item.name}
-                  className="w-full h-full object-cover food-image"
+                  className="w-full h-full object-cover"
                 />
 
                 {/* Wishlist Button */}
@@ -797,17 +758,17 @@ const SevenDaysRestaurantMenu = () => {
               </div>
               
               {/* Item Details */}
-              <div className="p-3 sm:p-4 md:p-5 item-details-mobile">
+              <div className="p-3 sm:p-4 md:p-5">
                 <div className="flex justify-between items-start mb-2 sm:mb-3">
                   <div className="flex-1 min-w-0">
-                    <h3 className="font-bold text-base sm:text-lg md:text-xl text-gray-900 mb-1 item-name-mobile truncate">
+                    <h3 className="font-bold text-base sm:text-lg md:text-xl text-gray-900 mb-1 truncate">
                       {item.name}
                     </h3>
                     <p className="text-gray-600 text-xs sm:text-sm mb-2 line-clamp-2">
                       {item.description}
                     </p>
                   </div>
-                  <div className="text-purple-600 font-bold text-xl sm:text-2xl ml-2 item-price-mobile">
+                  <div className="text-purple-600 font-bold text-xl sm:text-2xl ml-2">
                     ৳{item.price}
                   </div>
                 </div>
@@ -819,7 +780,7 @@ const SevenDaysRestaurantMenu = () => {
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="flex items-center gap-1 bg-gray-100 px-2 py-1 rounded-md">
-                      <Star className="w-3 h-3 sm:w-4 sm:h-4 fill-amber-400 text-amber-400" />
+                      <Star className="w-3 h-3 sm:w-4 sm:h-4 fill-purple-400 text-purple-400" />
                       <span className="font-medium text-gray-800">{item.rating}</span>
                     </div>
                     <div className="capitalize bg-purple-100 text-purple-800 px-2 py-1 rounded-md text-xs font-medium">
@@ -829,8 +790,8 @@ const SevenDaysRestaurantMenu = () => {
                 </div>
                 
                 {/* Quantity Selector and Add to Cart - কালো + এবং - সহ */}
-                <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3 action-buttons-mobile">
-                  <div className="flex items-center gap-2 quantity-selector-mobile">
+                <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-3">
+                  <div className="flex items-center gap-2">
                     <button
                       onClick={() => decreaseQuantity(item.id)}
                       className="simple-quantity-btn text-black-important"
@@ -852,7 +813,7 @@ const SevenDaysRestaurantMenu = () => {
                   
                   <button
                     onClick={() => addToCart(item)}
-                    className="w-full sm:flex-1 bg-gradient-to-r from-purple-500 to-violet-500 hover:from-purple-600 hover:to-violet-600 text-white font-semibold py-2.5 sm:py-3 md:py-3.5 rounded-lg sm:rounded-xl transition-all duration-300 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 text-sm sm:text-base add-to-cart-btn-mobile"
+                    className="w-full sm:flex-1 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-semibold py-2.5 sm:py-3 md:py-3.5 rounded-lg sm:rounded-xl transition-all duration-300 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2 text-sm sm:text-base"
                   >
                     <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
                     Add to Cart
@@ -873,7 +834,7 @@ const SevenDaysRestaurantMenu = () => {
             <p className="text-gray-600 mb-6 sm:mb-8 text-sm sm:text-lg">Try selecting a different category</p>
             <button
               onClick={() => setActiveCategory("all")}
-              className="px-6 py-2.5 sm:px-8 sm:py-3.5 bg-gradient-to-r from-purple-500 to-violet-500 text-white font-semibold rounded-full hover:shadow-xl transition-all duration-300 text-sm sm:text-lg"
+              className="px-6 py-2.5 sm:px-8 sm:py-3.5 bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold rounded-full hover:shadow-xl transition-all duration-300 text-sm sm:text-lg"
             >
               View All Menu Items
             </button>
@@ -940,7 +901,7 @@ const SevenDaysRestaurantMenu = () => {
         </button>
         <button
           onClick={handleViewCartToast}
-          className="bg-gradient-to-r from-purple-500 to-violet-500 text-white font-semibold px-6 py-3.5 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center gap-2"
+          className="bg-gradient-to-r from-purple-500 to-pink-500 text-white font-semibold px-6 py-3.5 rounded-full shadow-xl hover:shadow-2xl transition-all duration-300 hover:scale-105 flex items-center gap-2"
         >
           <ShoppingCart className="w-5 h-5" />
           View Cart ({cartItems.length})
@@ -951,4 +912,4 @@ const SevenDaysRestaurantMenu = () => {
   );
 };
 
-export default SevenDaysRestaurantMenu;
+export default SadiasKitchenMenu;
