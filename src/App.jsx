@@ -23,22 +23,7 @@ import BengalMeatShop from './pages/shops/BengalMeatShop';
 import FruitZoneShop from './pages/shops/FruitZoneShop';
 import RFLPharmaShop from './pages/shops/RFLPharmaShop';
 import UnimartShop from './pages/shops/UnimartShop';
-
-// যদি AmanaBigBazarShop না থাকে তবে একটি সাধারণ কম্পোনেন্ট
-const AmanaBigBazarShop = () => (
-  <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-    <div className="bg-white p-8 rounded-xl shadow-lg text-center">
-      <h1 className="text-3xl font-bold text-gray-800 mb-4">Amana Big Bazar - Mohakhali</h1>
-      <p className="text-gray-600 mb-6">Departmental store with variety of products</p>
-      <button 
-        onClick={() => window.history.back()}
-        className="px-6 py-3 bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-lg hover:shadow-lg transition-shadow"
-      >
-        Go Back
-      </button>
-    </div>
-  </div>
-);
+import AmanaBigBazarShop from './pages/shops/AmanaBigBazarShop'; // ✅ সঠিকভাবে import করুন
 
 // Simple brand page component for other restaurants
 const SimpleBrandPage = ({ brandName, description = "" }) => (
@@ -92,7 +77,7 @@ function App() {
           <Route path="shop/bengal-meat-dhali" element={<BengalMeatShop />} />
           <Route path="shop/rfl-best-buy-pharma" element={<RFLPharmaShop />} />
           <Route path="shop/unimart-gulshan" element={<UnimartShop />} />
-          <Route path="shop/amana-big-bazar" element={<AmanaBigBazarShop />} />
+          <Route path="shop/amana-big-bazar" element={<AmanaBigBazarShop />} /> {/* ✅ এখন কাজ করবে */}
           <Route path="shop/agora-rm-center" element={<AgoraShop />} />
           
           {/* Simple brand routes for Top Brands */}

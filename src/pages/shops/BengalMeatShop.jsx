@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ArrowLeft, ShoppingCart, Star, Truck, Shield, Check, Plus, Minus, Heart, Home as HomeIcon, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -8,6 +8,30 @@ const BengalMeatShop = () => {
   const [cart, setCart] = useState([]);
   const [quantities, setQuantities] = useState({});
   const [wishlist, setWishlist] = useState([]);
+
+  // লোকাল স্টোরেজ থেকে ডেটা লোড
+  useEffect(() => {
+    const savedWishlist = localStorage.getItem("shopickWishlist");
+    const savedCart = localStorage.getItem("shopickCart");
+    
+    if (savedWishlist) {
+      try {
+        setWishlist(JSON.parse(savedWishlist));
+      } catch (error) {
+        console.error("Error parsing wishlist:", error);
+        localStorage.removeItem("shopickWishlist");
+      }
+    }
+    
+    if (savedCart) {
+      try {
+        setCart(JSON.parse(savedCart));
+      } catch (error) {
+        console.error("Error parsing cart:", error);
+        localStorage.removeItem("shopickCart");
+      }
+    }
+  }, []);
 
   // Wishlist টোস্ট ফাংশন
   const handleViewWishlistToast = () => {
@@ -109,19 +133,63 @@ const BengalMeatShop = () => {
     }, 500);
   };
 
-  // লোকাল স্টোরেজ থেকে ডেটা লোড
-  useState(() => {
-    const savedWishlist = localStorage.getItem("shopickWishlist");
-    const savedCart = localStorage.getItem("shopickCart");
+  // Add to Wishlist ফাংশন
+  const addToWishlist = (item) => {
+    const existingItem = wishlist.find(wishlistItem => wishlistItem.id === item.id);
     
-    if (savedWishlist) {
-      setWishlist(JSON.parse(savedWishlist));
+    if (!existingItem) {
+      const wishlistItem = {
+        ...item,
+        quantity: quantities[item.id] || 1,
+        addedToWishlist: new Date().toISOString()
+      };
+      
+      const updatedWishlist = [...wishlist, wishlistItem];
+      setWishlist(updatedWishlist);
+      localStorage.setItem("shopickWishlist", JSON.stringify(updatedWishlist));
+      window.dispatchEvent(new Event('wishlistUpdated'));
+      
+      toast.success(`${item.name} added to wishlist! ❤️`, {
+        position: "top-right",
+        autoClose: 2000,
+      });
+    } else {
+      toast.info(`${item.name} is already in your wishlist!`, {
+        position: "top-right",
+        autoClose: 2000,
+      });
+    }
+  };
+
+  // Add to Cart ফাংশন (সংশোধিত)
+  const addToCart = (item) => {
+    const quantity = quantities[item.id] || 1;
+    const cartItem = {
+      ...item,
+      quantity,
+      totalPrice: item.price * quantity
+    };
+    
+    const existingItemIndex = cart.findIndex(cartItem => cartItem.id === item.id);
+    
+    let updatedCart;
+    if (existingItemIndex >= 0) {
+      updatedCart = [...cart];
+      updatedCart[existingItemIndex].quantity += quantity;
+      updatedCart[existingItemIndex].totalPrice = updatedCart[existingItemIndex].price * updatedCart[existingItemIndex].quantity;
+    } else {
+      updatedCart = [...cart, cartItem];
     }
     
-    if (savedCart) {
-      setCart(JSON.parse(savedCart));
-    }
-  }, []);
+    setCart(updatedCart);
+    localStorage.setItem("shopickCart", JSON.stringify(updatedCart));
+    window.dispatchEvent(new Event('cartUpdated'));
+    
+    toast.success(`${item.name} (${quantity} ${item.unit}) added to cart! 🛒`, {
+      position: "top-right",
+      autoClose: 2000,
+    });
+  };
 
   const meatItems = [
     {
@@ -284,21 +352,6 @@ const BengalMeatShop = () => {
     }));
   };
 
-  const addToCart = (item) => {
-    const quantity = quantities[item.id] || 1;
-    const cartItem = {
-      ...item,
-      quantity,
-      totalPrice: item.price * quantity
-    };
-    
-    setCart([...cart, cartItem]);
-    toast.success(`${item.name} (${quantity} ${item.unit}) added to cart! 🛒`, {
-      position: "top-right",
-      autoClose: 2000,
-    });
-  };
-
   const cartTotal = cart.reduce((sum, item) => sum + item.totalPrice, 0);
 
   return (
@@ -430,33 +483,43 @@ const BengalMeatShop = () => {
                     <div className="flex items-center gap-2">
                       <button
                         onClick={() => decreaseQuantity(item.id)}
-                        className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center"
+                        className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-black"
                       >
                         <Minus className="w-4 h-4" />
                       </button>
-                      <span className="w-12 text-center font-bold">
+                      <span className="w-12 text-center font-bold text-black">
                         {quantities[item.id] || 1}
                       </span>
                       <button
                         onClick={() => increaseQuantity(item.id)}
-                        className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center"
+                        className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center text-black"
                       >
                         <Plus className="w-4 h-4" />
                       </button>
                     </div>
                   </div>
-                  <div className="text-sm font-medium text-gray-700">
+                  <div className="text-sm font-medium text-black">
                     Total: ৳{item.price * (quantities[item.id] || 1)}
                   </div>
                 </div>
 
-                <button
-                  onClick={() => addToCart(item)}
-                  className="w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-semibold py-3 rounded-lg transition-all hover:shadow-lg flex items-center justify-center gap-2"
-                >
-                  <ShoppingCart className="w-5 h-5" />
-                  Add to Cart
-                </button>
+                <div className="space-y-2">
+                  <button
+                    onClick={() => addToCart(item)}
+                    className="w-full bg-gradient-to-r from-red-500 to-orange-500 hover:from-red-600 hover:to-orange-600 text-white font-semibold py-3 rounded-lg transition-all hover:shadow-lg flex items-center justify-center gap-2"
+                  >
+                    <ShoppingCart className="w-5 h-5" />
+                    Add to Cart
+                  </button>
+                  
+                  <button
+                    onClick={() => addToWishlist(item)}
+                    className="w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-semibold py-3 rounded-lg transition-all hover:shadow-lg flex items-center justify-center gap-2"
+                  >
+                    <Heart className="w-5 h-5" />
+                    Add to Wishlist
+                  </button>
+                </div>
               </div>
             </div>
           ))}

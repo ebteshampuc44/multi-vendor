@@ -472,7 +472,7 @@ const Login = () => {
         </div>
       </div>
 
-      {/* Mobile Bottom Navigation - KacchiBhaiMenu.jsx এর মতোই */}
+      {/* Mobile Bottom Navigation - Home.jsx এর মতোই */}
       <div className="lg:hidden mobile-bottom-nav">
         <div className="nav-buttons">
           <button

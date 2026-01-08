@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { ArrowLeft, ShoppingCart, Star, Package, Truck, Shield, Plus, Minus } from "lucide-react";
+import { useState, useEffect } from "react";
+import { ArrowLeft, ShoppingCart, Star, Package, Truck, Shield, Plus, Minus, Heart, Home as HomeIcon, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -7,6 +7,189 @@ const FruitZoneShop = () => {
   const navigate = useNavigate();
   const [cart, setCart] = useState([]);
   const [quantities, setQuantities] = useState({});
+  const [wishlist, setWishlist] = useState([]);
+
+  // লোকাল স্টোরেজ থেকে ডেটা লোড
+  useEffect(() => {
+    const savedWishlist = localStorage.getItem("shopickWishlist");
+    const savedCart = localStorage.getItem("shopickCart");
+    
+    if (savedWishlist) {
+      try {
+        setWishlist(JSON.parse(savedWishlist));
+      } catch (error) {
+        console.error("Error parsing wishlist:", error);
+        localStorage.removeItem("shopickWishlist");
+      }
+    }
+    
+    if (savedCart) {
+      try {
+        setCart(JSON.parse(savedCart));
+      } catch (error) {
+        console.error("Error parsing cart:", error);
+        localStorage.removeItem("shopickCart");
+      }
+    }
+  }, []);
+
+  // Wishlist টোস্ট ফাংশন
+  const handleViewWishlistToast = () => {
+    toast.dismiss();
+    
+    if (wishlist.length > 0) {
+      toast.info(`❤️ You have ${wishlist.length} items in wishlist`, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        style: {
+          background: 'linear-gradient(135deg, #ec4899 0%, #db2777 100%)',
+          color: 'white',
+          fontWeight: '600',
+          fontSize: '14px',
+          borderRadius: '12px',
+          boxShadow: '0 4px 12px rgba(219, 39, 119, 0.3)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+        },
+      });
+    } else {
+      toast.info(`❤️ Your wishlist is empty`, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        style: {
+          background: 'linear-gradient(135deg, #6b7280 0%, #4b5563 100%)',
+          color: 'white',
+          fontWeight: '600',
+          fontSize: '14px',
+          borderRadius: '12px',
+          boxShadow: '0 4px 12px rgba(75, 85, 99, 0.3)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+        },
+      });
+    }
+    setTimeout(() => {
+      navigate('/wishlist');
+    }, 500);
+  };
+
+  // Cart টোস্ট ফাংশন
+  const handleViewCartToast = () => {
+    toast.dismiss();
+    
+    if (cart.length > 0) {
+      toast.info(`🛒 You have ${cart.length} items in cart`, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        style: {
+          background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+          color: 'white',
+          fontWeight: '600',
+          fontSize: '14px',
+          borderRadius: '12px',
+          boxShadow: '0 4px 12px rgba(217, 119, 6, 0.3)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+        },
+      });
+    } else {
+      toast.info(`🛒 Your cart is empty`, {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "dark",
+        style: {
+          background: 'linear-gradient(135deg, #6b7280 0%, #4b5563 100%)',
+          color: 'white',
+          fontWeight: '600',
+          fontSize: '14px',
+          borderRadius: '12px',
+          boxShadow: '0 4px 12px rgba(75, 85, 99, 0.3)',
+          border: '1px solid rgba(255, 255, 255, 0.1)',
+        },
+      });
+    }
+    setTimeout(() => {
+      navigate('/cart');
+    }, 500);
+  };
+
+  // Add to Wishlist ফাংশন
+  const addToWishlist = (item) => {
+    const existingItem = wishlist.find(wishlistItem => wishlistItem.id === item.id);
+    
+    if (!existingItem) {
+      const wishlistItem = {
+        ...item,
+        quantity: quantities[item.id] || 1,
+        addedToWishlist: new Date().toISOString()
+      };
+      
+      const updatedWishlist = [...wishlist, wishlistItem];
+      setWishlist(updatedWishlist);
+      localStorage.setItem("shopickWishlist", JSON.stringify(updatedWishlist));
+      window.dispatchEvent(new Event('wishlistUpdated'));
+      
+      toast.success(`${item.name} added to wishlist! ❤️`, {
+        position: "top-right",
+        autoClose: 2000,
+      });
+    } else {
+      toast.info(`${item.name} is already in your wishlist!`, {
+        position: "top-right",
+        autoClose: 2000,
+      });
+    }
+  };
+
+  // Add to Cart ফাংশন (সংশোধিত)
+  const addToCart = (item) => {
+    const quantity = quantities[item.id] || 1;
+    const cartItem = {
+      ...item,
+      quantity,
+      totalPrice: item.price * quantity
+    };
+    
+    const existingItemIndex = cart.findIndex(cartItem => cartItem.id === item.id);
+    
+    let updatedCart;
+    if (existingItemIndex >= 0) {
+      updatedCart = [...cart];
+      updatedCart[existingItemIndex].quantity += quantity;
+      updatedCart[existingItemIndex].totalPrice = updatedCart[existingItemIndex].price * updatedCart[existingItemIndex].quantity;
+    } else {
+      updatedCart = [...cart, cartItem];
+    }
+    
+    setCart(updatedCart);
+    localStorage.setItem("shopickCart", JSON.stringify(updatedCart));
+    window.dispatchEvent(new Event('cartUpdated'));
+    
+    toast.success(`${item.name} (${quantity} ${item.unit}) added to cart! 🛒`, {
+      position: "top-right",
+      autoClose: 2000,
+    });
+  };
 
   const groceryItems = [
     {
@@ -169,25 +352,10 @@ const FruitZoneShop = () => {
     }));
   };
 
-  const addToCart = (item) => {
-    const quantity = quantities[item.id] || 1;
-    const cartItem = {
-      ...item,
-      quantity,
-      totalPrice: item.price * quantity
-    };
-    
-    setCart([...cart, cartItem]);
-    toast.success(`${item.name} (${quantity} ${item.unit}) added to cart! 🛒`, {
-      position: "top-right",
-      autoClose: 2000,
-    });
-  };
-
   const cartTotal = cart.reduce((sum, item) => sum + item.totalPrice, 0);
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 pb-16">
       {/* Header */}
       <div className="bg-gradient-to-r from-green-600 to-emerald-600 text-white">
         <div className="container mx-auto px-4 py-6">
@@ -246,7 +414,7 @@ const FruitZoneShop = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <ShoppingCart className="w-5 h-5 text-yellow-600" />
-                <span className="font-medium text-yellow-800">
+                <span className="font-medium text-black">
                   {cart.length} items in cart • Total: ৳{cartTotal}
                 </span>
               </div>
@@ -317,16 +485,16 @@ const FruitZoneShop = () => {
                         onClick={() => decreaseQuantity(item.id)}
                         className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center"
                       >
-                        <Minus className="w-4 h-4" />
+                        <Minus className="w-4 text-black h-4" />
                       </button>
-                      <span className="w-12 text-center font-bold">
+                      <span className="w-12 text-black text-center font-bold">
                         {quantities[item.id] || 1}
                       </span>
                       <button
                         onClick={() => increaseQuantity(item.id)}
                         className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center"
                       >
-                        <Plus className="w-4 h-4" />
+                        <Plus className="w-4 text-black h-4" />
                       </button>
                     </div>
                   </div>
@@ -335,13 +503,23 @@ const FruitZoneShop = () => {
                   </div>
                 </div>
 
-                <button
-                  onClick={() => addToCart(item)}
-                  className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-semibold py-3 rounded-lg transition-all hover:shadow-lg flex items-center justify-center gap-2"
-                >
-                  <ShoppingCart className="w-5 h-5" />
-                  Add to Cart
-                </button>
+                <div className="space-y-2">
+                  <button
+                    onClick={() => addToCart(item)}
+                    className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white font-semibold py-3 rounded-lg transition-all hover:shadow-lg flex items-center justify-center gap-2"
+                  >
+                    <ShoppingCart className="w-5 h-5" />
+                    Add to Cart
+                  </button>
+                  
+                  <button
+                    onClick={() => addToWishlist(item)}
+                    className="w-full bg-gradient-to-r from-pink-500 to-rose-500 hover:from-pink-600 hover:to-rose-600 text-white font-semibold py-3 rounded-lg transition-all hover:shadow-lg flex items-center justify-center gap-2"
+                  >
+                    <Heart className="w-5 h-5" />
+                    Add to Wishlist
+                  </button>
+                </div>
               </div>
             </div>
           ))}
@@ -436,6 +614,108 @@ const FruitZoneShop = () => {
           </div>
         </div>
       </div>
+
+      {/* Mobile Bottom Navigation */}
+      <div className="lg:hidden mobile-bottom-nav">
+        <div className="nav-buttons">
+          <button
+            onClick={() => navigate('/')}
+            className="nav-btn text-gray-600 hover:text-green-600"
+          >
+            <HomeIcon className="w-5 h-5" />
+            <span className="text-xs font-medium">Home</span>
+          </button>
+          
+          <button
+            onClick={handleViewWishlistToast}
+            className="nav-btn text-gray-600 hover:text-pink-600"
+          >
+            <Heart 
+              className="w-5 h-5" 
+              fill={wishlist.length > 0 ? "#ef4444" : "none"}
+              color={wishlist.length > 0 ? "#ef4444" : "#6b7280"}
+            />
+            <span className="text-xs font-medium">Wishlist</span>
+            {wishlist.length > 0 && (
+              <span className="badge">{wishlist.length}</span>
+            )}
+          </button>
+          
+          <button
+            onClick={handleViewCartToast}
+            className="nav-btn text-gray-600 hover:text-blue-600"
+          >
+            <ShoppingCart className="w-5 h-5" />
+            <span className="text-xs font-medium">Cart</span>
+            {cart.length > 0 && (
+              <span className="badge">{cart.length}</span>
+            )}
+          </button>
+          
+          <button
+            onClick={() => navigate('/profile')}
+            className="nav-btn text-gray-600 hover:text-purple-600"
+          >
+            <User className="w-5 h-5" />
+            <span className="text-xs font-medium">Profile</span>
+          </button>
+        </div>
+      </div>
+
+      <style jsx global>{`
+        /* Mobile Bottom Navigation স্টাইল */
+        .mobile-bottom-nav {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background: white;
+          border-top: 1px solid #e5e7eb;
+          padding: 0.75rem 1rem;
+          z-index: 50;
+          box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+
+        .mobile-bottom-nav .nav-buttons {
+          display: flex;
+          justify-content: space-around;
+          width: 100%;
+        }
+
+        .mobile-bottom-nav .nav-btn {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0.25rem;
+          padding: 0.5rem;
+          border-radius: 0.5rem;
+          transition: background-color 0.2s;
+          position: relative;
+        }
+
+        .mobile-bottom-nav .nav-btn:hover {
+          background-color: #f9fafb;
+        }
+
+        .mobile-bottom-nav .nav-btn.active {
+          background-color: #f3f4f6;
+        }
+
+        .mobile-bottom-nav .badge {
+          position: absolute;
+          top: -5px;
+          right: -5px;
+          background-color: #ef4444;
+          color: white;
+          font-size: 0.75rem;
+          border-radius: 50%;
+          width: 18px;
+          height: 18px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      `}</style>
     </div>
   );
 };

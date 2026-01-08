@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-import { Mail, Lock, User, Phone, MapPin, Eye, EyeOff, ArrowLeft, CheckCircle } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Mail, Lock, User, Phone, MapPin, Eye, EyeOff, ArrowLeft, CheckCircle, Home, ShoppingCart, Heart } from "lucide-react";
 
 const UserRegister = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -13,6 +13,27 @@ const UserRegister = () => {
     agreeTerms: false,
     newsletter: true
   });
+  
+  const [cartItems, setCartItems] = useState([]);
+  const [wishlistItems, setWishlistItems] = useState([]);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    loadCartAndWishlist();
+  }, []);
+
+  const loadCartAndWishlist = () => {
+    const savedCart = localStorage.getItem("shopickCart");
+    const savedWishlist = localStorage.getItem("shopickWishlist");
+    
+    if (savedCart) {
+      setCartItems(JSON.parse(savedCart));
+    }
+    
+    if (savedWishlist) {
+      setWishlistItems(JSON.parse(savedWishlist));
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -29,7 +50,64 @@ const UserRegister = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center py-12 px-4">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-white flex items-center justify-center py-12 px-4 pb-24 sm:pb-12">
+      <style jsx global>{`
+        /* মোবাইল বটম নেভিগেশন স্টাইল */
+        .mobile-bottom-nav {
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          background: white;
+          border-top: 1px solid #e5e7eb;
+          padding: 0.75rem 1rem;
+          z-index: 50;
+          box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .mobile-bottom-nav .nav-buttons {
+          display: flex;
+          justify-content: space-around;
+          width: 100%;
+        }
+        
+        .mobile-bottom-nav .nav-btn {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 0.25rem;
+          padding: 0.5rem;
+          border-radius: 0.5rem;
+          transition: background-color 0.2s;
+          position: relative;
+        }
+        
+        .mobile-bottom-nav .nav-btn:hover {
+          background-color: #f9fafb;
+        }
+        
+        .mobile-bottom-nav .badge {
+          position: absolute;
+          top: -5px;
+          right: -5px;
+          background-color: #ef4444;
+          color: white;
+          font-size: 0.75rem;
+          border-radius: 50%;
+          width: 18px;
+          height: 18px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        @media (min-width: 1024px) {
+          .mobile-bottom-nav {
+            display: none;
+          }
+        }
+      `}</style>
+
       <div className="max-w-2xl w-full">
         {/* Header */}
         <div className="text-center mb-8">
@@ -228,6 +306,63 @@ const UserRegister = () => {
               Sign in here
             </Link>
           </p>
+        </div>
+
+        {/* Back to Home */}
+        <div className="text-center mt-8">
+          <Link 
+            to="/" 
+            className="inline-flex items-center gap-2 text-gray-800 hover:text-blue-600 transition"
+          >
+            ← Back to Home
+          </Link>
+        </div>
+      </div>
+
+      {/* Mobile Bottom Navigation - Home.jsx এর মতোই */}
+      <div className="lg:hidden mobile-bottom-nav">
+        <div className="nav-buttons">
+          <button
+            onClick={() => navigate('/')}
+            className="nav-btn text-gray-600 hover:text-green-600"
+          >
+            <Home className="w-5 h-5" />
+            <span className="text-xs font-medium">Home</span>
+          </button>
+          
+          <button
+            onClick={() => navigate('/login')}
+            className="nav-btn text-gray-600 hover:text-blue-600"
+          >
+            <User className="w-5 h-5" />
+            <span className="text-xs font-medium">Login</span>
+          </button>
+          
+          <button
+            onClick={() => navigate('/wishlist')}
+            className="nav-btn text-gray-600 hover:text-pink-600"
+          >
+            <Heart 
+              className="w-5 h-5" 
+              fill={wishlistItems.length > 0 ? "#ef4444" : "none"}
+              color={wishlistItems.length > 0 ? "#ef4444" : "#6b7280"}
+            />
+            <span className="text-xs font-medium">Wishlist</span>
+            {wishlistItems.length > 0 && (
+              <span className="badge">{wishlistItems.length}</span>
+            )}
+          </button>
+          
+          <button
+            onClick={() => navigate('/cart')}
+            className="nav-btn text-gray-600 hover:text-blue-600"
+          >
+            <ShoppingCart className="w-5 h-5" />
+            <span className="text-xs font-medium">Cart</span>
+            {cartItems.length > 0 && (
+              <span className="badge">{cartItems.length}</span>
+            )}
+          </button>
         </div>
       </div>
     </div>
